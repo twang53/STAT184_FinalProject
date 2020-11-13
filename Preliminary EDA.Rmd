@@ -1,0 +1,11 @@
+---
+title: "Preliminary EDA"
+author: "Tanya Wang"
+output: 
+    html_notebook:
+    fig_height: 6
+    fig_width: 10
+---
+---
+
+## Introduction
