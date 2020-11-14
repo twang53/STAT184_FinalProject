@@ -11,3 +11,18 @@ output:
 ## Introduction
 
 ### Research Question
+
+
+## The Data
+
+### Questions
+- where did it come from?
+- who collected/maintains them?
+- when & why were they originally collected?
+- what does a case represent in each data source, & how many total cases are available?
+- what are some of the variables that I plan to use?
+
+
+## Preliminary Observations
+
+### Plots & Summary Statistics
