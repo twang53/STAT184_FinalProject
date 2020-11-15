@@ -1768,50 +1768,34 @@ summary {
 <ul>
 <li><strong>tidyverse:</strong> this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.</li>
 <li><strong>readxl:</strong> this package makes it easy to get data out of Excel and into R</li>
-<li><strong>tibble:</strong> a tibble is basically a data.frame that leads to cleaner and more expressive code</li>
 </ul>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShwbHlyKVxuXG5gYGAifQ== -->
-<pre class="r"><code>library(plyr)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm0obGlzdCA9IGxzKCkpXG5cbmxpYnJhcnkodGlkeXZlcnNlKVxubGlicmFyeShyZWFkeGwpXG5gYGAifQ== -->
+<pre class="r"><code>rm(list = ls())
+
+library(tidyverse)
+library(readxl)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5Zb3UgaGF2ZSBsb2FkZWQgcGx5ciBhZnRlciBkcGx5ciAtIHRoaXMgaXMgbGlrZWx5IHRvIGNhdXNlIHByb2JsZW1zLlxuSWYgeW91IG5lZWQgZnVuY3Rpb25zIGZyb20gYm90aCBwbHlyIGFuZCBkcGx5ciwgcGxlYXNlIGxvYWQgcGx5ciBmaXJzdCwgdGhlbiBkcGx5cjpcbmxpYnJhcnkocGx5cik7IGxpYnJhcnkoZHBseXIpXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cblxuQXR0YWNoaW5nIHBhY2thZ2U6IOOkvOO4sXBseXLjpLzjuLJcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDjpLzjuLFwYWNrYWdlOmRwbHly46S847iyOlxuXG4gICAgYXJyYW5nZSwgY291bnQsIGRlc2MsIGZhaWx3aXRoLCBpZCwgbXV0YXRlLCByZW5hbWUsIHN1bW1hcmlzZSxcbiAgICBzdW1tYXJpemVcblxuVGhlIGZvbGxvd2luZyBvYmplY3QgaXMgbWFza2VkIGZyb20g46S847ixcGFja2FnZTpwdXJycuOkvOO4sjpcblxuICAgIGNvbXBhY3RcbiJ9 -->
-<pre><code>---------------------------------------------------------------------------
-You have loaded plyr after dplyr - this is likely to cause problems.
-If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-library(plyr); library(dplyr)
----------------------------------------------------------------------------
-
-Attaching package: 㤼㸱plyr㤼㸲
-
-The following objects are masked from 㤼㸱package:dplyr㤼㸲:
-
-    arrange, count, desc, failwith, id, mutate, rename, summarise,
-    summarize
-
-The following object is masked from 㤼㸱package:purrr㤼㸲:
-
-    compact</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Now we read in our data from the xls file. This one is for counties in the US and contains 155 counties, all in separate sheets.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueGxzX2RhdGEgPC0gXCJDOi9Vc2Vycy9HdWFpR3VhaS9Eb2N1bWVudHMvUi9TVEFUMTg0X0ZpbmFsUHJvamVjdC8yMDA5LTIwMTMtYWNzLWxhbmctdGFibGVzLWNvdW50eS54bHNcIlxuXG4jIFRoaXMgcmV0dXJucyB0aGUgbmFtZXMgb2YgYWxsIHRoZSBzaGVldHMgaW4gb3VyIHhscyBmaWxlIChmb3IgZnV0dXJlIHJlZmVyZW5jZSlcbmV4Y2VsX3NoZWV0cyhwYXRoID0geGxzX2RhdGEpXG5gYGAifQ== -->
+<pre class="r"><code>xls_data &lt;- &quot;C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-county.xls&quot;
+
+# This returns the names of all the sheets in our xls file (for future reference)
+excel_sheets(path = xls_data)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQW5jaG9yYWdlTXVuaWNpcGFsaXR5IDwtIHJlYWRfZXhjZWwocGF0aCA9IHhsc19kYXRhLCBzaGVldCA9IFwiQW5jaG9yYWdlIE11bmljaXBhbGl0eSwgQUtcIilcblxuYGBgIn0= -->
-<pre class="r"><code>AnchorageMunicipality &lt;- read_excel(path = xls_data, sheet = &quot;Anchorage Municipality, AK&quot;)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJIHNwZWNpZmllZCB3aGljaCBzaGVldCBJIHdhbnQgYnkgaXQncyBuYW1lIGFuZCBtYWRlIHN1cmUgdG8gc2V0IHRoZSBuYSBhcmd1bWVudCBiZWNhdXNlIHNvbWUgb2YgdGhlIGNlbGxzIGFyZSBlbXB0eSBidXQgcmVwcmVzZW50ZWQgYnkgXCItLVwiLCByYXRoZXIgdGhhbiBhIGJsYW5rIGNlbGwuIEkgd2lsbCBkZWFsIHdpdGggdGhlIGNlbGxzIHdpdGggbGV0dGVycyBpbiB0aGVtIGxhdGVyLlxuQW5jaG9yYWdlTXVuaWNpcGFsaXR5IDwtIHJlYWRfZXhjZWwocGF0aCA9IHhsc19kYXRhLCBzaGVldCA9IFwiQW5jaG9yYWdlIE11bmljaXBhbGl0eSwgQUtcIiwgbmEgPSBcIi0tXCIpXG5cblZpZXcoQW5jaG9yYWdlTXVuaWNpcGFsaXR5KVxuYGBgIn0= -->
+<pre class="r"><code># I specified which sheet I want by it&#39;s name and made sure to set the na argument because some of the cells are empty but represented by &quot;--&quot;, rather than a blank cell. I will deal with the cells with letters in them later.
+AnchorageMunicipality &lt;- read_excel(path = xls_data, sheet = &quot;Anchorage Municipality, AK&quot;, na = &quot;--&quot;)
+
+View(AnchorageMunicipality)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuKiBgYCAtPiAuLi4yXG4qIGBgIC0+IC4uLjNcbiogYGAgLT4gLi4uNFxuKiBgYCAtPiAuLi41XG4ifQ== -->
-<pre><code>New names:
-* `` -&gt; ...2
-* `` -&gt; ...3
-* `` -&gt; ...4
-* `` -&gt; ...5</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="questions" class="section level3">
@@ -1833,7 +1817,7 @@ The following object is masked from 㤼㸱package:purrr㤼㸲:
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZWxpbWluYXJ5IEVEQSINCmF1dGhvcjogIlRhbnlhIFdhbmciDQpvdXRwdXQ6IA0KICAgIGh0bWxfbm90ZWJvb2s6DQogICAgZmlnX2hlaWdodDogNg0KICAgIGZpZ193aWR0aDogMTANCi0tLQ0KLS0tDQoNCiMjIEludHJvZHVjdGlvbg0KDQojIyMgUmVzZWFyY2ggUXVlc3Rpb24NCiMjIyMgKipIb3cgZG8gdGhlIG51bWJlciBvZiBsYW5ndWFnZXMgc3Bva2VuIGF0IGhvbWUgYWZmZWN0IEVuZ2xpc2ggc3BlYWtpbmcgYWJpbGl0eT8qKg0KSSB3YW50IHRvIHNlZSBob3cgdGhlIG51bWJlciBvZiBsYW5ndWFnZXMgYW5kIHRoZSB0eXBlIG9mIGxhbmd1YWdlKHMpIHNwb2tlbiBhdCBob21lIGNhbiBhZmZlY3QgYSBwZXJzb24ncyBhYmlsaXR5IHRvIHNwZWFrIEVuZ2xpc2ggd2VsbC4gSSBoYXZlIGEgY291cGxlIGRhdGEgc291cmNlcyB0byBhbmFseXplIHRoYXQsIG9uZSBiYXNlZCBvbiBjb3VudGllcyBpbiB0aGUgVVMsIG9uZSBiYXNlZCBvbiB0aGUgc3RhdGVzIGluIHRoZSBVUywgYW5kIG9uZSBvZiB0aGUgVVMgKHRoZSBuYXRpb24pIG92ZXJhbGwuIEkgbWF5IGxvb2sgZm9yIG1vcmUgZGF0YXNldHMgdG8gYWRkIHNvIHRoYXQgdGhlcmUncyBhIGJpdCBtb3JlICJjb2xvciIgYW5kIG1ha2VzIHRoZSBlbnRpcmUgcHJvamVjdCBtb3JlIGludGVyZXN0aW5nLg0KDQojIyBUaGUgRGF0YQ0KDQpGaXJzdCB3ZSBuZWVkIGNsZWFuIHRoZSBlbnZpcm9ubWVudCBhbmQgdGhlbiBsb2FkIHRoZSBwYWNrYWdlKHMpIHdlIG5lZWQuIEJlbG93IGlzIGEgZGVzY3JpcHRpb24gb2YgZWFjaCBwYWNrYWdlIEkgbG9hZGVkIGFuZCB3aGF0IGl0IGlzIHVzZWQgZm9yOg0KDQotICoqdGlkeXZlcnNlOioqIHRoaXMgaXMgYSBjb2xsZWN0aW9uIG9mIFIgcGFja2FnZXMgZGVzaWduZWQgZm9yIGRhdGEgc2NpZW5jZS4gSXQgaW5jbHVkZXMgZ2dwbG90MiwgZHBseXIsIHRpZHlyLCBhbmQgbW9yZSB0aGF0IHdlIGNhbiB1c2UgZm9yIGV2ZXJ5ZGF5IGRhdGEgYW5hbHlzZXMuDQotICoqcmVhZHhsOioqIHRoaXMgcGFja2FnZSBtYWtlcyBpdCBlYXN5IHRvIGdldCBkYXRhIG91dCBvZiBFeGNlbCBhbmQgaW50byBSDQotICoqdGliYmxlOioqIGEgdGliYmxlIGlzIGJhc2ljYWxseSBhIGRhdGEuZnJhbWUgdGhhdCBsZWFkcyB0byBjbGVhbmVyIGFuZCBtb3JlIGV4cHJlc3NpdmUgY29kZQ0KYGBge3J9DQpybShsaXN0ID0gbHMoKSkNCg0KbGlicmFyeSh0aWR5dmVyc2UpDQpsaWJyYXJ5KHJlYWR4bCkNCmxpYnJhcnkodGliYmxlKQ0KYGBgDQoNCk5vdyB3ZSByZWFkIGluIG91ciBkYXRhIGZyb20gdGhlIHhscyBmaWxlLiBUaGlzIG9uZSBpcyBmb3IgY291bnRpZXMgaW4gdGhlIFVTIGFuZCBjb250YWlucyAxNTUgY291bnRpZXMsIGFsbCBpbiBzZXBhcmF0ZSBzaGVldHMuDQpgYGB7cn0NCnhsc19kYXRhIDwtICJDOi9Vc2Vycy9HdWFpR3VhaS9Eb2N1bWVudHMvUi9TVEFUMTg0X0ZpbmFsUHJvamVjdC8yMDA5LTIwMTMtYWNzLWxhbmctdGFibGVzLWNvdW50eS54bHMiDQoNCiMgVGhpcyByZXR1cm5zIHRoZSBuYW1lcyBvZiBhbGwgdGhlIHNoZWV0cyBpbiBvdXIgeGxzIGZpbGUgKGZvciBmdXR1cmUgcmVmZXJlbmNlKQ0KZXhjZWxfc2hlZXRzKHBhdGggPSB4bHNfZGF0YSkNCmBgYA0KYGBge3J9DQpBbmNob3JhZ2VNdW5pY2lwYWxpdHkgPC0gcmVhZF9leGNlbChwYXRoID0geGxzX2RhdGEsIHNoZWV0ID0gIkFuY2hvcmFnZSBNdW5pY2lwYWxpdHksIEFLIikNCg0KVmlldyhBbmNob3JhZ2VNdW5pY2lwYWxpdHkpDQpgYGANCg0KIyMjIFF1ZXN0aW9ucw0KLSB3aGVyZSBkaWQgaXQgY29tZSBmcm9tPw0KLSB3aG8gY29sbGVjdGVkL21haW50YWlucyB0aGVtPw0KLSB3aGVuICYgd2h5IHdlcmUgdGhleSBvcmlnaW5hbGx5IGNvbGxlY3RlZD8NCi0gd2hhdCBkb2VzIGEgY2FzZSByZXByZXNlbnQgaW4gZWFjaCBkYXRhIHNvdXJjZSwgJiBob3cgbWFueSB0b3RhbCBjYXNlcyBhcmUgYXZhaWxhYmxlPw0KLSB3aGF0IGFyZSBzb21lIG9mIHRoZSB2YXJpYWJsZXMgdGhhdCBJIHBsYW4gdG8gdXNlPw0KDQoNCiMjIFByZWxpbWluYXJ5IE9ic2VydmF0aW9ucw0KDQojIyMgUGxvdHMgJiBTdW1tYXJ5IFN0YXRpc3RpY3MNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZWxpbWluYXJ5IEVEQSINCmF1dGhvcjogIlRhbnlhIFdhbmciDQpvdXRwdXQ6IA0KICAgIGh0bWxfbm90ZWJvb2s6DQogICAgZmlnX2hlaWdodDogNg0KICAgIGZpZ193aWR0aDogMTANCi0tLQ0KLS0tDQoNCiMjIEludHJvZHVjdGlvbg0KDQojIyMgUmVzZWFyY2ggUXVlc3Rpb24NCiMjIyMgKipIb3cgZG8gdGhlIG51bWJlciBvZiBsYW5ndWFnZXMgc3Bva2VuIGF0IGhvbWUgYWZmZWN0IEVuZ2xpc2ggc3BlYWtpbmcgYWJpbGl0eT8qKg0KSSB3YW50IHRvIHNlZSBob3cgdGhlIG51bWJlciBvZiBsYW5ndWFnZXMgYW5kIHRoZSB0eXBlIG9mIGxhbmd1YWdlKHMpIHNwb2tlbiBhdCBob21lIGNhbiBhZmZlY3QgYSBwZXJzb24ncyBhYmlsaXR5IHRvIHNwZWFrIEVuZ2xpc2ggd2VsbC4gSSBoYXZlIGEgY291cGxlIGRhdGEgc291cmNlcyB0byBhbmFseXplIHRoYXQsIG9uZSBiYXNlZCBvbiBjb3VudGllcyBpbiB0aGUgVVMsIG9uZSBiYXNlZCBvbiB0aGUgc3RhdGVzIGluIHRoZSBVUywgYW5kIG9uZSBvZiB0aGUgVVMgKHRoZSBuYXRpb24pIG92ZXJhbGwuIEkgbWF5IGxvb2sgZm9yIG1vcmUgZGF0YXNldHMgdG8gYWRkIHNvIHRoYXQgdGhlcmUncyBhIGJpdCBtb3JlICJjb2xvciIgYW5kIG1ha2VzIHRoZSBlbnRpcmUgcHJvamVjdCBtb3JlIGludGVyZXN0aW5nLg0KDQojIyBUaGUgRGF0YQ0KDQpGaXJzdCB3ZSBuZWVkIGNsZWFuIHRoZSBlbnZpcm9ubWVudCBhbmQgdGhlbiBsb2FkIHRoZSBwYWNrYWdlKHMpIHdlIG5lZWQuIEJlbG93IGlzIGEgZGVzY3JpcHRpb24gb2YgZWFjaCBwYWNrYWdlIEkgbG9hZGVkIGFuZCB3aGF0IGl0IGlzIHVzZWQgZm9yOg0KDQotICoqdGlkeXZlcnNlOioqIHRoaXMgaXMgYSBjb2xsZWN0aW9uIG9mIFIgcGFja2FnZXMgZGVzaWduZWQgZm9yIGRhdGEgc2NpZW5jZS4gSXQgaW5jbHVkZXMgZ2dwbG90MiwgZHBseXIsIHRpZHlyLCBhbmQgbW9yZSB0aGF0IHdlIGNhbiB1c2UgZm9yIGV2ZXJ5ZGF5IGRhdGEgYW5hbHlzZXMuDQotICoqcmVhZHhsOioqIHRoaXMgcGFja2FnZSBtYWtlcyBpdCBlYXN5IHRvIGdldCBkYXRhIG91dCBvZiBFeGNlbCBhbmQgaW50byBSDQpgYGB7cn0NCnJtKGxpc3QgPSBscygpKQ0KDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkocmVhZHhsKQ0KYGBgDQoNCk5vdyB3ZSByZWFkIGluIG91ciBkYXRhIGZyb20gdGhlIHhscyBmaWxlLiBUaGlzIG9uZSBpcyBmb3IgY291bnRpZXMgaW4gdGhlIFVTIGFuZCBjb250YWlucyAxNTUgY291bnRpZXMsIGFsbCBpbiBzZXBhcmF0ZSBzaGVldHMuDQpgYGB7cn0NCnhsc19kYXRhIDwtICJDOi9Vc2Vycy9HdWFpR3VhaS9Eb2N1bWVudHMvUi9TVEFUMTg0X0ZpbmFsUHJvamVjdC8yMDA5LTIwMTMtYWNzLWxhbmctdGFibGVzLWNvdW50eS54bHMiDQoNCiMgVGhpcyByZXR1cm5zIHRoZSBuYW1lcyBvZiBhbGwgdGhlIHNoZWV0cyBpbiBvdXIgeGxzIGZpbGUgKGZvciBmdXR1cmUgcmVmZXJlbmNlKQ0KZXhjZWxfc2hlZXRzKHBhdGggPSB4bHNfZGF0YSkNCmBgYA0KYGBge3J9DQojIEkgc3BlY2lmaWVkIHdoaWNoIHNoZWV0IEkgd2FudCBieSBpdCdzIG5hbWUgYW5kIG1hZGUgc3VyZSB0byBzZXQgdGhlIG5hIGFyZ3VtZW50IGJlY2F1c2Ugc29tZSBvZiB0aGUgY2VsbHMgYXJlIGVtcHR5IGJ1dCByZXByZXNlbnRlZCBieSAiLS0iLCByYXRoZXIgdGhhbiBhIGJsYW5rIGNlbGwuIEkgd2lsbCBkZWFsIHdpdGggdGhlIGNlbGxzIHdpdGggbGV0dGVycyBpbiB0aGVtIGxhdGVyLg0KQW5jaG9yYWdlTXVuaWNpcGFsaXR5IDwtIHJlYWRfZXhjZWwocGF0aCA9IHhsc19kYXRhLCBzaGVldCA9ICJBbmNob3JhZ2UgTXVuaWNpcGFsaXR5LCBBSyIsIG5hID0gIi0tIikNCg0KVmlldyhBbmNob3JhZ2VNdW5pY2lwYWxpdHkpDQpgYGANCg0KIyMjIFF1ZXN0aW9ucw0KLSB3aGVyZSBkaWQgaXQgY29tZSBmcm9tPw0KLSB3aG8gY29sbGVjdGVkL21haW50YWlucyB0aGVtPw0KLSB3aGVuICYgd2h5IHdlcmUgdGhleSBvcmlnaW5hbGx5IGNvbGxlY3RlZD8NCi0gd2hhdCBkb2VzIGEgY2FzZSByZXByZXNlbnQgaW4gZWFjaCBkYXRhIHNvdXJjZSwgJiBob3cgbWFueSB0b3RhbCBjYXNlcyBhcmUgYXZhaWxhYmxlPw0KLSB3aGF0IGFyZSBzb21lIG9mIHRoZSB2YXJpYWJsZXMgdGhhdCBJIHBsYW4gdG8gdXNlPw0KDQoNCiMjIFByZWxpbWluYXJ5IE9ic2VydmF0aW9ucw0KDQojIyMgUGxvdHMgJiBTdW1tYXJ5IFN0YXRpc3RpY3MNCg==</div>
 
 
 

@@ -20,13 +20,11 @@ First we need clean the environment and then load the package(s) we need. Below 
 
 - **tidyverse:** this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.
 - **readxl:** this package makes it easy to get data out of Excel and into R
-- **tibble:** a tibble is basically a data.frame that leads to cleaner and more expressive code
 ```{r}
 rm(list = ls())
 
 library(tidyverse)
 library(readxl)
-library(tibble)
 ```
 
 Now we read in our data from the xls file. This one is for counties in the US and contains 155 counties, all in separate sheets.
@@ -37,7 +35,8 @@ xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-la
 excel_sheets(path = xls_data)
 ```
 ```{r}
-AnchorageMunicipality <- read_excel(path = xls_data, sheet = "Anchorage Municipality, AK")
+# I specified which sheet I want by it's name and made sure to set the na argument because some of the cells are empty but represented by "--", rather than a blank cell. I will deal with the cells with letters in them later.
+AnchorageMunicipality <- read_excel(path = xls_data, sheet = "Anchorage Municipality, AK", na = "--")
 
 View(AnchorageMunicipality)
 ```
