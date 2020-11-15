@@ -41,13 +41,14 @@ library(datasets)
 
 ### Loading the Data
 
-Now we read in our data from the xls file. This one is for states in the US and contains 52, all in separate sheets (because it contains Puerto Rico as well). Let's start off with just one state.
+Now we read in our data from the xls file. This one is for **states in the US and contains 52 data tables**, all in separate sheets (because it contains Puerto Rico as well). Let's start off with just one state.
 ```{r}
 xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-state.xls"
 
 # This returns the names of all the sheets in our xls file (for future reference).
 excel_sheets(path = xls_data)
 ```
+
 Let's start with an example **Alabama**. I will take you through my process of loading and cleaning the data.
 ```{r}
 # I specified which sheet I want by it's name and made sure to set the na argument because some of the cells are empty but represented by "--", rather than a blank cell. I will deal with the cells with letters in them later.
@@ -71,6 +72,8 @@ Alabama <-
   filter(row_number() > 5, row_number() < 144)
 
 # I used replace_with_na from the naniar package to replace certain values with NA based on the descriptions for the data I received. This will make cleaning up data a bit easier later when I get rid of cases that contain all NA values.
+
+# According to the dataset, (D) stands for data withheld to avoid disclosure, (B) stands for iether no sample observations or too few sample observations were available to compute an estimate, and (X) stands for that the question does not apply.
 Alabama <-
   Alabama %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
 
@@ -78,12 +81,14 @@ Alabama <-
 View(Alabama)
 head(Alabama)
 ```
+
 After the initial filtering, I still need to take out some rows that are just totals (which therefore make the data not tidy). I will also be dropping the cases that have NA values.
 ```{r}
 # Dropping specific rows
 Alabama <-
   Alabama[-c(2, 4, 5, 7:9, 13, 15, 17, 21, 29, 33, 44, 55, 65, 66, 78, 88, 101, 103, 122),]
 
+#Drop the cases with NA values
 Alabama <-
   Alabama %>%
   na.omit()
@@ -92,6 +97,7 @@ Alabama <-
 View(Alabama)
 head(Alabama)
 ```
+
 Now that we have finished that cleaning, we need to add a new variable to prep this data table for when we append other data tables to it.
 ```{r}
 # I use mutate() to add a state variable so when we append data tables, we will know which data is from which state.
@@ -106,10 +112,11 @@ View(Alabama)
 
 ### Variable Types
 
-So now that we have the data cleaned up and in a form that we want and like, we need to check how the variables are stored and make necessary adjustments. We know that we want the variables "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", and "EnglishError" to be numerical, and the rest (language & state) to be categorical.
+So now that we have the data cleaned up and in a form that we want and like, we need to check how the variables are stored and make necessary adjustments. We know that **we want the variables "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", and "EnglishError" to be numerical**, and the rest (language & state) to be categorical.
 ```{r}
 str(Alabama)
 ```
+
 Based on the code I just ran, all the variables are stored as characters, so we need to change some of them into numerical variable types.
 ```{r}
 # I use as.numeric() to change the variable types.
@@ -194,7 +201,8 @@ str(Hawaii)
 
 ### Append the Tables
 
-Now that I have some data tables, I will start appending them together in terms of region. From this wikipedia page ("https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg"), I found a map of the regions and divisons that the Census utilizes for the United States. For the purposes of the preliminary EDA, I only have some of the data tables, so will only have one or two of the regions. For the final report, I will have all the data tables, and therefore all the regions
+Now that I have some data tables, I will start appending them together in terms of region.   
+From this wikipedia page ("https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg"), I found a map of the regions and divisons that the Census utilizes for the United States. For the purposes of the preliminary EDA, I only have some of the data tables, so will only have one or two of the regions. For the final report, I will have all the data tables, and therefore all the regions
 ```{r}
 Pacific <- bind_rows(Alaska, Hawaii) %>%
   arrange(desc(NumberSpeakers))
@@ -220,6 +228,7 @@ I am still considering if I would like to use more data sources, possibly the "m
 
 
 ## Brief Description & Exaplanation Of the Data & the Research
+
 I knew I wanted to do research and analysis on languages, culture, or something in the medical field, but I decided to focus my search on languages. I was able to find this data from the Census Bureau (specifically this website: "https://www.census.gov/data/tables/2013/demo/2009-2013-lang-tables.html
 "). It contains four separate xls documents that each contain multiple sheets of data. It is all describing detailed languages spoken at home and ability to speak English for the population over a 5 year period (from 2009 to 2013).   
 From the description on the site, I saw that the the tables are available for the nation, each of the 50 states, plus Washington, D.C. and Puerto Rico, counties with 100,000 or more total population and 25,000 or more speakers of languages other than English & Spanish, as well as core-based statistical areas (metropolitan statistical areas & micropolitan statistical areas) with 100,000 or more total population and 25,000 or more speakers of langauges other than English & Spanish.   
@@ -229,10 +238,22 @@ For the data I am using (the states), there are separate tables for each state. 
 Once I finish cleaning and appending the tables, there will be 6 variables, language (categorical), number of speakers (numerical), margin of error (numerical), speak English less than "very well" (numerical), second margin of error (numerical), and state (categorical). I plan to mainly focus on the language, number of speakers, speak English les than "very well", and state. I want to see if there are any patterns in the language being spoken affecting the English speaking ability (maybe by how similar the language is to English). I also want to compare these trends between states (or most likely regions) and see if there are similar trends or not.   
 In combination with my other data source, state.x77 (loaded from R), I want to see if maybe there could also be correlations between these languages spoken, English ability, and income, illteracy, and graduation percentage (these last 3 are variables in the state.x77 dataset). I am still debating on whether I would like to use all this in combination with antoher R dataset (probably the midwest dataset in the ggplot2 package) or another outside data source. This will be something you might see being explored more in my final report.
 
+
 ## Preliminary Observations
 
 ### Plots & Summary Statistics
-```{r}
 
+So first off, I ran the summary() function on the Pacific Region data to get a brief glimpse of what's going on with the data. Remember that this region only contains data for the states Alaska and Hawaii.
+```{r}
+summary(Pacific)
 ```
+The summary function tells us that there are 128 total cases (because of the 128 languages). Minimum number of speakers for a language is 4 people, but the maximum is 58345 people, with an average of 3350.8 people per language.   
+Just as a quick note, the margin of errors are the 90% error.
+
+Let's see the stateData dataset using summary() as well.
+```{r}
+summary(stateData)
+```
+We can see a lot of very interesting data summarizing the data for each of the 50 states. Before I explore possible plots to show relationships and such, let's run some more summary statistics.
+
 
