@@ -27,26 +27,31 @@ library(tidyverse)
 library(readxl)
 ```
 
-Now we read in our data from the xls file. This one is for states in the US and contains 53, all in separate sheets (because it contains Puerto Rico as well).
+Now we read in our data from the xls file. This one is for states in the US and contains 52, all in separate sheets (because it contains Puerto Rico as well).
 ```{r}
 xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-state.xls"
 
-# This returns the names of all the sheets in our xls file (for future reference)
+# This returns the names of all the sheets in our xls file (for future reference).
 excel_sheets(path = xls_data)
 ```
 ```{r}
 # I specified which sheet I want by it's name and made sure to set the na argument because some of the cells are empty but represented by "--", rather than a blank cell. I will deal with the cells with letters in them later.
 Alabama <- read_excel(path = xls_data, sheet = "Alabama", na = "--")
 
+# Let's see what the data looks like at first so that we know what kind of cleaning we need to do.
 View(Alabama)
+head(Alabama)
 ```
 
-### Questions
-- where did it come from?
-- who collected/maintains them?
-- when & why were they originally collected?
-- what does a case represent in each data source, & how many total cases are available?
-- what are some of the variables that I plan to use?
+
+### Brief Description & Exaplanation Of the Data & the Research
+I knew I wanted to do research and analysis on languages, culture, or something in the medical field, but I decided to focus my search on languages. I was able to find this data from the Census Bureau (specifically this website: "https://www.census.gov/data/tables/2013/demo/2009-2013-lang-tables.html
+"). It contains four separate xls documents that each contain multiple sheets of data. It is all describing detailed languages spoken at home and ability to speak English for the population over a 5 year period (from 2009 to 2013).   
+From the description on the site, I saw that the the tables are available for the nation, each of the 50 states, plus Washington, D.C. and Puerto Rico, counties with 100,000 or more total population and 25,000 or more speakers of languages other than English & Spanish, as well as core-based statistical areas (metropolitan statistical areas & micropolitan statistical areas) with 100,000 or more total population and 25,000 or more speakers of langauges other than English & Spanish.   
+The information is collected by the American Community Survey, which contains multi-year data used to list all languages spoken in the United States that were reported during the sample period. The data is maintained by the Census Bureau's application programming interface (API)
+Unfortunately, the data is only a sample of the total population since the ACS did not sample the households where some other languages are spoken, or because the person filling out the survey didn't report some languages and/or possibiliity reported another language instead. The English-speaking ability variable is self-reported so it represents the person's own perception about his or her own ability. The ACS questionnaires are also usually completed by one household member, so it may not reflect the overall household.   
+For the data I am using (the states), there are separate tables for each state. A case is usually represented by a single language (or a group of languages to generalize some more specific languages) in each state. The cases vary by the state, but since I am planning on appending the tables to each other, we can do some rough math. If there are 52 tables for states and each table has about 145 cases (languages), and if we append all those tables together, we'll get around 7,540 caes in total. Whether or not I will be appending all of the states may vary. I may split the states up by region (northeast, west, south, midwest, etc.) and append those tables together and then have separate tables for each region instead.   
+Once I finish cleaning and appending the tables, there will be 6 variables, language (categorical), number of speakers (numerical), margin of error (numerical), speak English less than "very well" (numerical), second margin of error (numerical), and state (categorical). I plan to mainly focus on the language, number of speakers, speak English les than "very well", and state. I want to see if there are any patterns in the language being spoken affecting the English speaking ability (maybe by how similar the language is to English). I also want to compare these trends between states (or most likely regions) and see if there are similar trends or not.
 
 
 ## Preliminary Observations
