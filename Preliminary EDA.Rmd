@@ -23,6 +23,7 @@ First we need clean the environment and then load the package(s) we need. There 
 - **tidyverse:** this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.
 - **readxl:** this package makes it easy to get data out of Excel and into R
 - **naniar:** contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot & tidy data
+- **datasets:** contains tons of data the user can load and use immediately
 ```{r}
 # This cleans up the environment.
 rm(list = ls())
@@ -34,6 +35,7 @@ rm(list = ls())
 library(tidyverse)
 library(readxl)
 library(naniar)
+library(datasets)
 ```
 
 
@@ -94,6 +96,15 @@ str(Alabama)
 ```
 
 
+### Other Data Source
+```{r}
+# This is the other data source I am using. This is a dataset in R that is a matrix with 50 rows and 8 columns giving statistics about the population, income, illteracy rate, life expantancy, murder rate, high school graduation percentage, days with frost, and land area for each state.
+data(state.x77)
+
+data(midwest)
+#other data source?
+```
+
 ### Append the Tables
 ```{r}
 # example: JapanChina <- bind_rows(China, Japan)
@@ -107,8 +118,8 @@ From the description on the site, I saw that the the tables are available for th
 The information is collected by the American Community Survey, which contains multi-year data used to list all languages spoken in the United States that were reported during the sample period. The data is maintained by the Census Bureau's application programming interface (API)
 Unfortunately, the data is only a sample of the total population since the ACS did not sample the households where some other languages are spoken, or because the person filling out the survey didn't report some languages and/or possibiliity reported another language instead. The English-speaking ability variable is self-reported so it represents the person's own perception about his or her own ability. The ACS questionnaires are also usually completed by one household member, so it may not reflect the overall household.   
 For the data I am using (the states), there are separate tables for each state. A case is usually represented by a single language (or a group of languages to generalize some more specific languages) in each state. The cases vary by the state, but since I am planning on appending the tables to each other, we can do some rough math. If there are 52 tables for states and each table has about 145 cases (languages), and if we append all those tables together, we'll get around 7,540 caes in total. Whether or not I will be appending all of the states may vary. I may split the states up by region (northeast, west, south, midwest, etc.) and append those tables together and then have separate tables for each region instead.   
-Once I finish cleaning and appending the tables, there will be 6 variables, language (categorical), number of speakers (numerical), margin of error (numerical), speak English less than "very well" (numerical), second margin of error (numerical), and state (categorical). I plan to mainly focus on the language, number of speakers, speak English les than "very well", and state. I want to see if there are any patterns in the language being spoken affecting the English speaking ability (maybe by how similar the language is to English). I also want to compare these trends between states (or most likely regions) and see if there are similar trends or not.
-
+Once I finish cleaning and appending the tables, there will be 6 variables, language (categorical), number of speakers (numerical), margin of error (numerical), speak English less than "very well" (numerical), second margin of error (numerical), and state (categorical). I plan to mainly focus on the language, number of speakers, speak English les than "very well", and state. I want to see if there are any patterns in the language being spoken affecting the English speaking ability (maybe by how similar the language is to English). I also want to compare these trends between states (or most likely regions) and see if there are similar trends or not.   
+In combination with my other data source, state.x77 (loaded from R), I want to see if maybe there could also be correlations between these languages spoken, English ability, and income, illteracy, and graduation percentage (these last 3 are variables in the state.x77 dataset). I am still debating on whether I would like to use all this in combination with antoher R dataset (probably the midwest dataset in the ggplot2 package) or another outside data source. This will be something you might see being explored more in my final report.
 
 ## Preliminary Observations
 
