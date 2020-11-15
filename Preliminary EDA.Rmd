@@ -19,13 +19,28 @@ I want to see how the number of languages and the type of language(s) spoken at 
 First we need clean the environment and then load the package(s) we need. Below is a description of each package I loaded and what it is used for:
 
 - **tidyverse:** this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.
+- **readxl:** this package makes it easy to get data out of Excel and into R
+- **tibble:** a tibble is basically a data.frame that leads to cleaner and more expressive code
 ```{r}
 rm(list = ls())
 
 library(tidyverse)
-
+library(readxl)
+library(tibble)
 ```
 
+Now we read in our data from the xls file. This one is for counties in the US and contains 155 counties, all in separate sheets.
+```{r}
+xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-county.xls"
+
+# This returns the names of all the sheets in our xls file (for future reference)
+excel_sheets(path = xls_data)
+```
+```{r}
+AnchorageMunicipality <- read_excel(path = xls_data, sheet = "Anchorage Municipality, AK")
+
+View(AnchorageMunicipality)
+```
 
 ### Questions
 - where did it come from?
