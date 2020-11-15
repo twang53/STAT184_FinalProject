@@ -11,9 +11,11 @@ output:
 ## Introduction
 
 ### Research Question
-
+**How do the number of languages spoken at home affect English speaking ability?**
+I want to see how the number of languages and the type of language(s) spoken at home can affect a person's ability to speak English well. I have a couple data sources to analyze that, one based on counties in the US, one based on the states in the US, and one of the US (the nation) overall. I may look for more datasets to add so that there's a bit more "color" and makes the entire project more interesting.
 
 ## The Data
+
 
 ### Questions
 - where did it come from?
