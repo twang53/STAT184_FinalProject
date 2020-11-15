@@ -8,11 +8,13 @@ output:
 ---
 ---
 
+
 ## Introduction
 
 ### Research Question
 #### **How do the number of languages spoken at home affect English speaking ability?**
 I want to see how the number of languages and the type of language(s) spoken at home can affect a person's ability to speak English well. I have a couple data sources to analyze that, one based on counties in the US, one based on the states in the US, and one of the US (the nation) overall. I may look for more datasets to add so that there's a bit more "color" and makes the entire project more interesting.
+
 
 ## The Data
 
@@ -21,13 +23,18 @@ First we need clean the environment and then load the package(s) we need. Below 
 - **tidyverse:** this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.
 - **readxl:** this package makes it easy to get data out of Excel and into R
 ```{r}
+# This cleans up the environment.
 rm(list = ls())
 
+# This loads the packages we need.
 library(tidyverse)
 library(readxl)
 ```
 
-Now we read in our data from the xls file. This one is for states in the US and contains 52, all in separate sheets (because it contains Puerto Rico as well).
+
+### Loading the Data
+
+Now we read in our data from the xls file. This one is for states in the US and contains 52, all in separate sheets (because it contains Puerto Rico as well). Let's start off with just one state.
 ```{r}
 xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-state.xls"
 
@@ -41,6 +48,46 @@ Alabama <- read_excel(path = xls_data, sheet = "Alabama", na = "--")
 # Let's see what the data looks like at first so that we know what kind of cleaning we need to do.
 View(Alabama)
 head(Alabama)
+```
+
+### Clean the Data
+
+```{r}
+# I need to rename the variables (columns) first to sort out what I'm looking at.
+names(Alabama)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+# Now I need to filter the data initially so I get my first couple of rows. I will filter out more rows after this.
+Alabama <-
+  Alabama %>%
+  filter(row_number() > 5, row_number() < 144)
+
+# Check to see if my cleaning did anything.
+View(Alabama)
+head(Alabama)
+```
+```{r}
+
+```
+
+### Variable Types
+
+```{r}
+str(Alabama)
+```
+```{r}
+# mutate(variable = as.numeric, etc.)
+```
+
+
+### Load & Clean the Rest of the Data
+```{r}
+
+```
+
+
+### Append the Tables
+```{r}
+# example: JapanChina <- bind_rows(China, Japan)
 ```
 
 
@@ -57,3 +104,7 @@ Once I finish cleaning and appending the tables, there will be 6 variables, lang
 ## Preliminary Observations
 
 ### Plots & Summary Statistics
+```{r}
+
+```
+
