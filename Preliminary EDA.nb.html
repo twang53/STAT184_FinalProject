@@ -1756,11 +1756,22 @@ summary {
 <h2>Introduction</h2>
 <div id="research-question" class="section level3">
 <h3>Research Question</h3>
-<p><strong>How do the number of languages spoken at home affect English speaking ability?</strong> I want to see how the number of languages and the type of language(s) spoken at home can affect a person’s ability to speak English well. I have a couple data sources to analyze that, one based on counties in the US, one based on the states in the US, and one of the US (the nation) overall. I may look for more datasets to add so that there’s a bit more “color” and makes the entire project more interesting.</p>
+<div id="how-do-the-number-of-languages-spoken-at-home-affect-english-speaking-ability" class="section level4">
+<h4><strong>How do the number of languages spoken at home affect English speaking ability?</strong></h4>
+<p>I want to see how the number of languages and the type of language(s) spoken at home can affect a person’s ability to speak English well. I have a couple data sources to analyze that, one based on counties in the US, one based on the states in the US, and one of the US (the nation) overall. I may look for more datasets to add so that there’s a bit more “color” and makes the entire project more interesting.</p>
+</div>
 </div>
 </div>
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
+<p>First we need clean the environment and then load the package(s) we need. Below is a description of each package I loaded and what it is used for:</p>
+<ul>
+<li><strong>tidyverse:</strong> this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <div id="questions" class="section level3">
 <h3>Questions</h3>
 <ul>
@@ -1780,7 +1791,7 @@ summary {
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZWxpbWluYXJ5IEVEQSINCmF1dGhvcjogIlRhbnlhIFdhbmciDQpvdXRwdXQ6IA0KICAgIGh0bWxfbm90ZWJvb2s6DQogICAgZmlnX2hlaWdodDogNg0KICAgIGZpZ193aWR0aDogMTANCi0tLQ0KLS0tDQoNCiMjIEludHJvZHVjdGlvbg0KDQojIyMgUmVzZWFyY2ggUXVlc3Rpb24NCioqSG93IGRvIHRoZSBudW1iZXIgb2YgbGFuZ3VhZ2VzIHNwb2tlbiBhdCBob21lIGFmZmVjdCBFbmdsaXNoIHNwZWFraW5nIGFiaWxpdHk/KioNCkkgd2FudCB0byBzZWUgaG93IHRoZSBudW1iZXIgb2YgbGFuZ3VhZ2VzIGFuZCB0aGUgdHlwZSBvZiBsYW5ndWFnZShzKSBzcG9rZW4gYXQgaG9tZSBjYW4gYWZmZWN0IGEgcGVyc29uJ3MgYWJpbGl0eSB0byBzcGVhayBFbmdsaXNoIHdlbGwuIEkgaGF2ZSBhIGNvdXBsZSBkYXRhIHNvdXJjZXMgdG8gYW5hbHl6ZSB0aGF0LCBvbmUgYmFzZWQgb24gY291bnRpZXMgaW4gdGhlIFVTLCBvbmUgYmFzZWQgb24gdGhlIHN0YXRlcyBpbiB0aGUgVVMsIGFuZCBvbmUgb2YgdGhlIFVTICh0aGUgbmF0aW9uKSBvdmVyYWxsLiBJIG1heSBsb29rIGZvciBtb3JlIGRhdGFzZXRzIHRvIGFkZCBzbyB0aGF0IHRoZXJlJ3MgYSBiaXQgbW9yZSAiY29sb3IiIGFuZCBtYWtlcyB0aGUgZW50aXJlIHByb2plY3QgbW9yZSBpbnRlcmVzdGluZy4NCg0KIyMgVGhlIERhdGENCg0KDQojIyMgUXVlc3Rpb25zDQotIHdoZXJlIGRpZCBpdCBjb21lIGZyb20/DQotIHdobyBjb2xsZWN0ZWQvbWFpbnRhaW5zIHRoZW0/DQotIHdoZW4gJiB3aHkgd2VyZSB0aGV5IG9yaWdpbmFsbHkgY29sbGVjdGVkPw0KLSB3aGF0IGRvZXMgYSBjYXNlIHJlcHJlc2VudCBpbiBlYWNoIGRhdGEgc291cmNlLCAmIGhvdyBtYW55IHRvdGFsIGNhc2VzIGFyZSBhdmFpbGFibGU/DQotIHdoYXQgYXJlIHNvbWUgb2YgdGhlIHZhcmlhYmxlcyB0aGF0IEkgcGxhbiB0byB1c2U/DQoNCg0KIyMgUHJlbGltaW5hcnkgT2JzZXJ2YXRpb25zDQoNCiMjIyBQbG90cyAmIFN1bW1hcnkgU3RhdGlzdGljcw0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByZWxpbWluYXJ5IEVEQSINCmF1dGhvcjogIlRhbnlhIFdhbmciDQpvdXRwdXQ6IA0KICAgIGh0bWxfbm90ZWJvb2s6DQogICAgZmlnX2hlaWdodDogNg0KICAgIGZpZ193aWR0aDogMTANCi0tLQ0KLS0tDQoNCiMjIEludHJvZHVjdGlvbg0KDQojIyMgUmVzZWFyY2ggUXVlc3Rpb24NCiMjIyMgKipIb3cgZG8gdGhlIG51bWJlciBvZiBsYW5ndWFnZXMgc3Bva2VuIGF0IGhvbWUgYWZmZWN0IEVuZ2xpc2ggc3BlYWtpbmcgYWJpbGl0eT8qKg0KSSB3YW50IHRvIHNlZSBob3cgdGhlIG51bWJlciBvZiBsYW5ndWFnZXMgYW5kIHRoZSB0eXBlIG9mIGxhbmd1YWdlKHMpIHNwb2tlbiBhdCBob21lIGNhbiBhZmZlY3QgYSBwZXJzb24ncyBhYmlsaXR5IHRvIHNwZWFrIEVuZ2xpc2ggd2VsbC4gSSBoYXZlIGEgY291cGxlIGRhdGEgc291cmNlcyB0byBhbmFseXplIHRoYXQsIG9uZSBiYXNlZCBvbiBjb3VudGllcyBpbiB0aGUgVVMsIG9uZSBiYXNlZCBvbiB0aGUgc3RhdGVzIGluIHRoZSBVUywgYW5kIG9uZSBvZiB0aGUgVVMgKHRoZSBuYXRpb24pIG92ZXJhbGwuIEkgbWF5IGxvb2sgZm9yIG1vcmUgZGF0YXNldHMgdG8gYWRkIHNvIHRoYXQgdGhlcmUncyBhIGJpdCBtb3JlICJjb2xvciIgYW5kIG1ha2VzIHRoZSBlbnRpcmUgcHJvamVjdCBtb3JlIGludGVyZXN0aW5nLg0KDQojIyBUaGUgRGF0YQ0KDQpGaXJzdCB3ZSBuZWVkIGNsZWFuIHRoZSBlbnZpcm9ubWVudCBhbmQgdGhlbiBsb2FkIHRoZSBwYWNrYWdlKHMpIHdlIG5lZWQuIEJlbG93IGlzIGEgZGVzY3JpcHRpb24gb2YgZWFjaCBwYWNrYWdlIEkgbG9hZGVkIGFuZCB3aGF0IGl0IGlzIHVzZWQgZm9yOg0KDQotICoqdGlkeXZlcnNlOioqIHRoaXMgaXMgYSBjb2xsZWN0aW9uIG9mIFIgcGFja2FnZXMgZGVzaWduZWQgZm9yIGRhdGEgc2NpZW5jZS4gSXQgaW5jbHVkZXMgZ2dwbG90MiwgZHBseXIsIHRpZHlyLCBhbmQgbW9yZSB0aGF0IHdlIGNhbiB1c2UgZm9yIGV2ZXJ5ZGF5IGRhdGEgYW5hbHlzZXMuDQpgYGB7cn0NCnJtKGxpc3QgPSBscygpKQ0KDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCg0KYGBgDQoNCg0KIyMjIFF1ZXN0aW9ucw0KLSB3aGVyZSBkaWQgaXQgY29tZSBmcm9tPw0KLSB3aG8gY29sbGVjdGVkL21haW50YWlucyB0aGVtPw0KLSB3aGVuICYgd2h5IHdlcmUgdGhleSBvcmlnaW5hbGx5IGNvbGxlY3RlZD8NCi0gd2hhdCBkb2VzIGEgY2FzZSByZXByZXNlbnQgaW4gZWFjaCBkYXRhIHNvdXJjZSwgJiBob3cgbWFueSB0b3RhbCBjYXNlcyBhcmUgYXZhaWxhYmxlPw0KLSB3aGF0IGFyZSBzb21lIG9mIHRoZSB2YXJpYWJsZXMgdGhhdCBJIHBsYW4gdG8gdXNlPw0KDQoNCiMjIFByZWxpbWluYXJ5IE9ic2VydmF0aW9ucw0KDQojIyMgUGxvdHMgJiBTdW1tYXJ5IFN0YXRpc3RpY3MNCg==</div>
 
 
 
