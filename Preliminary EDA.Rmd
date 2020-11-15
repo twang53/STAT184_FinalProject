@@ -76,38 +76,67 @@ Alabama <-
 View(Alabama)
 head(Alabama)
 ```
+After the initial filtering, I still need to take out some rows that are just totals (which therefore make the data not tidy). For now, I will keep the cases that have all NA values.
 ```{r}
+# Dropping specific rows
+Alabama <-
+  Alabama[-c(2, 4, 5, 7:9, 13, 15, 17, 21, 29, 33, 44, 55, 65, 66, 78, 88, 101, 103, 122, 132),]
 
+# Check to see if I get the output I want
+View(Alabama)
+head(Alabama)
+```
+Now that we have finished that cleaning, we need to add a new variable to prep this data table for when we append other data tables to it.
+```{r}
+# I use mutate() to add a state variable so when we append data tables, we will know which data is from which state.
+Alabama <-
+  Alabama %>%
+  mutate(state = "Alabama")
+
+# Check the data table
+View(Alabama)
 ```
 
 ### Variable Types
 
+So now that we have the data cleaned up and in a form that we want and like, we need to check how the variables are stored and make necessary adjustments. We know that we want the variables "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", and "EnglishError" to be numerical, and the rest (language & state) to be categorical.
 ```{r}
 str(Alabama)
 ```
+Based on the code I just ran, all the variables are stored as characters, so we need to change some of them into numerical variable types.
 ```{r}
-# mutate(variable = as.numeric, etc.)
-```
+# I use as.numeric() to change the variable types.
+Alabama <-
+  Alabama %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
 
+# Now I check to make sure the variable types have changed as necessary.
+str(Alabama)
+```
+Now that we have gone through the explanations for one data table, I will be going through the same process for all the rest of the data tables (52 in all).
 
 ### Load & Clean the Rest of the Data
+
 ```{r}
 
+```
+
+### Append the Tables
+
+Now that I have all the data tables, I will start appending them together in terms of region. From this wikipedia page ("https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg"), I found a map of the regions and divisons that the Census utilizes for the United States.
+```{r}
+# example: JapanChina <- bind_rows(China, Japan)
 ```
 
 
 ### Other Data Source
+
 ```{r}
 # This is the other data source I am using. This is a dataset in R that is a matrix with 50 rows and 8 columns giving statistics about the population, income, illteracy rate, life expantancy, murder rate, high school graduation percentage, days with frost, and land area for each state.
 data(state.x77)
 
 data(midwest)
 #other data source?
-```
-
-### Append the Tables
-```{r}
-# example: JapanChina <- bind_rows(China, Japan)
 ```
 
 
