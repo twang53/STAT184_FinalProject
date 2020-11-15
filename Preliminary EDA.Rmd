@@ -48,6 +48,7 @@ xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-la
 # This returns the names of all the sheets in our xls file (for future reference).
 excel_sheets(path = xls_data)
 ```
+Let's start with an example **Alabama**. I will take you through my process of loading and cleaning the data.
 ```{r}
 # I specified which sheet I want by it's name and made sure to set the na argument because some of the cells are empty but represented by "--", rather than a blank cell. I will deal with the cells with letters in them later.
 Alabama <- read_excel(path = xls_data, sheet = "Alabama", na = "--")
@@ -205,13 +206,17 @@ View(Pacific)
 
 ### Other Data Source
 
+This is the other data source I am using. This is a dataset in R that is a matrix with 50 rows and 8 columns giving statistics about the population, income, illteracy rate, life expantancy, murder rate, high school graduation percentage, days with frost, and land area for each state.
 ```{r}
-# This is the other data source I am using. This is a dataset in R that is a matrix with 50 rows and 8 columns giving statistics about the population, income, illteracy rate, life expantancy, murder rate, high school graduation percentage, days with frost, and land area for each state.
-data(state.x77)
+# Load the data, assign a new data frame
+data(state)
+stateData <- data.frame(state.x77)
 
-data(midwest)
-#other data source?
+# Check out what is in the data and what it looks like
+head(stateData)
+View(stateData)
 ```
+I am still considering if I would like to use more data sources, possibly the "midwest" dataset in R or another data source from the Census Bureau. But for now, I think I have a good amount of data and lots of coding and analysis to do for the preliminary EDA.
 
 
 ## Brief Description & Exaplanation Of the Data & the Research
