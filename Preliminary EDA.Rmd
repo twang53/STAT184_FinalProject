@@ -57,6 +57,7 @@ View(Alabama)
 head(Alabama)
 ```
 
+
 ### Clean the Data
 
 ```{r}
@@ -76,11 +77,15 @@ Alabama <-
 View(Alabama)
 head(Alabama)
 ```
-After the initial filtering, I still need to take out some rows that are just totals (which therefore make the data not tidy). For now, I will keep the cases that have all NA values.
+After the initial filtering, I still need to take out some rows that are just totals (which therefore make the data not tidy). I will also be dropping the cases that have NA values.
 ```{r}
 # Dropping specific rows
 Alabama <-
-  Alabama[-c(2, 4, 5, 7:9, 13, 15, 17, 21, 29, 33, 44, 55, 65, 66, 78, 88, 101, 103, 122, 132),]
+  Alabama[-c(2, 4, 5, 7:9, 13, 15, 17, 21, 29, 33, 44, 55, 65, 66, 78, 88, 101, 103, 122),]
+
+Alabama <-
+  Alabama %>%
+  na.omit()
 
 # Check to see if I get the output I want
 View(Alabama)
@@ -96,6 +101,7 @@ Alabama <-
 # Check the data table
 View(Alabama)
 ```
+
 
 ### Variable Types
 
@@ -113,19 +119,87 @@ Alabama <-
 # Now I check to make sure the variable types have changed as necessary.
 str(Alabama)
 ```
-Now that we have gone through the explanations for one data table, I will be going through the same process for all the rest of the data tables (52 in all).
+Now that we have gone through the explanations for one data table (Alabama), I will be going through the same process for all the rest of the data tables (52 in all), but for the sake of this preliminary EDA, I will only go through enough for one or two regions so we can get a brief look at what I want to do. I will continue loading and cleaning all 52 tables for my final report.
+
 
 ### Load & Clean the Rest of the Data
 
+**Alaska**
 ```{r}
+Alaska <- read_excel(path = xls_data, sheet = "Alaska", na = "--")
 
+names(Alaska)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Alaska <-
+  Alaska %>%
+  filter(row_number() > 5, row_number() < 165)
+
+Alaska <-
+  Alaska %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Alaska <-
+  Alaska[-c(2, 4, 5, 7:9, 13, 16, 17, 20, 28, 32, 44, 50, 58, 59, 71, 84, 103, 105, 144),]
+
+Alaska <-
+  Alaska %>%
+  na.omit()
+
+Alaska <-
+  Alaska %>%
+  mutate(state = "Alaska")
+
+View(Alaska)
+
+Alaska <-
+  Alaska %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Alaska)
 ```
+
+**Hawaii**
+```{r}
+Hawaii <- read_excel(path = xls_data, sheet = "Hawaii", na = "--")
+
+names(Hawaii)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Hawaii <-
+  Hawaii %>%
+  filter(row_number() > 5, row_number() < 158)
+
+Hawaii <-
+  Hawaii %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Hawaii <-
+  Hawaii[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+
+Hawaii <-
+  Hawaii %>%
+  na.omit()
+
+Hawaii <-
+  Hawaii %>%
+  mutate(state = "Hawaii")
+
+View(Hawaii)
+
+Hawaii <-
+  Hawaii %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Hawaii)
+```
+
 
 ### Append the Tables
 
-Now that I have all the data tables, I will start appending them together in terms of region. From this wikipedia page ("https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg"), I found a map of the regions and divisons that the Census utilizes for the United States.
+Now that I have some data tables, I will start appending them together in terms of region. From this wikipedia page ("https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg"), I found a map of the regions and divisons that the Census utilizes for the United States. For the purposes of the preliminary EDA, I only have some of the data tables, so will only have one or two of the regions. For the final report, I will have all the data tables, and therefore all the regions
 ```{r}
-# example: JapanChina <- bind_rows(China, Japan)
+Pacific <- bind_rows(Alaska, Hawaii) %>%
+  arrange(desc(NumberSpeakers))
+
+# Check out my new data table for the Pacific Region
+View(Pacific)
 ```
 
 
