@@ -256,4 +256,20 @@ summary(stateData)
 ```
 We can see a lot of very interesting data summarizing the data for each of the 50 states. Before I explore possible plots to show relationships and such, let's run some more summary statistics.
 
+```{r}
+glimpse(Pacific)
+```
+```{r}
+glimpse(stateData)
+```
+Using the glimpse() funciton, we get the number or rows, number or columns, the variable names, and a brief look at what kind of data is under each variable. For my Pacific data table, there are 128 rows/cases and 6 columns/variables. I noticed before, and now, that the language names have periods in front of them, but I don't believe it will affect any further analysis, so I won't be changing those names to take out the period symbols.   
+For the stateData loaded from the state.x77 R dataset, we see that there are 50 rows/cases and 8 columns/variables. All the variables contain numerical data, so that means only the data I created myself (i.e. Pacific) contains a mix of numerical and categorical variables.
+
+**Now let's create some plots!**
+```{r}
+
+```
+
+
+
 
