@@ -27,18 +27,18 @@ library(tidyverse)
 library(readxl)
 ```
 
-Now we read in our data from the xls file. This one is for counties in the US and contains 155 counties, all in separate sheets.
+Now we read in our data from the xls file. This one is for states in the US and contains 53, all in separate sheets (because it contains Puerto Rico as well).
 ```{r}
-xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-county.xls"
+xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-state.xls"
 
 # This returns the names of all the sheets in our xls file (for future reference)
 excel_sheets(path = xls_data)
 ```
 ```{r}
 # I specified which sheet I want by it's name and made sure to set the na argument because some of the cells are empty but represented by "--", rather than a blank cell. I will deal with the cells with letters in them later.
-AnchorageMunicipality <- read_excel(path = xls_data, sheet = "Anchorage Municipality, AK", na = "--")
+Alabama <- read_excel(path = xls_data, sheet = "Alabama", na = "--")
 
-View(AnchorageMunicipality)
+View(Alabama)
 ```
 
 ### Questions
