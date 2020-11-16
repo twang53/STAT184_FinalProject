@@ -13,7 +13,8 @@ output:
 
 ### Research Question
 #### **How do the number of languages spoken at home affect English speaking ability?**
-I want to see how the number of languages and the type of language(s) spoken at home can affect a person's ability to speak English well. I have a couple data sources to analyze that, one based on counties in the US, one based on the states in the US, and one of the US (the nation) overall. I may look for more datasets to add so that there's a bit more "color" and makes the entire project more interesting.
+I want to see how the number of languages and the type of language(s) spoken at home can affect a person's ability to speak English well. I have a couple data sources to analyze that, one based on counties in the US, one based on the states in the US, and one of the US (the nation) overall. I may look for more datasets to add so that there's a bit more "color" and makes the entire project more interesting.   
+For now, I will focus my energy on the datasets by state since that in itself is a lot of data to clean, wrangle, and such.
 
 
 ## The Data
@@ -265,11 +266,51 @@ glimpse(stateData)
 Using the glimpse() funciton, we get the number or rows, number or columns, the variable names, and a brief look at what kind of data is under each variable. For my Pacific data table, there are 128 rows/cases and 6 columns/variables. I noticed before, and now, that the language names have periods in front of them, but I don't believe it will affect any further analysis, so I won't be changing those names to take out the period symbols.   
 For the stateData loaded from the state.x77 R dataset, we see that there are 50 rows/cases and 8 columns/variables. All the variables contain numerical data, so that means only the data I created myself (i.e. Pacific) contains a mix of numerical and categorical variables.
 
-**Now let's create some plots!**
+**I want to try more data wrangling with the datasets once I have more data cleaned and ready to use for the final report. I was having some issues with using group_by() and summarize() for my Pacific dataset, so I need to also work through those issues before I submit my final project. The code below is not giving me what I want (total speakers for both states grouped by language). I thought I'd include this to show what I am struggling with right now.**
 ```{r}
-
+Pacific %>%
+  group_by(Language) %>%
+  summarize(totalSpeakers = sum(NumberSpeakers))
 ```
 
 
+**Now let's create some plots!**
 
+```{r}
+Pacific %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("Number of Speakers") +
+  ylab("English Ability Not 'Very Well'") +
+  labs(title = "Speakers vs English Ability in the Pacific Region")
+```
+First, I created a simple dot plot with a line that helps us recognize any patterns in the data for the Pacific Region. I plotted the Number of Speakers versus the English Ability variable and differentiated color based on the state. As you can see, if we have more states, then this plot could become very interesting. If the plot becomes too messy looking, we could even use faceting instead to differentiate the states.   
+From this plot, we can see that for the Pacific Region, as the number of speakers of a language increases, so does the amount of people who claim their English speaking ability is not/less than "Very Well".
+
+I really want to see what the data for Alabama by itself is like.
+```{r}
+Alabama %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("Number of Speakers") +
+  ylab("English Ability Not 'Very Well'") +
+  labs(title = "Speakers vs English Ability in Alabama")
+```
+As we can see, a similar pattern is showing up, but there seems to be only one data point in the extreme of a large number of speakers and a large amount of people claiming their English ability is not "very well". This dot seems to be an outlier and could possibly be messing with our overall distribution.
+
+Now let's move onto plots for stateData.
+```{r}
+stateData %>%
+  ggplot(aes(x = Income, y = Life.Exp)) +
+  geom_point() +
+  geom_smooth() +
+  ylab("Life Expectancy") +
+  labs(title = "Income vs Life Expectancy for the United States")
+```
+The graph above is from the stateData dataset I am using. I thought it'd be cool to see if there's a trend for income versus life expectancy and it's really interesting. There're a couple outliers that make the data a bit weird, but overall, up to a certain point (around 4700 maybe?) for income, the higher it goes, the higher the life expectancy. Then we hit kind of a max and thne it starts plateauing and decreasing, meaning if the income keeps going higher, then the life expectancy doesn't increase and might even actually decrease. Note that these are average income and average life expectancy for each individual state, so it may not be extremely accurate since there are only 50 data points (1 for each state).
+
+
+### Final Thoughts
 
