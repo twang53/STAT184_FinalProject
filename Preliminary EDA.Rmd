@@ -313,4 +313,10 @@ The graph above is from the stateData dataset I am using. I thought it'd be cool
 
 
 ### Final Thoughts
+Overall, based on how everything has gone from importing data, cleaning it, messing around with it to get it to look nicer, and then exploring some summary statistics and plots, I realize that maybe my research question needs to change a little bit as well. I may need to look for some more data sources so that I could possibly join different sources to get more interesting plots and such. Of course, this Preliminary EDA seems a little bit underwhelming, probably because I only imported and cleaned 3 out of the 52 data tables I have. I think once I import and clean up all the data tables and separate them into the regions (Pacific, West, Midwest, South, and Northeast), I might be able to run similar plots for each of the regions and compare those. Maybe I could even combine all the regions and create a graph to compare not only the states, but also the regions. That would be really cool.
 
+I think I may have to change my research question to be more along the lines of **"Do the number of people who speak a language affect the English speaking ability differ for each state and/or region?"**
+
+If I can figure out how to get the stateData in a form where "state" is also a variable that I can manipulate and use, then I could possibly join some tables to see the relationships between number of speakers for a specific language versus the population of a state, or something along those lines.
+
+There is definitely a lot I need to discuss with the professor and TA in regards to my data wrangling commands not working, my data sources, and if I'm even going down the right path.
