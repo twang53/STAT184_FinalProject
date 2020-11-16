@@ -108,6 +108,7 @@ Alabama <-
 
 # Check the data table
 View(Alabama)
+names(Alabama)
 ```
 
 
@@ -210,6 +211,7 @@ Pacific <- bind_rows(Alaska, Hawaii) %>%
 
 # Check out my new data table for the Pacific Region
 View(Pacific)
+head(Pacific)
 ```
 
 
