@@ -1,0 +1,10 @@
+---
+title: "Final Project"
+author: "Tanya Wang"
+output: 
+    html_notebook:
+    fig_height: 6
+    fig_width: 10
+---
+
+# How Languages Spoken Affect English Ability
