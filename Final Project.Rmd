@@ -53,7 +53,7 @@ excel_sheets(path = xls_data)
 ```
 
 Let's start with an example: **Alabama**. I will take you through my process of loading and cleaning the data.
-```{r, warning = FALSE}
+```{r, message = FALSE}
 # I specified which sheet I want by it's name and made sure to set the na argument because some of the cells are empty but represented by "--", rather than a blank cell. I will deal with the cells with letters in them later.
 Alabama <- read_excel(path = xls_data, sheet = "Alabama", na = "--")
 
@@ -139,9 +139,11 @@ Now that we have gone through the explanations for one data table (Alabama), I w
 
 
 ### Load & Clean the Rest of the Data
+**NOTE:** Note that I occasionally used the View() function in the console to check my code, that's why I don't have any inspecting functions for the data tables below. I believe the step-by-step process I walked you through previously is sufficient evidence that I constantly check my data after every step to make sure everything is okay.
 
+#### Pacific Region
 **Alaska**
-```{r, warning = FALSE}
+```{r, message = FALSE}
 Alaska <- read_excel(path = xls_data, sheet = "Alaska", na = "--")
 
 names(Alaska)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
@@ -164,7 +166,6 @@ Alaska <-
   Alaska %>%
   mutate(state = "Alaska")
 
-View(Alaska)
 
 Alaska <-
   Alaska %>%
@@ -174,7 +175,7 @@ str(Alaska)
 ```
 
 **Hawaii**
-```{r, warning = FALSE}
+```{r, message = FALSE}
 Hawaii <- read_excel(path = xls_data, sheet = "Hawaii", na = "--")
 
 names(Hawaii)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
@@ -197,7 +198,6 @@ Hawaii <-
   Hawaii %>%
   mutate(state = "Hawaii")
 
-View(Hawaii)
 
 Hawaii <-
   Hawaii %>%
@@ -205,6 +205,23 @@ Hawaii <-
 
 str(Hawaii)
 ```
+
+**Utah**
+
+#### Midwest Region
+**Iowa**
+**Michigan**
+**Ohio**
+
+#### South Region
+**Texas**
+**Florida**
+**Virginia**
+
+#### Northeast Region
+**Pennsylvania**
+**Vermont**
+**Maine**
 
 
 ### Append the Tables
