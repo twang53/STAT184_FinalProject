@@ -19,13 +19,13 @@ From experience when I submitted my preliminary EDA, I found out that I had to s
 
 ## The Data
 
-First we need clean the environment and then load the package(s) we need. There are some packages that requiring installing, but I have commented them out after I have installed it once. Below is a description of each package I loaded and what it is used for:
+First we need to clean the environment and then load the package(s) we need. There are some packages that requiring installing, but I have commented them out after I have installed it once so that the code doesn't run but you can see what packages I needed to install. Below is a description of each package I loaded and what it is used for:
 
 - **tidyverse:** this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.
 - **readxl:** this package makes it easy to get data out of Excel and into R
 - **naniar:** contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot & tidy data
 - **datasets:** contains tons of data the user can load and use immediately
-```{r}
+```{r, warning = FALSE}
 # This cleans up the environment.
 rm(list = ls())
 
@@ -37,4 +37,183 @@ library(tidyverse)
 library(readxl)
 library(naniar)
 library(datasets)
+```
+
+
+### Loading the Data
+
+Now we read in our data from the xls file. This one is for **states in the US and contains 52 data tables**, all in separate sheets (because it contains Puerto Rico as well). Let's start off with just one state.
+```{r}
+xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-state.xls"
+
+# This returns the names of all the sheets in our xls file (for future reference).
+excel_sheets(path = xls_data)
+```
+
+Let's start with an example: **Alabama**. I will take you through my process of loading and cleaning the data.
+```{r, warning = FALSE}
+# I specified which sheet I want by it's name and made sure to set the na argument because some of the cells are empty but represented by "--", rather than a blank cell. I will deal with the cells with letters in them later.
+Alabama <- read_excel(path = xls_data, sheet = "Alabama", na = "--")
+
+
+# Let's see what the data looks like at first so that we know what kind of cleaning we need to do.
+
+# View(Alabama) --> This code is commented out because View() should not be put in a markdown file and was a function I used in the console to check my data. I just wanted to add it here initially so you know I was checking my entire table. For the rest of the markdown file, I will not be including View() functions, even if I run them in the console.
+
+head(Alabama)
+```
+
+
+### Clean the Data
+
+```{r}
+# I need to rename the variables (columns) first to sort out what I'm looking at.
+names(Alabama)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+# Now I need to filter the data initially so I get my first couple of rows. I will filter out more rows after this.
+Alabama <-
+  Alabama %>%
+  filter(row_number() > 5, row_number() < 144)
+
+
+# I used replace_with_na from the naniar package to replace certain values with NA based on the descriptions for the data I received. This will make cleaning up data a bit easier later when I get rid of cases that contain all NA values.
+
+# According to the dataset, (D) stands for data withheld to avoid disclosure, (B) stands for either no sample observations or too few sample observations were available to compute an estimate, and (X) stands for that the question does not apply.
+Alabama <-
+  Alabama %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+# Check to see if my cleaning did anything.
+head(Alabama)
+```
+
+After the initial filtering, I still need to take out some rows that are just totals (which therefore make the data not tidy). I will also be dropping the cases that have NA values.
+```{r}
+# Dropping specific rows
+Alabama <-
+  Alabama[-c(2, 4, 5, 7:9, 13, 15, 17, 21, 29, 33, 44, 55, 65, 66, 78, 88, 101, 103, 122),]
+
+#Drop the cases with NA values
+Alabama <-
+  Alabama %>%
+  na.omit()
+
+# Check to see if I get the output I want
+head(Alabama)
+```
+
+Now that we have finished that cleaning, we need to add a new variable to prep this data table for when we append other data tables to it.
+```{r}
+# I use mutate() to add a state variable so when we append data tables, we will know which data is from which state.
+Alabama <-
+  Alabama %>%
+  mutate(state = "Alabama")
+
+# Check the data table
+names(Alabama)
+```
+
+
+### Variable Types
+
+So now that we have the data cleaned up and in a form that we want and like, we need to check how the variables are stored and make necessary adjustments. We know that **we want the variables "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", and "EnglishError" to be numerical**, and the rest (language & state) to be categorical.
+```{r}
+str(Alabama)
+```
+
+Based on the code I just ran, all the variables are stored as characters, so we need to change some of them into numerical variable types.
+```{r}
+# I use as.numeric() to change the variable types.
+Alabama <-
+  Alabama %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+# Now I check to make sure the variable types have changed as necessary.
+str(Alabama)
+```
+
+Now that we have gone through the explanations for one data table (Alabama), I will be going through the same process for specific states so that I have enough data for one full region, as well as some individual states that I can combine to represent the other regions.
+
+**Technical Challenge:** I had previously considered cleaning all 52 tables, but after discussing with the TA, we decided it would be more beneficial and realistic to only choose a couple of the tables, since the data required some hard-coding to be done via the excel spreadsheet before importing into R (I had to go in and delete a bunch of periods that were showing up in the beginning of language names that were causing me issues when trying to wrangle my data and use join and certain reduction/transformation functions).
+
+
+### Load & Clean the Rest of the Data
+
+**Alaska**
+```{r, warning = FALSE}
+Alaska <- read_excel(path = xls_data, sheet = "Alaska", na = "--")
+
+names(Alaska)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Alaska <-
+  Alaska %>%
+  filter(row_number() > 5, row_number() < 165)
+
+Alaska <-
+  Alaska %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Alaska <-
+  Alaska[-c(2, 4, 5, 7:9, 13, 16, 17, 20, 28, 32, 44, 50, 58, 59, 71, 84, 103, 105, 144),]
+
+Alaska <-
+  Alaska %>%
+  na.omit()
+
+Alaska <-
+  Alaska %>%
+  mutate(state = "Alaska")
+
+View(Alaska)
+
+Alaska <-
+  Alaska %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Alaska)
+```
+
+**Hawaii**
+```{r, warning = FALSE}
+Hawaii <- read_excel(path = xls_data, sheet = "Hawaii", na = "--")
+
+names(Hawaii)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Hawaii <-
+  Hawaii %>%
+  filter(row_number() > 5, row_number() < 158)
+
+Hawaii <-
+  Hawaii %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Hawaii <-
+  Hawaii[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+
+Hawaii <-
+  Hawaii %>%
+  na.omit()
+
+Hawaii <-
+  Hawaii %>%
+  mutate(state = "Hawaii")
+
+View(Hawaii)
+
+Hawaii <-
+  Hawaii %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Hawaii)
+```
+
+
+### Append the Tables
+
+Now that I have the individual data tables for states, I will start appending them together in terms of region.   
+From this wikipedia page ("https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg"), I found a map of the regions and divisons that the Census utilizes for the United States.
+```{r}
+Pacific <- bind_rows(Alaska, Hawaii) %>%
+  arrange(desc(NumberSpeakers))
+
+# Check out my new data table for the Pacific Region
+View(Pacific)
+head(Pacific)
 ```

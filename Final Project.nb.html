@@ -1766,7 +1766,7 @@ From experience when I submitted my preliminary EDA, I found out that I had to s
 </div>
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
-<p>First we need clean the environment and then load the package(s) we need. There are some packages that requiring installing, but I have commented them out after I have installed it once. Below is a description of each package I loaded and what it is used for:</p>
+<p>First we need to clean the environment and then load the package(s) we need. There are some packages that requiring installing, but I have commented them out after I have installed it once so that the code doesn’t run but you can see what packages I needed to install. Below is a description of each package I loaded and what it is used for:</p>
 <ul>
 <li><strong>tidyverse:</strong> this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.</li>
 <li><strong>readxl:</strong> this package makes it easy to get data out of Excel and into R</li>
@@ -1789,10 +1789,197 @@ library(naniar)
 library(datasets)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="loading-the-data" class="section level3">
+<h3>Loading the Data</h3>
+<p>Now we read in our data from the xls file. This one is for <strong>states in the US and contains 52 data tables</strong>, all in separate sheets (because it contains Puerto Rico as well). Let’s start off with just one state.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueGxzX2RhdGEgPC0gXCJDOi9Vc2Vycy9HdWFpR3VhaS9Eb2N1bWVudHMvUi9TVEFUMTg0X0ZpbmFsUHJvamVjdC8yMDA5LTIwMTMtYWNzLWxhbmctdGFibGVzLXN0YXRlLnhsc1wiXG5cbiMgVGhpcyByZXR1cm5zIHRoZSBuYW1lcyBvZiBhbGwgdGhlIHNoZWV0cyBpbiBvdXIgeGxzIGZpbGUgKGZvciBmdXR1cmUgcmVmZXJlbmNlKS5cbmV4Y2VsX3NoZWV0cyhwYXRoID0geGxzX2RhdGEpXG5gYGAifQ== -->
+<pre class="r"><code>xls_data &lt;- &quot;C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-state.xls&quot;
+
+# This returns the names of all the sheets in our xls file (for future reference).
+excel_sheets(path = xls_data)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Let’s start with an example: <strong>Alabama</strong>. I will take you through my process of loading and cleaning the data.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJIHNwZWNpZmllZCB3aGljaCBzaGVldCBJIHdhbnQgYnkgaXQncyBuYW1lIGFuZCBtYWRlIHN1cmUgdG8gc2V0IHRoZSBuYSBhcmd1bWVudCBiZWNhdXNlIHNvbWUgb2YgdGhlIGNlbGxzIGFyZSBlbXB0eSBidXQgcmVwcmVzZW50ZWQgYnkgXCItLVwiLCByYXRoZXIgdGhhbiBhIGJsYW5rIGNlbGwuIEkgd2lsbCBkZWFsIHdpdGggdGhlIGNlbGxzIHdpdGggbGV0dGVycyBpbiB0aGVtIGxhdGVyLlxuQWxhYmFtYSA8LSByZWFkX2V4Y2VsKHBhdGggPSB4bHNfZGF0YSwgc2hlZXQgPSBcIkFsYWJhbWFcIiwgbmEgPSBcIi0tXCIpXG5cblxuIyBMZXQncyBzZWUgd2hhdCB0aGUgZGF0YSBsb29rcyBsaWtlIGF0IGZpcnN0IHNvIHRoYXQgd2Uga25vdyB3aGF0IGtpbmQgb2YgY2xlYW5pbmcgd2UgbmVlZCB0byBkby5cblxuIyBWaWV3KEFsYWJhbWEpIC0tPiBUaGlzIGNvZGUgaXMgY29tbWVudGVkIG91dCBiZWNhdXNlIFZpZXcoKSBzaG91bGQgbm90IGJlIHB1dCBpbiBhIG1hcmtkb3duIGZpbGUgYW5kIHdhcyBhIGZ1bmN0aW9uIEkgdXNlZCBpbiB0aGUgY29uc29sZSB0byBjaGVjayBteSBkYXRhLiBJIGp1c3Qgd2FudGVkIHRvIGFkZCBpdCBoZXJlIGluaXRpYWxseSBzbyB5b3Uga25vdyBJIHdhcyBjaGVja2luZyBteSBlbnRpcmUgdGFibGUuIEZvciB0aGUgcmVzdCBvZiB0aGUgbWFya2Rvd24gZmlsZSwgSSB3aWxsIG5vdCBiZSBpbmNsdWRpbmcgVmlldygpIGZ1bmN0aW9ucywgZXZlbiBpZiBJIHJ1biB0aGVtIGluIHRoZSBjb25zb2xlLlxuXG5oZWFkKEFsYWJhbWEpXG5gYGAifQ== -->
+<pre class="r"><code># I specified which sheet I want by it&#39;s name and made sure to set the na argument because some of the cells are empty but represented by &quot;--&quot;, rather than a blank cell. I will deal with the cells with letters in them later.
+Alabama &lt;- read_excel(path = xls_data, sheet = &quot;Alabama&quot;, na = &quot;--&quot;)
+
+
+# Let&#39;s see what the data looks like at first so that we know what kind of cleaning we need to do.
+
+# View(Alabama) --&gt; This code is commented out because View() should not be put in a markdown file and was a function I used in the console to check my data. I just wanted to add it here initially so you know I was checking my entire table. For the rest of the markdown file, I will not be including View() functions, even if I run them in the console.
+
+head(Alabama)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="clean-the-data" class="section level3">
+<h3>Clean the Data</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJIG5lZWQgdG8gcmVuYW1lIHRoZSB2YXJpYWJsZXMgKGNvbHVtbnMpIGZpcnN0IHRvIHNvcnQgb3V0IHdoYXQgSSdtIGxvb2tpbmcgYXQuXG5uYW1lcyhBbGFiYW1hKVtjKDEsIDIsIDMsIDQsIDUpXSA8LSBjKFwiTGFuZ3VhZ2VcIiwgXCJOdW1iZXJTcGVha2Vyc1wiLCBcIlNwZWFrZXJzRXJyb3JcIiwgXCJFbmdsaXNoTm90VmVyeVdlbGxcIiwgXCJFbmdsaXNoRXJyb3JcIilcblxuIyBOb3cgSSBuZWVkIHRvIGZpbHRlciB0aGUgZGF0YSBpbml0aWFsbHkgc28gSSBnZXQgbXkgZmlyc3QgY291cGxlIG9mIHJvd3MuIEkgd2lsbCBmaWx0ZXIgb3V0IG1vcmUgcm93cyBhZnRlciB0aGlzLlxuQWxhYmFtYSA8LVxuICBBbGFiYW1hICU+JVxuICBmaWx0ZXIocm93X251bWJlcigpID4gNSwgcm93X251bWJlcigpIDwgMTQ0KVxuXG5cbiMgSSB1c2VkIHJlcGxhY2Vfd2l0aF9uYSBmcm9tIHRoZSBuYW5pYXIgcGFja2FnZSB0byByZXBsYWNlIGNlcnRhaW4gdmFsdWVzIHdpdGggTkEgYmFzZWQgb24gdGhlIGRlc2NyaXB0aW9ucyBmb3IgdGhlIGRhdGEgSSByZWNlaXZlZC4gVGhpcyB3aWxsIG1ha2UgY2xlYW5pbmcgdXAgZGF0YSBhIGJpdCBlYXNpZXIgbGF0ZXIgd2hlbiBJIGdldCByaWQgb2YgY2FzZXMgdGhhdCBjb250YWluIGFsbCBOQSB2YWx1ZXMuXG5cbiMgQWNjb3JkaW5nIHRvIHRoZSBkYXRhc2V0LCAoRCkgc3RhbmRzIGZvciBkYXRhIHdpdGhoZWxkIHRvIGF2b2lkIGRpc2Nsb3N1cmUsIChCKSBzdGFuZHMgZm9yIGVpdGhlciBubyBzYW1wbGUgb2JzZXJ2YXRpb25zIG9yIHRvbyBmZXcgc2FtcGxlIG9ic2VydmF0aW9ucyB3ZXJlIGF2YWlsYWJsZSB0byBjb21wdXRlIGFuIGVzdGltYXRlLCBhbmQgKFgpIHN0YW5kcyBmb3IgdGhhdCB0aGUgcXVlc3Rpb24gZG9lcyBub3QgYXBwbHkuXG5BbGFiYW1hIDwtXG4gIEFsYWJhbWEgJT4lIHJlcGxhY2Vfd2l0aF9uYShyZXBsYWNlID0gbGlzdChOdW1iZXJTcGVha2VycyA9IGMoXCIoRClcIiwgXCIoQilcIiwgXCIoWClcIiksIFNwZWFrZXJzRXJyb3IgPSBjKFwiKEQpXCIsIFwiKEIpXCIsIFwiKFgpXCIpLCBFbmdsaXNoTm90VmVyeVdlbGwgPSBjKFwiKEQpXCIsIFwiKEIpXCIsIFwiKFgpXCIpLCBFbmdsaXNoRXJyb3IgPSBjKFwiKEQpXCIsIFwiKEIpXCIsIFwiKFgpXCIpKSlcblxuIyBDaGVjayB0byBzZWUgaWYgbXkgY2xlYW5pbmcgZGlkIGFueXRoaW5nLlxuaGVhZChBbGFiYW1hKVxuYGBgIn0= -->
+<pre class="r"><code># I need to rename the variables (columns) first to sort out what I&#39;m looking at.
+names(Alabama)[c(1, 2, 3, 4, 5)] &lt;- c(&quot;Language&quot;, &quot;NumberSpeakers&quot;, &quot;SpeakersError&quot;, &quot;EnglishNotVeryWell&quot;, &quot;EnglishError&quot;)
+
+# Now I need to filter the data initially so I get my first couple of rows. I will filter out more rows after this.
+Alabama &lt;-
+  Alabama %&gt;%
+  filter(row_number() &gt; 5, row_number() &lt; 144)
+
+
+# I used replace_with_na from the naniar package to replace certain values with NA based on the descriptions for the data I received. This will make cleaning up data a bit easier later when I get rid of cases that contain all NA values.
+
+# According to the dataset, (D) stands for data withheld to avoid disclosure, (B) stands for either no sample observations or too few sample observations were available to compute an estimate, and (X) stands for that the question does not apply.
+Alabama &lt;-
+  Alabama %&gt;% replace_with_na(replace = list(NumberSpeakers = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;), SpeakersError = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;), EnglishNotVeryWell = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;), EnglishError = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;)))
+
+# Check to see if my cleaning did anything.
+head(Alabama)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>After the initial filtering, I still need to take out some rows that are just totals (which therefore make the data not tidy). I will also be dropping the cases that have NA values.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBEcm9wcGluZyBzcGVjaWZpYyByb3dzXG5BbGFiYW1hIDwtXG4gIEFsYWJhbWFbLWMoMiwgNCwgNSwgNzo5LCAxMywgMTUsIDE3LCAyMSwgMjksIDMzLCA0NCwgNTUsIDY1LCA2NiwgNzgsIDg4LCAxMDEsIDEwMywgMTIyKSxdXG5cbiNEcm9wIHRoZSBjYXNlcyB3aXRoIE5BIHZhbHVlc1xuQWxhYmFtYSA8LVxuICBBbGFiYW1hICU+JVxuICBuYS5vbWl0KClcblxuIyBDaGVjayB0byBzZWUgaWYgSSBnZXQgdGhlIG91dHB1dCBJIHdhbnRcbmhlYWQoQWxhYmFtYSlcbmBgYCJ9 -->
+<pre class="r"><code># Dropping specific rows
+Alabama &lt;-
+  Alabama[-c(2, 4, 5, 7:9, 13, 15, 17, 21, 29, 33, 44, 55, 65, 66, 78, 88, 101, 103, 122),]
+
+#Drop the cases with NA values
+Alabama &lt;-
+  Alabama %&gt;%
+  na.omit()
+
+# Check to see if I get the output I want
+head(Alabama)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now that we have finished that cleaning, we need to add a new variable to prep this data table for when we append other data tables to it.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJIHVzZSBtdXRhdGUoKSB0byBhZGQgYSBzdGF0ZSB2YXJpYWJsZSBzbyB3aGVuIHdlIGFwcGVuZCBkYXRhIHRhYmxlcywgd2Ugd2lsbCBrbm93IHdoaWNoIGRhdGEgaXMgZnJvbSB3aGljaCBzdGF0ZS5cbkFsYWJhbWEgPC1cbiAgQWxhYmFtYSAlPiVcbiAgbXV0YXRlKHN0YXRlID0gXCJBbGFiYW1hXCIpXG5cbiMgQ2hlY2sgdGhlIGRhdGEgdGFibGVcbm5hbWVzKEFsYWJhbWEpXG5gYGAifQ== -->
+<pre class="r"><code># I use mutate() to add a state variable so when we append data tables, we will know which data is from which state.
+Alabama &lt;-
+  Alabama %&gt;%
+  mutate(state = &quot;Alabama&quot;)
+
+# Check the data table
+names(Alabama)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="variable-types" class="section level3">
+<h3>Variable Types</h3>
+<p>So now that we have the data cleaned up and in a form that we want and like, we need to check how the variables are stored and make necessary adjustments. We know that <strong>we want the variables “NumberSpeakers”, “SpeakersError”, “EnglishNotVeryWell”, and “EnglishError” to be numerical</strong>, and the rest (language &amp; state) to be categorical.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKEFsYWJhbWEpXG5gYGAifQ== -->
+<pre class="r"><code>str(Alabama)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Based on the code I just ran, all the variables are stored as characters, so we need to change some of them into numerical variable types.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJIHVzZSBhcy5udW1lcmljKCkgdG8gY2hhbmdlIHRoZSB2YXJpYWJsZSB0eXBlcy5cbkFsYWJhbWEgPC1cbiAgQWxhYmFtYSAlPiVcbiAgbXV0YXRlKE51bWJlclNwZWFrZXJzID0gYXMubnVtZXJpYyhOdW1iZXJTcGVha2VycyksIFNwZWFrZXJzRXJyb3IgPSBhcy5udW1lcmljKFNwZWFrZXJzRXJyb3IpLCBFbmdsaXNoTm90VmVyeVdlbGwgPSBhcy5udW1lcmljKEVuZ2xpc2hOb3RWZXJ5V2VsbCksIEVuZ2xpc2hFcnJvciA9IGFzLm51bWVyaWMoRW5nbGlzaEVycm9yKSlcblxuIyBOb3cgSSBjaGVjayB0byBtYWtlIHN1cmUgdGhlIHZhcmlhYmxlIHR5cGVzIGhhdmUgY2hhbmdlZCBhcyBuZWNlc3NhcnkuXG5zdHIoQWxhYmFtYSlcbmBgYCJ9 -->
+<pre class="r"><code># I use as.numeric() to change the variable types.
+Alabama &lt;-
+  Alabama %&gt;%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+# Now I check to make sure the variable types have changed as necessary.
+str(Alabama)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now that we have gone through the explanations for one data table (Alabama), I will be going through the same process for specific states so that I have enough data for one full region, as well as some individual states that I can combine to represent the other regions.</p>
+<p><strong>Technical Challenge:</strong> I had previously considered cleaning all 52 tables, but after discussing with the TA, we decided it would be more beneficial and realistic to only choose a couple of the tables, since the data required some hard-coding to be done via the excel spreadsheet before importing into R (I had to go in and delete a bunch of periods that were showing up in the beginning of language names that were causing me issues when trying to wrangle my data and use join and certain reduction/transformation functions).</p>
+</div>
+<div id="load-clean-the-rest-of-the-data" class="section level3">
+<h3>Load &amp; Clean the Rest of the Data</h3>
+<p><strong>Alaska</strong></p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQWxhc2thIDwtIHJlYWRfZXhjZWwocGF0aCA9IHhsc19kYXRhLCBzaGVldCA9IFwiQWxhc2thXCIsIG5hID0gXCItLVwiKVxuXG5gYGAifQ== -->
+<pre class="r"><code>Alaska &lt;- read_excel(path = xls_data, sheet = &quot;Alaska&quot;, na = &quot;--&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuKiBgYCAtPiAuLi4yXG4qIGBgIC0+IC4uLjNcbiogYGAgLT4gLi4uNFxuKiBgYCAtPiAuLi41XG4ifQ== -->
+<pre><code>New names:
+* `` -&gt; ...2
+* `` -&gt; ...3
+* `` -&gt; ...4
+* `` -&gt; ...5</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p><strong>Hawaii</strong></p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSGF3YWlpIDwtIHJlYWRfZXhjZWwocGF0aCA9IHhsc19kYXRhLCBzaGVldCA9IFwiSGF3YWlpXCIsIG5hID0gXCItLVwiKVxuXG5uYW1lcyhIYXdhaWkpW2MoMSwgMiwgMywgNCwgNSldIDwtIGMoXCJMYW5ndWFnZVwiLCBcIk51bWJlclNwZWFrZXJzXCIsIFwiU3BlYWtlcnNFcnJvclwiLCBcIkVuZ2xpc2hOb3RWZXJ5V2VsbFwiLCBcIkVuZ2xpc2hFcnJvclwiKVxuXG5IYXdhaWkgPC1cbiAgSGF3YWlpICU+JVxuICBmaWx0ZXIocm93X251bWJlcigpID4gNSwgcm93X251bWJlcigpIDwgMTU4KVxuXG5IYXdhaWkgPC1cbiAgSGF3YWlpICU+JSByZXBsYWNlX3dpdGhfbmEocmVwbGFjZSA9IGxpc3QoTnVtYmVyU3BlYWtlcnMgPSBjKFwiKEQpXCIsIFwiKEIpXCIsIFwiKFgpXCIpLCBTcGVha2Vyc0Vycm9yID0gYyhcIihEKVwiLCBcIihCKVwiLCBcIihYKVwiKSwgRW5nbGlzaE5vdFZlcnlXZWxsID0gYyhcIihEKVwiLCBcIihCKVwiLCBcIihYKVwiKSwgRW5nbGlzaEVycm9yID0gYyhcIihEKVwiLCBcIihCKVwiLCBcIihYKVwiKSkpXG5cbkhhd2FpaSA8LVxuICBIYXdhaWlbLWMoMiwgNCwgNSwgNzo5LCAxMiwgMTQsIDE2LCAyMCwgMjgsIDMxLCA0MiwgNTAsIDYxLCA2MiwgNzYsIDg4LCAxMjIsIDEyNCwgMTQxKSxdXG5cbkhhd2FpaSA8LVxuICBIYXdhaWkgJT4lXG4gIG5hLm9taXQoKVxuXG5IYXdhaWkgPC1cbiAgSGF3YWlpICU+JVxuICBtdXRhdGUoc3RhdGUgPSBcIkhhd2FpaVwiKVxuXG5WaWV3KEhhd2FpaSlcblxuSGF3YWlpIDwtXG4gIEhhd2FpaSAlPiVcbiAgbXV0YXRlKE51bWJlclNwZWFrZXJzID0gYXMubnVtZXJpYyhOdW1iZXJTcGVha2VycyksIFNwZWFrZXJzRXJyb3IgPSBhcy5udW1lcmljKFNwZWFrZXJzRXJyb3IpLCBFbmdsaXNoTm90VmVyeVdlbGwgPSBhcy5udW1lcmljKEVuZ2xpc2hOb3RWZXJ5V2VsbCksIEVuZ2xpc2hFcnJvciA9IGFzLm51bWVyaWMoRW5nbGlzaEVycm9yKSlcblxuc3RyKEhhd2FpaSlcbmBgYCJ9 -->
+<pre class="r"><code>Hawaii &lt;- read_excel(path = xls_data, sheet = &quot;Hawaii&quot;, na = &quot;--&quot;)
+
+names(Hawaii)[c(1, 2, 3, 4, 5)] &lt;- c(&quot;Language&quot;, &quot;NumberSpeakers&quot;, &quot;SpeakersError&quot;, &quot;EnglishNotVeryWell&quot;, &quot;EnglishError&quot;)
+
+Hawaii &lt;-
+  Hawaii %&gt;%
+  filter(row_number() &gt; 5, row_number() &lt; 158)
+
+Hawaii &lt;-
+  Hawaii %&gt;% replace_with_na(replace = list(NumberSpeakers = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;), SpeakersError = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;), EnglishNotVeryWell = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;), EnglishError = c(&quot;(D)&quot;, &quot;(B)&quot;, &quot;(X)&quot;)))
+
+Hawaii &lt;-
+  Hawaii[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+
+Hawaii &lt;-
+  Hawaii %&gt;%
+  na.omit()
+
+Hawaii &lt;-
+  Hawaii %&gt;%
+  mutate(state = &quot;Hawaii&quot;)
+
+View(Hawaii)
+
+Hawaii &lt;-
+  Hawaii %&gt;%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Hawaii)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="append-the-tables" class="section level3">
+<h3>Append the Tables</h3>
+<p>Now that I have the individual data tables for states, I will start appending them together in terms of region.<br />
+From this wikipedia page (“<a href="https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg" class="uri">https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg</a>”), I found a map of the regions and divisons that the Census utilizes for the United States.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUGFjaWZpYyA8LSBiaW5kX3Jvd3MoQWxhc2thLCBIYXdhaWkpICU+JVxuICBhcnJhbmdlKGRlc2MoTnVtYmVyU3BlYWtlcnMpKVxuXG4jIENoZWNrIG91dCBteSBuZXcgZGF0YSB0YWJsZSBmb3IgdGhlIFBhY2lmaWMgUmVnaW9uXG5WaWV3KFBhY2lmaWMpXG5oZWFkKFBhY2lmaWMpXG5gYGAifQ== -->
+<pre class="r"><code>Pacific &lt;- bind_rows(Alaska, Hawaii) %&gt;%
+  arrange(desc(NumberSpeakers))
+
+# Check out my new data table for the Pacific Region
+View(Pacific)
+head(Pacific)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+</div>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZpbmFsIFByb2plY3QiDQphdXRob3I6ICJUYW55YSBXYW5nIg0Kb3V0cHV0OiANCiAgICBodG1sX25vdGVib29rOg0KICAgIGZpZ19oZWlnaHQ6IDYNCiAgICBmaWdfd2lkdGg6IDEwDQotLS0NCg0KIyBIb3cgTGFuZ3VhZ2VzIFNwb2tlbiBBZmZlY3QgRW5nbGlzaCBBYmlsaXR5DQoNCiMjIEludHJvZHVjdGlvbg0KDQojIyMgUmVzZWFyY2ggUXVlc3Rpb24NCiMjIyMgKipIb3cgZG9lcyB0aGUgdHlwZSBvZiBsYW5ndWFnZSBzcG9rZW4gYXQgaG9tZSBhZmZlY3QgRW5nbGlzaCBzcGVha2luZyBhYmlsaXR5PyoqDQpJIHdhbnQgdG8gc2VlIGhvdyB0aGUgdHlwZSBvZiBsYW5ndWFnZShzKSBzcG9rZW4gYXQgaG9tZSBjYW4gYWZmZWN0IGEgcGVyc29uJ3MgYWJpbGl0eSB0byBzcGVhayBFbmdsaXNoIHdlbGwuIFRoaXMgaXMgcmVhbGx5IGludGVyZXN0aW5nIGZvciBtZSBiZWNhdXNlIEkndmUgYWx3YXlzIGJlZW4gaW50ZXJlc3RlZCBpbiB0aGUgbGluZ3Vpc3RpY3MgZmllbGQgYW5kIEkgdGhvdWdodCBpdCB3b3VsZCBiZSBjb29sIHRvIHNlZSBpZiB0aGVyZSB3YXMgc29tZSB0cmVuZCBpbiB0aGUgbnVtYmVyIG9mIGxhbmd1YWdlcyAodHlwZXMgb2YgbGFuZ3VhZ2VzKSBzcG9rZW4gYXQgaG9tZSB2ZXJzdXMgc2VsZi1yZXBvcnRlZCBFbmdsaXNoIHNwZWFraW5nIGFiaWxpdHkuIElkZWFsbHksIHdlJ2QgbGlrZSBhIHNjaWVudGlmaWMgb3V0cHV0IGZvciBFbmdsaWhzIHNwZWFraW5nIGFiaWxpdHkgZm9yIGVhY2ggcGVyc29uIGJhc2VkIG9uIHN0YXRpc3RpY2FsIGFuYWx5c2lzIG9mIHRoZWlyIHJlc3BvbnNlcyB0byBkaWZmZXJlbnQgdGFza3MsIGJ1dCB0aGUgZGF0YSBJIGdvdCBmcm9tIHRoZSBDZW5zdXMgZG9lc24ndCBoYXZlIHRoYXQgc2luY2UgdGhpcyBwYXR0ZXJuIEknbSBsb29raW5nIGZvciB3YXNuJ3Qgd2hhdCB0aGV5IG9yaWdpbmFsbHkgY29sbGVjdGVkIHRoZSBkYXRhIGZvci4gICANCkZyb20gZXhwZXJpZW5jZSB3aGVuIEkgc3VibWl0dGVkIG15IHByZWxpbWluYXJ5IEVEQSwgSSBmb3VuZCBvdXQgdGhhdCBJIGhhZCB0byBzaWduaWZpY2FuY3RseSBkaWFsIGRvd24gdGhlIG51bWJlciBvZiBkYXRhIHRhYmxlcyBJIHdhbnRlZCB0byB1c2Ugc2luY2UgdGhlIGRhdGEgaXMgbm90IGZvcm1hdHRlZCBpbiBhIHdheSB0aGF0IGlzIGVhc2lseSB1c2FibGUgYnkgUi4gSSBkZWNpZGVkIHRvIHN0aWNrIHdpdGggb25seSBhIGNvdXBsZSBvZiBzdGF0ZXMgZnJvbSB0aGUgZGF0YXNldHMgYnkgc3RhdGUgc2luY2UgdGhhdCBpbiBpdHNlbGYgaXMgYSBsb3Qgb2YgZGF0YSB0byBjbGVhbiwgd3JhbmdsZSwgYW5kIHN1Y2guIEkgYWxzbyBkZWNpZGVkIHRvIGFkZCBpbiBhbm90aGVyIGRhdGFzZXQgZm9yIHRoZSBlbnRpcmUgVVMgbmF0aW9uIGl0c2VsZiB0byBzZWUgaWYgdGhlIHNhbWUgdHJlbmQgd2UgbWlnaHQgc2VlIGluIHN0YXRlcyBtYXkgYWxzbyBiZSB0cnVlIGZvciB0aGUgZW50aXJlIG5hdGlvbiBhcyBhIHdob2xlLg0KDQoNCiMjIFRoZSBEYXRhDQoNCkZpcnN0IHdlIG5lZWQgY2xlYW4gdGhlIGVudmlyb25tZW50IGFuZCB0aGVuIGxvYWQgdGhlIHBhY2thZ2Uocykgd2UgbmVlZC4gVGhlcmUgYXJlIHNvbWUgcGFja2FnZXMgdGhhdCByZXF1aXJpbmcgaW5zdGFsbGluZywgYnV0IEkgaGF2ZSBjb21tZW50ZWQgdGhlbSBvdXQgYWZ0ZXIgSSBoYXZlIGluc3RhbGxlZCBpdCBvbmNlLiBCZWxvdyBpcyBhIGRlc2NyaXB0aW9uIG9mIGVhY2ggcGFja2FnZSBJIGxvYWRlZCBhbmQgd2hhdCBpdCBpcyB1c2VkIGZvcjoNCg0KLSAqKnRpZHl2ZXJzZToqKiB0aGlzIGlzIGEgY29sbGVjdGlvbiBvZiBSIHBhY2thZ2VzIGRlc2lnbmVkIGZvciBkYXRhIHNjaWVuY2UuIEl0IGluY2x1ZGVzIGdncGxvdDIsIGRwbHlyLCB0aWR5ciwgYW5kIG1vcmUgdGhhdCB3ZSBjYW4gdXNlIGZvciBldmVyeWRheSBkYXRhIGFuYWx5c2VzLg0KLSAqKnJlYWR4bDoqKiB0aGlzIHBhY2thZ2UgbWFrZXMgaXQgZWFzeSB0byBnZXQgZGF0YSBvdXQgb2YgRXhjZWwgYW5kIGludG8gUg0KLSAqKm5hbmlhcjoqKiBjb250YWlucyB0b29scyBmb3IgZXhwbG9yaW5nIG1pc3NpbmcgZGF0YSBzdHJ1Y3R1cmVzIHdpdGggbWluaW1hbCBkZXZpYXRpb24gZnJvbSB0aGUgY29tbW9uIHdvcmtmbG93cyBvZiBnZ3Bsb3QgJiB0aWR5IGRhdGENCi0gKipkYXRhc2V0czoqKiBjb250YWlucyB0b25zIG9mIGRhdGEgdGhlIHVzZXIgY2FuIGxvYWQgYW5kIHVzZSBpbW1lZGlhdGVseQ0KYGBge3J9DQojIFRoaXMgY2xlYW5zIHVwIHRoZSBlbnZpcm9ubWVudC4NCnJtKGxpc3QgPSBscygpKQ0KDQojIEluc3RhbGwgbmVjZXNzYXJ5IHBhY2thZ2VzLg0KIyBpbnN0YWxsLnBhY2thZ2VzKCJuYW5pYXIiKQ0KDQojIFRoaXMgbG9hZHMgdGhlIHBhY2thZ2VzIHdlIG5lZWQuDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkocmVhZHhsKQ0KbGlicmFyeShuYW5pYXIpDQpsaWJyYXJ5KGRhdGFzZXRzKQ0KYGBgDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZpbmFsIFByb2plY3QiDQphdXRob3I6ICJUYW55YSBXYW5nIg0Kb3V0cHV0OiANCiAgICBodG1sX25vdGVib29rOg0KICAgIGZpZ19oZWlnaHQ6IDYNCiAgICBmaWdfd2lkdGg6IDEwDQotLS0NCg0KIyBIb3cgTGFuZ3VhZ2VzIFNwb2tlbiBBZmZlY3QgRW5nbGlzaCBBYmlsaXR5DQoNCiMjIEludHJvZHVjdGlvbg0KDQojIyMgUmVzZWFyY2ggUXVlc3Rpb24NCiMjIyMgKipIb3cgZG9lcyB0aGUgdHlwZSBvZiBsYW5ndWFnZSBzcG9rZW4gYXQgaG9tZSBhZmZlY3QgRW5nbGlzaCBzcGVha2luZyBhYmlsaXR5PyoqDQpJIHdhbnQgdG8gc2VlIGhvdyB0aGUgdHlwZSBvZiBsYW5ndWFnZShzKSBzcG9rZW4gYXQgaG9tZSBjYW4gYWZmZWN0IGEgcGVyc29uJ3MgYWJpbGl0eSB0byBzcGVhayBFbmdsaXNoIHdlbGwuIFRoaXMgaXMgcmVhbGx5IGludGVyZXN0aW5nIGZvciBtZSBiZWNhdXNlIEkndmUgYWx3YXlzIGJlZW4gaW50ZXJlc3RlZCBpbiB0aGUgbGluZ3Vpc3RpY3MgZmllbGQgYW5kIEkgdGhvdWdodCBpdCB3b3VsZCBiZSBjb29sIHRvIHNlZSBpZiB0aGVyZSB3YXMgc29tZSB0cmVuZCBpbiB0aGUgbnVtYmVyIG9mIGxhbmd1YWdlcyAodHlwZXMgb2YgbGFuZ3VhZ2VzKSBzcG9rZW4gYXQgaG9tZSB2ZXJzdXMgc2VsZi1yZXBvcnRlZCBFbmdsaXNoIHNwZWFraW5nIGFiaWxpdHkuIElkZWFsbHksIHdlJ2QgbGlrZSBhIHNjaWVudGlmaWMgb3V0cHV0IGZvciBFbmdsaWhzIHNwZWFraW5nIGFiaWxpdHkgZm9yIGVhY2ggcGVyc29uIGJhc2VkIG9uIHN0YXRpc3RpY2FsIGFuYWx5c2lzIG9mIHRoZWlyIHJlc3BvbnNlcyB0byBkaWZmZXJlbnQgdGFza3MsIGJ1dCB0aGUgZGF0YSBJIGdvdCBmcm9tIHRoZSBDZW5zdXMgZG9lc24ndCBoYXZlIHRoYXQgc2luY2UgdGhpcyBwYXR0ZXJuIEknbSBsb29raW5nIGZvciB3YXNuJ3Qgd2hhdCB0aGV5IG9yaWdpbmFsbHkgY29sbGVjdGVkIHRoZSBkYXRhIGZvci4gICANCkZyb20gZXhwZXJpZW5jZSB3aGVuIEkgc3VibWl0dGVkIG15IHByZWxpbWluYXJ5IEVEQSwgSSBmb3VuZCBvdXQgdGhhdCBJIGhhZCB0byBzaWduaWZpY2FuY3RseSBkaWFsIGRvd24gdGhlIG51bWJlciBvZiBkYXRhIHRhYmxlcyBJIHdhbnRlZCB0byB1c2Ugc2luY2UgdGhlIGRhdGEgaXMgbm90IGZvcm1hdHRlZCBpbiBhIHdheSB0aGF0IGlzIGVhc2lseSB1c2FibGUgYnkgUi4gSSBkZWNpZGVkIHRvIHN0aWNrIHdpdGggb25seSBhIGNvdXBsZSBvZiBzdGF0ZXMgZnJvbSB0aGUgZGF0YXNldHMgYnkgc3RhdGUgc2luY2UgdGhhdCBpbiBpdHNlbGYgaXMgYSBsb3Qgb2YgZGF0YSB0byBjbGVhbiwgd3JhbmdsZSwgYW5kIHN1Y2guIEkgYWxzbyBkZWNpZGVkIHRvIGFkZCBpbiBhbm90aGVyIGRhdGFzZXQgZm9yIHRoZSBlbnRpcmUgVVMgbmF0aW9uIGl0c2VsZiB0byBzZWUgaWYgdGhlIHNhbWUgdHJlbmQgd2UgbWlnaHQgc2VlIGluIHN0YXRlcyBtYXkgYWxzbyBiZSB0cnVlIGZvciB0aGUgZW50aXJlIG5hdGlvbiBhcyBhIHdob2xlLg0KDQoNCiMjIFRoZSBEYXRhDQoNCkZpcnN0IHdlIG5lZWQgdG8gY2xlYW4gdGhlIGVudmlyb25tZW50IGFuZCB0aGVuIGxvYWQgdGhlIHBhY2thZ2Uocykgd2UgbmVlZC4gVGhlcmUgYXJlIHNvbWUgcGFja2FnZXMgdGhhdCByZXF1aXJpbmcgaW5zdGFsbGluZywgYnV0IEkgaGF2ZSBjb21tZW50ZWQgdGhlbSBvdXQgYWZ0ZXIgSSBoYXZlIGluc3RhbGxlZCBpdCBvbmNlIHNvIHRoYXQgdGhlIGNvZGUgZG9lc24ndCBydW4gYnV0IHlvdSBjYW4gc2VlIHdoYXQgcGFja2FnZXMgSSBuZWVkZWQgdG8gaW5zdGFsbC4gQmVsb3cgaXMgYSBkZXNjcmlwdGlvbiBvZiBlYWNoIHBhY2thZ2UgSSBsb2FkZWQgYW5kIHdoYXQgaXQgaXMgdXNlZCBmb3I6DQoNCi0gKip0aWR5dmVyc2U6KiogdGhpcyBpcyBhIGNvbGxlY3Rpb24gb2YgUiBwYWNrYWdlcyBkZXNpZ25lZCBmb3IgZGF0YSBzY2llbmNlLiBJdCBpbmNsdWRlcyBnZ3Bsb3QyLCBkcGx5ciwgdGlkeXIsIGFuZCBtb3JlIHRoYXQgd2UgY2FuIHVzZSBmb3IgZXZlcnlkYXkgZGF0YSBhbmFseXNlcy4NCi0gKipyZWFkeGw6KiogdGhpcyBwYWNrYWdlIG1ha2VzIGl0IGVhc3kgdG8gZ2V0IGRhdGEgb3V0IG9mIEV4Y2VsIGFuZCBpbnRvIFINCi0gKipuYW5pYXI6KiogY29udGFpbnMgdG9vbHMgZm9yIGV4cGxvcmluZyBtaXNzaW5nIGRhdGEgc3RydWN0dXJlcyB3aXRoIG1pbmltYWwgZGV2aWF0aW9uIGZyb20gdGhlIGNvbW1vbiB3b3JrZmxvd3Mgb2YgZ2dwbG90ICYgdGlkeSBkYXRhDQotICoqZGF0YXNldHM6KiogY29udGFpbnMgdG9ucyBvZiBkYXRhIHRoZSB1c2VyIGNhbiBsb2FkIGFuZCB1c2UgaW1tZWRpYXRlbHkNCmBgYHtyLCB3YXJuaW5nID0gRkFMU0V9DQojIFRoaXMgY2xlYW5zIHVwIHRoZSBlbnZpcm9ubWVudC4NCnJtKGxpc3QgPSBscygpKQ0KDQojIEluc3RhbGwgbmVjZXNzYXJ5IHBhY2thZ2VzLg0KIyBpbnN0YWxsLnBhY2thZ2VzKCJuYW5pYXIiKQ0KDQojIFRoaXMgbG9hZHMgdGhlIHBhY2thZ2VzIHdlIG5lZWQuDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkocmVhZHhsKQ0KbGlicmFyeShuYW5pYXIpDQpsaWJyYXJ5KGRhdGFzZXRzKQ0KYGBgDQoNCg0KIyMjIExvYWRpbmcgdGhlIERhdGENCg0KTm93IHdlIHJlYWQgaW4gb3VyIGRhdGEgZnJvbSB0aGUgeGxzIGZpbGUuIFRoaXMgb25lIGlzIGZvciAqKnN0YXRlcyBpbiB0aGUgVVMgYW5kIGNvbnRhaW5zIDUyIGRhdGEgdGFibGVzKiosIGFsbCBpbiBzZXBhcmF0ZSBzaGVldHMgKGJlY2F1c2UgaXQgY29udGFpbnMgUHVlcnRvIFJpY28gYXMgd2VsbCkuIExldCdzIHN0YXJ0IG9mZiB3aXRoIGp1c3Qgb25lIHN0YXRlLg0KYGBge3J9DQp4bHNfZGF0YSA8LSAiQzovVXNlcnMvR3VhaUd1YWkvRG9jdW1lbnRzL1IvU1RBVDE4NF9GaW5hbFByb2plY3QvMjAwOS0yMDEzLWFjcy1sYW5nLXRhYmxlcy1zdGF0ZS54bHMiDQoNCiMgVGhpcyByZXR1cm5zIHRoZSBuYW1lcyBvZiBhbGwgdGhlIHNoZWV0cyBpbiBvdXIgeGxzIGZpbGUgKGZvciBmdXR1cmUgcmVmZXJlbmNlKS4NCmV4Y2VsX3NoZWV0cyhwYXRoID0geGxzX2RhdGEpDQpgYGANCg0KTGV0J3Mgc3RhcnQgd2l0aCBhbiBleGFtcGxlOiAqKkFsYWJhbWEqKi4gSSB3aWxsIHRha2UgeW91IHRocm91Z2ggbXkgcHJvY2VzcyBvZiBsb2FkaW5nIGFuZCBjbGVhbmluZyB0aGUgZGF0YS4NCmBgYHtyLCB3YXJuaW5nID0gRkFMU0V9DQojIEkgc3BlY2lmaWVkIHdoaWNoIHNoZWV0IEkgd2FudCBieSBpdCdzIG5hbWUgYW5kIG1hZGUgc3VyZSB0byBzZXQgdGhlIG5hIGFyZ3VtZW50IGJlY2F1c2Ugc29tZSBvZiB0aGUgY2VsbHMgYXJlIGVtcHR5IGJ1dCByZXByZXNlbnRlZCBieSAiLS0iLCByYXRoZXIgdGhhbiBhIGJsYW5rIGNlbGwuIEkgd2lsbCBkZWFsIHdpdGggdGhlIGNlbGxzIHdpdGggbGV0dGVycyBpbiB0aGVtIGxhdGVyLg0KQWxhYmFtYSA8LSByZWFkX2V4Y2VsKHBhdGggPSB4bHNfZGF0YSwgc2hlZXQgPSAiQWxhYmFtYSIsIG5hID0gIi0tIikNCg0KDQojIExldCdzIHNlZSB3aGF0IHRoZSBkYXRhIGxvb2tzIGxpa2UgYXQgZmlyc3Qgc28gdGhhdCB3ZSBrbm93IHdoYXQga2luZCBvZiBjbGVhbmluZyB3ZSBuZWVkIHRvIGRvLg0KDQojIFZpZXcoQWxhYmFtYSkgLS0+IFRoaXMgY29kZSBpcyBjb21tZW50ZWQgb3V0IGJlY2F1c2UgVmlldygpIHNob3VsZCBub3QgYmUgcHV0IGluIGEgbWFya2Rvd24gZmlsZSBhbmQgd2FzIGEgZnVuY3Rpb24gSSB1c2VkIGluIHRoZSBjb25zb2xlIHRvIGNoZWNrIG15IGRhdGEuIEkganVzdCB3YW50ZWQgdG8gYWRkIGl0IGhlcmUgaW5pdGlhbGx5IHNvIHlvdSBrbm93IEkgd2FzIGNoZWNraW5nIG15IGVudGlyZSB0YWJsZS4gRm9yIHRoZSByZXN0IG9mIHRoZSBtYXJrZG93biBmaWxlLCBJIHdpbGwgbm90IGJlIGluY2x1ZGluZyBWaWV3KCkgZnVuY3Rpb25zLCBldmVuIGlmIEkgcnVuIHRoZW0gaW4gdGhlIGNvbnNvbGUuDQoNCmhlYWQoQWxhYmFtYSkNCmBgYA0KDQoNCiMjIyBDbGVhbiB0aGUgRGF0YQ0KDQpgYGB7cn0NCiMgSSBuZWVkIHRvIHJlbmFtZSB0aGUgdmFyaWFibGVzIChjb2x1bW5zKSBmaXJzdCB0byBzb3J0IG91dCB3aGF0IEknbSBsb29raW5nIGF0Lg0KbmFtZXMoQWxhYmFtYSlbYygxLCAyLCAzLCA0LCA1KV0gPC0gYygiTGFuZ3VhZ2UiLCAiTnVtYmVyU3BlYWtlcnMiLCAiU3BlYWtlcnNFcnJvciIsICJFbmdsaXNoTm90VmVyeVdlbGwiLCAiRW5nbGlzaEVycm9yIikNCg0KIyBOb3cgSSBuZWVkIHRvIGZpbHRlciB0aGUgZGF0YSBpbml0aWFsbHkgc28gSSBnZXQgbXkgZmlyc3QgY291cGxlIG9mIHJvd3MuIEkgd2lsbCBmaWx0ZXIgb3V0IG1vcmUgcm93cyBhZnRlciB0aGlzLg0KQWxhYmFtYSA8LQ0KICBBbGFiYW1hICU+JQ0KICBmaWx0ZXIocm93X251bWJlcigpID4gNSwgcm93X251bWJlcigpIDwgMTQ0KQ0KDQoNCiMgSSB1c2VkIHJlcGxhY2Vfd2l0aF9uYSBmcm9tIHRoZSBuYW5pYXIgcGFja2FnZSB0byByZXBsYWNlIGNlcnRhaW4gdmFsdWVzIHdpdGggTkEgYmFzZWQgb24gdGhlIGRlc2NyaXB0aW9ucyBmb3IgdGhlIGRhdGEgSSByZWNlaXZlZC4gVGhpcyB3aWxsIG1ha2UgY2xlYW5pbmcgdXAgZGF0YSBhIGJpdCBlYXNpZXIgbGF0ZXIgd2hlbiBJIGdldCByaWQgb2YgY2FzZXMgdGhhdCBjb250YWluIGFsbCBOQSB2YWx1ZXMuDQoNCiMgQWNjb3JkaW5nIHRvIHRoZSBkYXRhc2V0LCAoRCkgc3RhbmRzIGZvciBkYXRhIHdpdGhoZWxkIHRvIGF2b2lkIGRpc2Nsb3N1cmUsIChCKSBzdGFuZHMgZm9yIGVpdGhlciBubyBzYW1wbGUgb2JzZXJ2YXRpb25zIG9yIHRvbyBmZXcgc2FtcGxlIG9ic2VydmF0aW9ucyB3ZXJlIGF2YWlsYWJsZSB0byBjb21wdXRlIGFuIGVzdGltYXRlLCBhbmQgKFgpIHN0YW5kcyBmb3IgdGhhdCB0aGUgcXVlc3Rpb24gZG9lcyBub3QgYXBwbHkuDQpBbGFiYW1hIDwtDQogIEFsYWJhbWEgJT4lIHJlcGxhY2Vfd2l0aF9uYShyZXBsYWNlID0gbGlzdChOdW1iZXJTcGVha2VycyA9IGMoIihEKSIsICIoQikiLCAiKFgpIiksIFNwZWFrZXJzRXJyb3IgPSBjKCIoRCkiLCAiKEIpIiwgIihYKSIpLCBFbmdsaXNoTm90VmVyeVdlbGwgPSBjKCIoRCkiLCAiKEIpIiwgIihYKSIpLCBFbmdsaXNoRXJyb3IgPSBjKCIoRCkiLCAiKEIpIiwgIihYKSIpKSkNCg0KIyBDaGVjayB0byBzZWUgaWYgbXkgY2xlYW5pbmcgZGlkIGFueXRoaW5nLg0KaGVhZChBbGFiYW1hKQ0KYGBgDQoNCkFmdGVyIHRoZSBpbml0aWFsIGZpbHRlcmluZywgSSBzdGlsbCBuZWVkIHRvIHRha2Ugb3V0IHNvbWUgcm93cyB0aGF0IGFyZSBqdXN0IHRvdGFscyAod2hpY2ggdGhlcmVmb3JlIG1ha2UgdGhlIGRhdGEgbm90IHRpZHkpLiBJIHdpbGwgYWxzbyBiZSBkcm9wcGluZyB0aGUgY2FzZXMgdGhhdCBoYXZlIE5BIHZhbHVlcy4NCmBgYHtyfQ0KIyBEcm9wcGluZyBzcGVjaWZpYyByb3dzDQpBbGFiYW1hIDwtDQogIEFsYWJhbWFbLWMoMiwgNCwgNSwgNzo5LCAxMywgMTUsIDE3LCAyMSwgMjksIDMzLCA0NCwgNTUsIDY1LCA2NiwgNzgsIDg4LCAxMDEsIDEwMywgMTIyKSxdDQoNCiNEcm9wIHRoZSBjYXNlcyB3aXRoIE5BIHZhbHVlcw0KQWxhYmFtYSA8LQ0KICBBbGFiYW1hICU+JQ0KICBuYS5vbWl0KCkNCg0KIyBDaGVjayB0byBzZWUgaWYgSSBnZXQgdGhlIG91dHB1dCBJIHdhbnQNCmhlYWQoQWxhYmFtYSkNCmBgYA0KDQpOb3cgdGhhdCB3ZSBoYXZlIGZpbmlzaGVkIHRoYXQgY2xlYW5pbmcsIHdlIG5lZWQgdG8gYWRkIGEgbmV3IHZhcmlhYmxlIHRvIHByZXAgdGhpcyBkYXRhIHRhYmxlIGZvciB3aGVuIHdlIGFwcGVuZCBvdGhlciBkYXRhIHRhYmxlcyB0byBpdC4NCmBgYHtyfQ0KIyBJIHVzZSBtdXRhdGUoKSB0byBhZGQgYSBzdGF0ZSB2YXJpYWJsZSBzbyB3aGVuIHdlIGFwcGVuZCBkYXRhIHRhYmxlcywgd2Ugd2lsbCBrbm93IHdoaWNoIGRhdGEgaXMgZnJvbSB3aGljaCBzdGF0ZS4NCkFsYWJhbWEgPC0NCiAgQWxhYmFtYSAlPiUNCiAgbXV0YXRlKHN0YXRlID0gIkFsYWJhbWEiKQ0KDQojIENoZWNrIHRoZSBkYXRhIHRhYmxlDQpuYW1lcyhBbGFiYW1hKQ0KYGBgDQoNCg0KIyMjIFZhcmlhYmxlIFR5cGVzDQoNClNvIG5vdyB0aGF0IHdlIGhhdmUgdGhlIGRhdGEgY2xlYW5lZCB1cCBhbmQgaW4gYSBmb3JtIHRoYXQgd2Ugd2FudCBhbmQgbGlrZSwgd2UgbmVlZCB0byBjaGVjayBob3cgdGhlIHZhcmlhYmxlcyBhcmUgc3RvcmVkIGFuZCBtYWtlIG5lY2Vzc2FyeSBhZGp1c3RtZW50cy4gV2Uga25vdyB0aGF0ICoqd2Ugd2FudCB0aGUgdmFyaWFibGVzICJOdW1iZXJTcGVha2VycyIsICJTcGVha2Vyc0Vycm9yIiwgIkVuZ2xpc2hOb3RWZXJ5V2VsbCIsIGFuZCAiRW5nbGlzaEVycm9yIiB0byBiZSBudW1lcmljYWwqKiwgYW5kIHRoZSByZXN0IChsYW5ndWFnZSAmIHN0YXRlKSB0byBiZSBjYXRlZ29yaWNhbC4NCmBgYHtyfQ0Kc3RyKEFsYWJhbWEpDQpgYGANCg0KQmFzZWQgb24gdGhlIGNvZGUgSSBqdXN0IHJhbiwgYWxsIHRoZSB2YXJpYWJsZXMgYXJlIHN0b3JlZCBhcyBjaGFyYWN0ZXJzLCBzbyB3ZSBuZWVkIHRvIGNoYW5nZSBzb21lIG9mIHRoZW0gaW50byBudW1lcmljYWwgdmFyaWFibGUgdHlwZXMuDQpgYGB7cn0NCiMgSSB1c2UgYXMubnVtZXJpYygpIHRvIGNoYW5nZSB0aGUgdmFyaWFibGUgdHlwZXMuDQpBbGFiYW1hIDwtDQogIEFsYWJhbWEgJT4lDQogIG11dGF0ZShOdW1iZXJTcGVha2VycyA9IGFzLm51bWVyaWMoTnVtYmVyU3BlYWtlcnMpLCBTcGVha2Vyc0Vycm9yID0gYXMubnVtZXJpYyhTcGVha2Vyc0Vycm9yKSwgRW5nbGlzaE5vdFZlcnlXZWxsID0gYXMubnVtZXJpYyhFbmdsaXNoTm90VmVyeVdlbGwpLCBFbmdsaXNoRXJyb3IgPSBhcy5udW1lcmljKEVuZ2xpc2hFcnJvcikpDQoNCiMgTm93IEkgY2hlY2sgdG8gbWFrZSBzdXJlIHRoZSB2YXJpYWJsZSB0eXBlcyBoYXZlIGNoYW5nZWQgYXMgbmVjZXNzYXJ5Lg0Kc3RyKEFsYWJhbWEpDQpgYGANCg0KTm93IHRoYXQgd2UgaGF2ZSBnb25lIHRocm91Z2ggdGhlIGV4cGxhbmF0aW9ucyBmb3Igb25lIGRhdGEgdGFibGUgKEFsYWJhbWEpLCBJIHdpbGwgYmUgZ29pbmcgdGhyb3VnaCB0aGUgc2FtZSBwcm9jZXNzIGZvciBzcGVjaWZpYyBzdGF0ZXMgc28gdGhhdCBJIGhhdmUgZW5vdWdoIGRhdGEgZm9yIG9uZSBmdWxsIHJlZ2lvbiwgYXMgd2VsbCBhcyBzb21lIGluZGl2aWR1YWwgc3RhdGVzIHRoYXQgSSBjYW4gY29tYmluZSB0byByZXByZXNlbnQgdGhlIG90aGVyIHJlZ2lvbnMuDQoNCioqVGVjaG5pY2FsIENoYWxsZW5nZToqKiBJIGhhZCBwcmV2aW91c2x5IGNvbnNpZGVyZWQgY2xlYW5pbmcgYWxsIDUyIHRhYmxlcywgYnV0IGFmdGVyIGRpc2N1c3Npbmcgd2l0aCB0aGUgVEEsIHdlIGRlY2lkZWQgaXQgd291bGQgYmUgbW9yZSBiZW5lZmljaWFsIGFuZCByZWFsaXN0aWMgdG8gb25seSBjaG9vc2UgYSBjb3VwbGUgb2YgdGhlIHRhYmxlcywgc2luY2UgdGhlIGRhdGEgcmVxdWlyZWQgc29tZSBoYXJkLWNvZGluZyB0byBiZSBkb25lIHZpYSB0aGUgZXhjZWwgc3ByZWFkc2hlZXQgYmVmb3JlIGltcG9ydGluZyBpbnRvIFIgKEkgaGFkIHRvIGdvIGluIGFuZCBkZWxldGUgYSBidW5jaCBvZiBwZXJpb2RzIHRoYXQgd2VyZSBzaG93aW5nIHVwIGluIHRoZSBiZWdpbm5pbmcgb2YgbGFuZ3VhZ2UgbmFtZXMgdGhhdCB3ZXJlIGNhdXNpbmcgbWUgaXNzdWVzIHdoZW4gdHJ5aW5nIHRvIHdyYW5nbGUgbXkgZGF0YSBhbmQgdXNlIGpvaW4gYW5kIGNlcnRhaW4gcmVkdWN0aW9uL3RyYW5zZm9ybWF0aW9uIGZ1bmN0aW9ucykuDQoNCg0KIyMjIExvYWQgJiBDbGVhbiB0aGUgUmVzdCBvZiB0aGUgRGF0YQ0KDQoqKkFsYXNrYSoqDQpgYGB7ciwgd2FybmluZyA9IEZBTFNFfQ0KQWxhc2thIDwtIHJlYWRfZXhjZWwocGF0aCA9IHhsc19kYXRhLCBzaGVldCA9ICJBbGFza2EiLCBuYSA9ICItLSIpDQoNCm5hbWVzKEFsYXNrYSlbYygxLCAyLCAzLCA0LCA1KV0gPC0gYygiTGFuZ3VhZ2UiLCAiTnVtYmVyU3BlYWtlcnMiLCAiU3BlYWtlcnNFcnJvciIsICJFbmdsaXNoTm90VmVyeVdlbGwiLCAiRW5nbGlzaEVycm9yIikNCg0KQWxhc2thIDwtDQogIEFsYXNrYSAlPiUNCiAgZmlsdGVyKHJvd19udW1iZXIoKSA+IDUsIHJvd19udW1iZXIoKSA8IDE2NSkNCg0KQWxhc2thIDwtDQogIEFsYXNrYSAlPiUgcmVwbGFjZV93aXRoX25hKHJlcGxhY2UgPSBsaXN0KE51bWJlclNwZWFrZXJzID0gYygiKEQpIiwgIihCKSIsICIoWCkiKSwgU3BlYWtlcnNFcnJvciA9IGMoIihEKSIsICIoQikiLCAiKFgpIiksIEVuZ2xpc2hOb3RWZXJ5V2VsbCA9IGMoIihEKSIsICIoQikiLCAiKFgpIiksIEVuZ2xpc2hFcnJvciA9IGMoIihEKSIsICIoQikiLCAiKFgpIikpKQ0KDQpBbGFza2EgPC0NCiAgQWxhc2thWy1jKDIsIDQsIDUsIDc6OSwgMTMsIDE2LCAxNywgMjAsIDI4LCAzMiwgNDQsIDUwLCA1OCwgNTksIDcxLCA4NCwgMTAzLCAxMDUsIDE0NCksXQ0KDQpBbGFza2EgPC0NCiAgQWxhc2thICU+JQ0KICBuYS5vbWl0KCkNCg0KQWxhc2thIDwtDQogIEFsYXNrYSAlPiUNCiAgbXV0YXRlKHN0YXRlID0gIkFsYXNrYSIpDQoNClZpZXcoQWxhc2thKQ0KDQpBbGFza2EgPC0NCiAgQWxhc2thICU+JQ0KICBtdXRhdGUoTnVtYmVyU3BlYWtlcnMgPSBhcy5udW1lcmljKE51bWJlclNwZWFrZXJzKSwgU3BlYWtlcnNFcnJvciA9IGFzLm51bWVyaWMoU3BlYWtlcnNFcnJvciksIEVuZ2xpc2hOb3RWZXJ5V2VsbCA9IGFzLm51bWVyaWMoRW5nbGlzaE5vdFZlcnlXZWxsKSwgRW5nbGlzaEVycm9yID0gYXMubnVtZXJpYyhFbmdsaXNoRXJyb3IpKQ0KDQpzdHIoQWxhc2thKQ0KYGBgDQoNCioqSGF3YWlpKioNCmBgYHtyLCB3YXJuaW5nID0gRkFMU0V9DQpIYXdhaWkgPC0gcmVhZF9leGNlbChwYXRoID0geGxzX2RhdGEsIHNoZWV0ID0gIkhhd2FpaSIsIG5hID0gIi0tIikNCg0KbmFtZXMoSGF3YWlpKVtjKDEsIDIsIDMsIDQsIDUpXSA8LSBjKCJMYW5ndWFnZSIsICJOdW1iZXJTcGVha2VycyIsICJTcGVha2Vyc0Vycm9yIiwgIkVuZ2xpc2hOb3RWZXJ5V2VsbCIsICJFbmdsaXNoRXJyb3IiKQ0KDQpIYXdhaWkgPC0NCiAgSGF3YWlpICU+JQ0KICBmaWx0ZXIocm93X251bWJlcigpID4gNSwgcm93X251bWJlcigpIDwgMTU4KQ0KDQpIYXdhaWkgPC0NCiAgSGF3YWlpICU+JSByZXBsYWNlX3dpdGhfbmEocmVwbGFjZSA9IGxpc3QoTnVtYmVyU3BlYWtlcnMgPSBjKCIoRCkiLCAiKEIpIiwgIihYKSIpLCBTcGVha2Vyc0Vycm9yID0gYygiKEQpIiwgIihCKSIsICIoWCkiKSwgRW5nbGlzaE5vdFZlcnlXZWxsID0gYygiKEQpIiwgIihCKSIsICIoWCkiKSwgRW5nbGlzaEVycm9yID0gYygiKEQpIiwgIihCKSIsICIoWCkiKSkpDQoNCkhhd2FpaSA8LQ0KICBIYXdhaWlbLWMoMiwgNCwgNSwgNzo5LCAxMiwgMTQsIDE2LCAyMCwgMjgsIDMxLCA0MiwgNTAsIDYxLCA2MiwgNzYsIDg4LCAxMjIsIDEyNCwgMTQxKSxdDQoNCkhhd2FpaSA8LQ0KICBIYXdhaWkgJT4lDQogIG5hLm9taXQoKQ0KDQpIYXdhaWkgPC0NCiAgSGF3YWlpICU+JQ0KICBtdXRhdGUoc3RhdGUgPSAiSGF3YWlpIikNCg0KVmlldyhIYXdhaWkpDQoNCkhhd2FpaSA8LQ0KICBIYXdhaWkgJT4lDQogIG11dGF0ZShOdW1iZXJTcGVha2VycyA9IGFzLm51bWVyaWMoTnVtYmVyU3BlYWtlcnMpLCBTcGVha2Vyc0Vycm9yID0gYXMubnVtZXJpYyhTcGVha2Vyc0Vycm9yKSwgRW5nbGlzaE5vdFZlcnlXZWxsID0gYXMubnVtZXJpYyhFbmdsaXNoTm90VmVyeVdlbGwpLCBFbmdsaXNoRXJyb3IgPSBhcy5udW1lcmljKEVuZ2xpc2hFcnJvcikpDQoNCnN0cihIYXdhaWkpDQpgYGANCg0KDQojIyMgQXBwZW5kIHRoZSBUYWJsZXMNCg0KTm93IHRoYXQgSSBoYXZlIHRoZSBpbmRpdmlkdWFsIGRhdGEgdGFibGVzIGZvciBzdGF0ZXMsIEkgd2lsbCBzdGFydCBhcHBlbmRpbmcgdGhlbSB0b2dldGhlciBpbiB0ZXJtcyBvZiByZWdpb24uICAgDQpGcm9tIHRoaXMgd2lraXBlZGlhIHBhZ2UgKCJodHRwczovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9GaWxlOkNlbnN1c19SZWdpb25zX2FuZF9EaXZpc2lvbl9vZl90aGVfVW5pdGVkX1N0YXRlcy5zdmciKSwgSSBmb3VuZCBhIG1hcCBvZiB0aGUgcmVnaW9ucyBhbmQgZGl2aXNvbnMgdGhhdCB0aGUgQ2Vuc3VzIHV0aWxpemVzIGZvciB0aGUgVW5pdGVkIFN0YXRlcy4NCmBgYHtyfQ0KUGFjaWZpYyA8LSBiaW5kX3Jvd3MoQWxhc2thLCBIYXdhaWkpICU+JQ0KICBhcnJhbmdlKGRlc2MoTnVtYmVyU3BlYWtlcnMpKQ0KDQojIENoZWNrIG91dCBteSBuZXcgZGF0YSB0YWJsZSBmb3IgdGhlIFBhY2lmaWMgUmVnaW9uDQpWaWV3KFBhY2lmaWMpDQpoZWFkKFBhY2lmaWMpDQpgYGA=</div>
 
 
 
