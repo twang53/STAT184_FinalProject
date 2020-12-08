@@ -42,8 +42,10 @@ library(datasets)
 
 ### Loading the Data
 
-Now we read in our data from the xls file. This one is for **states in the US and contains 52 data tables**, all in separate sheets (because it contains Puerto Rico as well). Let's start off with just one state.
+Now we read in our data from the xls file. This one is for **states in the US and contains 52 data tables**, all in separate sheets (because it contains Puerto Rico as well). This data was taken from the Census Bureau website.   
+Let's start off with just one state.
 ```{r}
+# Specifying Data Path (change path as needed since this is specific to where the data is saved on my laptop)
 xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-state.xls"
 
 # This returns the names of all the sheets in our xls file (for future reference).
@@ -131,7 +133,7 @@ Alabama <-
 str(Alabama)
 ```
 
-Now that we have gone through the explanations for one data table (Alabama), I will be going through the same process for specific states so that I have enough data for one full region, as well as some individual states that I can combine to represent the other regions.
+Now that we have gone through the explanations for one data table (Alabama), I will be going through the same process for specific states so that I have enough data for some individual states that I can combine to represent the other regions.
 
 **Technical Challenge:** I had previously considered cleaning all 52 tables, but after discussing with the TA, we decided it would be more beneficial and realistic to only choose a couple of the tables, since the data required some hard-coding to be done via the excel spreadsheet before importing into R (I had to go in and delete a bunch of periods that were showing up in the beginning of language names that were causing me issues when trying to wrangle my data and use join and certain reduction/transformation functions).
 
@@ -216,4 +218,16 @@ Pacific <- bind_rows(Alaska, Hawaii) %>%
 # Check out my new data table for the Pacific Region
 View(Pacific)
 head(Pacific)
+```
+
+
+### Other Data Source
+
+This is the other data source I am using. It is also from the Census Bureau, but instead of language data for each state, it is for the nation as a whole. The data for each state would count as a subset of this data, so I wanted to know if the patterns I observe for the states/regions are also reflected in the overall nation data.
+```{r}
+# Specifying Data Path (change path as needed since this is specific to where the data is saved on my laptop)
+xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-nation.xls"
+
+# This returns the names of all the sheets in our xls file (for future reference).
+excel_sheets(path = xls_data)
 ```
