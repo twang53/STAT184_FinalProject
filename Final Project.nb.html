@@ -1753,10 +1753,46 @@ summary {
 <!-- rnb-text-begin -->
 <div id="how-languages-spoken-affect-english-ability" class="section level1">
 <h1>How Languages Spoken Affect English Ability</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<div id="research-question" class="section level3">
+<h3>Research Question</h3>
+<div id="how-does-the-type-of-language-spoken-at-home-affect-english-speaking-ability" class="section level4">
+<h4><strong>How does the type of language spoken at home affect English speaking ability?</strong></h4>
+<p>I want to see how the type of language(s) spoken at home can affect a person’s ability to speak English well. This is really interesting for me because I’ve always been interested in the linguistics field and I thought it would be cool to see if there was some trend in the number of languages (types of languages) spoken at home versus self-reported English speaking ability. Ideally, we’d like a scientific output for Englihs speaking ability for each person based on statistical analysis of their responses to different tasks, but the data I got from the Census doesn’t have that since this pattern I’m looking for wasn’t what they originally collected the data for.<br />
+From experience when I submitted my preliminary EDA, I found out that I had to significanctly dial down the number of data tables I wanted to use since the data is not formatted in a way that is easily usable by R. I decided to stick with only a couple of states from the datasets by state since that in itself is a lot of data to clean, wrangle, and such. I also decided to add in another dataset for the entire US nation itself to see if the same trend we might see in states may also be true for the entire nation as a whole.</p>
+</div>
+</div>
+</div>
+<div id="the-data" class="section level2">
+<h2>The Data</h2>
+<p>First we need clean the environment and then load the package(s) we need. There are some packages that requiring installing, but I have commented them out after I have installed it once. Below is a description of each package I loaded and what it is used for:</p>
+<ul>
+<li><strong>tidyverse:</strong> this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.</li>
+<li><strong>readxl:</strong> this package makes it easy to get data out of Excel and into R</li>
+<li><strong>naniar:</strong> contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot &amp; tidy data</li>
+<li><strong>datasets:</strong> contains tons of data the user can load and use immediately</li>
+</ul>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBUaGlzIGNsZWFucyB1cCB0aGUgZW52aXJvbm1lbnQuXG5ybShsaXN0ID0gbHMoKSlcblxuIyBJbnN0YWxsIG5lY2Vzc2FyeSBwYWNrYWdlcy5cbiMgaW5zdGFsbC5wYWNrYWdlcyhcIm5hbmlhclwiKVxuXG4jIFRoaXMgbG9hZHMgdGhlIHBhY2thZ2VzIHdlIG5lZWQuXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmxpYnJhcnkocmVhZHhsKVxubGlicmFyeShuYW5pYXIpXG5saWJyYXJ5KGRhdGFzZXRzKVxuYGBgIn0= -->
+<pre class="r"><code># This cleans up the environment.
+rm(list = ls())
+
+# Install necessary packages.
+# install.packages(&quot;naniar&quot;)
+
+# This loads the packages we need.
+library(tidyverse)
+library(readxl)
+library(naniar)
+library(datasets)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZpbmFsIFByb2plY3QiDQphdXRob3I6ICJUYW55YSBXYW5nIg0Kb3V0cHV0OiANCiAgICBodG1sX25vdGVib29rOg0KICAgIGZpZ19oZWlnaHQ6IDYNCiAgICBmaWdfd2lkdGg6IDEwDQotLS0NCg0KIyBIb3cgTGFuZ3VhZ2VzIFNwb2tlbiBBZmZlY3QgRW5nbGlzaCBBYmlsaXR5</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkZpbmFsIFByb2plY3QiDQphdXRob3I6ICJUYW55YSBXYW5nIg0Kb3V0cHV0OiANCiAgICBodG1sX25vdGVib29rOg0KICAgIGZpZ19oZWlnaHQ6IDYNCiAgICBmaWdfd2lkdGg6IDEwDQotLS0NCg0KIyBIb3cgTGFuZ3VhZ2VzIFNwb2tlbiBBZmZlY3QgRW5nbGlzaCBBYmlsaXR5DQoNCiMjIEludHJvZHVjdGlvbg0KDQojIyMgUmVzZWFyY2ggUXVlc3Rpb24NCiMjIyMgKipIb3cgZG9lcyB0aGUgdHlwZSBvZiBsYW5ndWFnZSBzcG9rZW4gYXQgaG9tZSBhZmZlY3QgRW5nbGlzaCBzcGVha2luZyBhYmlsaXR5PyoqDQpJIHdhbnQgdG8gc2VlIGhvdyB0aGUgdHlwZSBvZiBsYW5ndWFnZShzKSBzcG9rZW4gYXQgaG9tZSBjYW4gYWZmZWN0IGEgcGVyc29uJ3MgYWJpbGl0eSB0byBzcGVhayBFbmdsaXNoIHdlbGwuIFRoaXMgaXMgcmVhbGx5IGludGVyZXN0aW5nIGZvciBtZSBiZWNhdXNlIEkndmUgYWx3YXlzIGJlZW4gaW50ZXJlc3RlZCBpbiB0aGUgbGluZ3Vpc3RpY3MgZmllbGQgYW5kIEkgdGhvdWdodCBpdCB3b3VsZCBiZSBjb29sIHRvIHNlZSBpZiB0aGVyZSB3YXMgc29tZSB0cmVuZCBpbiB0aGUgbnVtYmVyIG9mIGxhbmd1YWdlcyAodHlwZXMgb2YgbGFuZ3VhZ2VzKSBzcG9rZW4gYXQgaG9tZSB2ZXJzdXMgc2VsZi1yZXBvcnRlZCBFbmdsaXNoIHNwZWFraW5nIGFiaWxpdHkuIElkZWFsbHksIHdlJ2QgbGlrZSBhIHNjaWVudGlmaWMgb3V0cHV0IGZvciBFbmdsaWhzIHNwZWFraW5nIGFiaWxpdHkgZm9yIGVhY2ggcGVyc29uIGJhc2VkIG9uIHN0YXRpc3RpY2FsIGFuYWx5c2lzIG9mIHRoZWlyIHJlc3BvbnNlcyB0byBkaWZmZXJlbnQgdGFza3MsIGJ1dCB0aGUgZGF0YSBJIGdvdCBmcm9tIHRoZSBDZW5zdXMgZG9lc24ndCBoYXZlIHRoYXQgc2luY2UgdGhpcyBwYXR0ZXJuIEknbSBsb29raW5nIGZvciB3YXNuJ3Qgd2hhdCB0aGV5IG9yaWdpbmFsbHkgY29sbGVjdGVkIHRoZSBkYXRhIGZvci4gICANCkZyb20gZXhwZXJpZW5jZSB3aGVuIEkgc3VibWl0dGVkIG15IHByZWxpbWluYXJ5IEVEQSwgSSBmb3VuZCBvdXQgdGhhdCBJIGhhZCB0byBzaWduaWZpY2FuY3RseSBkaWFsIGRvd24gdGhlIG51bWJlciBvZiBkYXRhIHRhYmxlcyBJIHdhbnRlZCB0byB1c2Ugc2luY2UgdGhlIGRhdGEgaXMgbm90IGZvcm1hdHRlZCBpbiBhIHdheSB0aGF0IGlzIGVhc2lseSB1c2FibGUgYnkgUi4gSSBkZWNpZGVkIHRvIHN0aWNrIHdpdGggb25seSBhIGNvdXBsZSBvZiBzdGF0ZXMgZnJvbSB0aGUgZGF0YXNldHMgYnkgc3RhdGUgc2luY2UgdGhhdCBpbiBpdHNlbGYgaXMgYSBsb3Qgb2YgZGF0YSB0byBjbGVhbiwgd3JhbmdsZSwgYW5kIHN1Y2guIEkgYWxzbyBkZWNpZGVkIHRvIGFkZCBpbiBhbm90aGVyIGRhdGFzZXQgZm9yIHRoZSBlbnRpcmUgVVMgbmF0aW9uIGl0c2VsZiB0byBzZWUgaWYgdGhlIHNhbWUgdHJlbmQgd2UgbWlnaHQgc2VlIGluIHN0YXRlcyBtYXkgYWxzbyBiZSB0cnVlIGZvciB0aGUgZW50aXJlIG5hdGlvbiBhcyBhIHdob2xlLg0KDQoNCiMjIFRoZSBEYXRhDQoNCkZpcnN0IHdlIG5lZWQgY2xlYW4gdGhlIGVudmlyb25tZW50IGFuZCB0aGVuIGxvYWQgdGhlIHBhY2thZ2Uocykgd2UgbmVlZC4gVGhlcmUgYXJlIHNvbWUgcGFja2FnZXMgdGhhdCByZXF1aXJpbmcgaW5zdGFsbGluZywgYnV0IEkgaGF2ZSBjb21tZW50ZWQgdGhlbSBvdXQgYWZ0ZXIgSSBoYXZlIGluc3RhbGxlZCBpdCBvbmNlLiBCZWxvdyBpcyBhIGRlc2NyaXB0aW9uIG9mIGVhY2ggcGFja2FnZSBJIGxvYWRlZCBhbmQgd2hhdCBpdCBpcyB1c2VkIGZvcjoNCg0KLSAqKnRpZHl2ZXJzZToqKiB0aGlzIGlzIGEgY29sbGVjdGlvbiBvZiBSIHBhY2thZ2VzIGRlc2lnbmVkIGZvciBkYXRhIHNjaWVuY2UuIEl0IGluY2x1ZGVzIGdncGxvdDIsIGRwbHlyLCB0aWR5ciwgYW5kIG1vcmUgdGhhdCB3ZSBjYW4gdXNlIGZvciBldmVyeWRheSBkYXRhIGFuYWx5c2VzLg0KLSAqKnJlYWR4bDoqKiB0aGlzIHBhY2thZ2UgbWFrZXMgaXQgZWFzeSB0byBnZXQgZGF0YSBvdXQgb2YgRXhjZWwgYW5kIGludG8gUg0KLSAqKm5hbmlhcjoqKiBjb250YWlucyB0b29scyBmb3IgZXhwbG9yaW5nIG1pc3NpbmcgZGF0YSBzdHJ1Y3R1cmVzIHdpdGggbWluaW1hbCBkZXZpYXRpb24gZnJvbSB0aGUgY29tbW9uIHdvcmtmbG93cyBvZiBnZ3Bsb3QgJiB0aWR5IGRhdGENCi0gKipkYXRhc2V0czoqKiBjb250YWlucyB0b25zIG9mIGRhdGEgdGhlIHVzZXIgY2FuIGxvYWQgYW5kIHVzZSBpbW1lZGlhdGVseQ0KYGBge3J9DQojIFRoaXMgY2xlYW5zIHVwIHRoZSBlbnZpcm9ubWVudC4NCnJtKGxpc3QgPSBscygpKQ0KDQojIEluc3RhbGwgbmVjZXNzYXJ5IHBhY2thZ2VzLg0KIyBpbnN0YWxsLnBhY2thZ2VzKCJuYW5pYXIiKQ0KDQojIFRoaXMgbG9hZHMgdGhlIHBhY2thZ2VzIHdlIG5lZWQuDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkocmVhZHhsKQ0KbGlicmFyeShuYW5pYXIpDQpsaWJyYXJ5KGRhdGFzZXRzKQ0KYGBgDQo=</div>
 
 
 

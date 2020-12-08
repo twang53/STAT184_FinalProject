@@ -8,3 +8,33 @@ output:
 ---
 
 # How Languages Spoken Affect English Ability
+
+## Introduction
+
+### Research Question
+#### **How does the type of language spoken at home affect English speaking ability?**
+I want to see how the type of language(s) spoken at home can affect a person's ability to speak English well. This is really interesting for me because I've always been interested in the linguistics field and I thought it would be cool to see if there was some trend in the number of languages (types of languages) spoken at home versus self-reported English speaking ability. Ideally, we'd like a scientific output for Englihs speaking ability for each person based on statistical analysis of their responses to different tasks, but the data I got from the Census doesn't have that since this pattern I'm looking for wasn't what they originally collected the data for.   
+From experience when I submitted my preliminary EDA, I found out that I had to significanctly dial down the number of data tables I wanted to use since the data is not formatted in a way that is easily usable by R. I decided to stick with only a couple of states from the datasets by state since that in itself is a lot of data to clean, wrangle, and such. I also decided to add in another dataset for the entire US nation itself to see if the same trend we might see in states may also be true for the entire nation as a whole.
+
+
+## The Data
+
+First we need clean the environment and then load the package(s) we need. There are some packages that requiring installing, but I have commented them out after I have installed it once. Below is a description of each package I loaded and what it is used for:
+
+- **tidyverse:** this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.
+- **readxl:** this package makes it easy to get data out of Excel and into R
+- **naniar:** contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot & tidy data
+- **datasets:** contains tons of data the user can load and use immediately
+```{r}
+# This cleans up the environment.
+rm(list = ls())
+
+# Install necessary packages.
+# install.packages("naniar")
+
+# This loads the packages we need.
+library(tidyverse)
+library(readxl)
+library(naniar)
+library(datasets)
+```
