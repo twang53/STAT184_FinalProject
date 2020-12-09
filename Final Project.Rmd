@@ -318,7 +318,7 @@ Ohio <-
   Ohio %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
 
 Ohio <-
-  Ohio[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+  Ohio[-c(2, 4, 5, 6, 11, 14, 18, 22, 30, 34, 47, 60, 73, 74, 89, 107, 124, 126, 155, 171),]
 
 Ohio <-
   Ohio %>%
@@ -338,13 +338,110 @@ str(Ohio)
 
 #### South Region
 **Texas**
+```{r, message = FALSE}
+Texas <- read_excel(path = xls_data, sheet = "Texas", na = "--")
+
+names(Texas)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Texas <-
+  Texas %>%
+  filter(row_number() > 5, row_number() < 228)
+
+Texas <-
+  Texas %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Texas <-
+  Texas[-c(2, 4:7, 13, 16, 20, 24, 32, 36, 48, 63, 66, 80, 81, 95, 117, 145, 147, 157, 192, 210, 213),]
+
+Texas <-
+  Texas %>%
+  na.omit()
+
+Texas <-
+  Texas %>%
+  mutate(state = "Texas")
+
+
+Texas <-
+  Texas %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Texas)
+```
+
 **Florida**
+```{r, message = FALSE}
+Florida <- read_excel(path = xls_data, sheet = "Florida", na = "--")
+
+names(Florida)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Florida <-
+  Florida %>%
+  filter(row_number() > 5, row_number() < 200)
+
+Florida <-
+  Florida %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Florida <-
+  Florida[-c(2, 4:7, 13, 16, 20, 25, 33, 37, 50, 63, 76, 77, 91, 109, 132, 134, 166, 181),]
+
+Florida <-
+  Florida %>%
+  na.omit()
+
+Florida <-
+  Florida %>%
+  mutate(state = "Florida")
+
+
+Florida <-
+  Florida %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Florida)
+```
+
 **Virginia**
+```{r, message = FALSE}
+Virginia <- read_excel(path = xls_data, sheet = "Virginia", na = "--")
+
+names(Virginia)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Virginia <-
+  Virginia %>%
+  filter(row_number() > 5, row_number() < 194)
+
+Virginia <-
+  Virginia %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Virginia <-
+  Virginia[-c(2, 4:6, 12, 14, 17, 22, 31, 35, 48, 61, 75, 76, 90, 108, 131, 133, 160, 178),]
+
+Virginia <-
+  Virginia %>%
+  na.omit()
+
+Virginia <-
+  Virginia %>%
+  mutate(state = "Virginia")
+
+
+Virginia <-
+  Virginia %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Virginia)
+```
 
 #### Northeast Region
 **Pennsylvania**
+
+
 **Vermont**
+
+
 **Maine**
+
 
 
 ### Append the Tables
