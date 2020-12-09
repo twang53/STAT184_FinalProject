@@ -1,5 +1,5 @@
 # STAT184_FinalProject
-You can find the Final Project Report [HERE](file:///C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/Final%20Project.nb.html)
+You can find the Final Project Report HERE: file:///C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/Final%20Project.nb.html
 
 This is my final project for STAT 184. It requires multiple steps, starting with Preliminary EDA and ending with a report and presentation.
 
