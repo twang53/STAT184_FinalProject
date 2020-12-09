@@ -3,12 +3,19 @@ title: "Final Project"
 author: "Tanya Wang"
 output: 
     html_notebook:
-    fig_height: 6
-    fig_width: 10
+      toc: true
+      toc_float:
+        collapsed: false
+        smooth_scroll: true
+      toc_depth: 2
+      fig_height: 6
+      fig_width: 10
 ---
 
 # How Languages Spoken Affect English Ability
 You can find this project at the following github.io website: "https://twang53.github.io/STAT184_FinalProject/"
+
+<br>
 
 ## Introduction
 
@@ -17,6 +24,7 @@ You can find this project at the following github.io website: "https://twang53.g
 I want to see how the number of peopel who speak a certain language at home can affect a person's ability to speak English well. If possible, I will also try seeing if there is a correlation between type of language and English speaking ability. This is really interesting for me because I've always been interested in the linguistics field and I thought it would be cool to see if there was some trend in the number of languages (types of languages) spoken at home versus self-reported English speaking ability. Ideally, we'd like a scientific output for Englihs speaking ability for each person based on statistical analysis of their responses to different tasks, but the data I got from the Census doesn't have that since this pattern I'm looking for wasn't what they originally collected the data for.   
 From experience when I submitted my preliminary EDA, I found out that I had to significanctly dial down the number of data tables I wanted to use since the data is not formatted in a way that is easily usable by R. I decided to stick with only a couple of states from the datasets by state since that in itself is a lot of data to clean, wrangle, and such. I also decided to add in another dataset for the entire US nation itself to see if the same trend we might see in states may also be true for the entire nation as a whole.
 
+<br>
 
 ## The Data
 
@@ -40,6 +48,7 @@ library(naniar)
 library(datasets)
 ```
 
+<br>
 
 ### Loading the Data
 
@@ -66,6 +75,7 @@ Alabama <- read_excel(path = xls_data, sheet = "Alabama", na = "--")
 head(Alabama)
 ```
 
+<br>
 
 ### Clean the Data
 
@@ -115,6 +125,7 @@ Alabama <-
 names(Alabama)
 ```
 
+<br>
 
 ### Variable Types
 
@@ -136,11 +147,16 @@ str(Alabama)
 
 Now that we have gone through the explanations for one data table (Alabama), I will be going through the same process for specific states so that I have enough data for some individual states that I can combine to represent the other regions.
 
+<br>
+
 **Technical Challenge:** I had previously considered cleaning all 52 tables, but after discussing with the TA, we decided it would be more beneficial and realistic to only choose a couple of the tables, since the data required some hard-coding to be done via the excel spreadsheet before importing into R (I had to go in and delete a bunch of periods that were showing up in the beginning of language names that were causing me issues when trying to wrangle my data and use join and certain reduction/transformation functions).
 
+<br>
 
 ### Load & Clean the Rest of the Data
 **NOTE:** Note that I occasionally used the View() function in the console to check my code, that's why I don't have any inspecting functions for the data tables below. I believe the step-by-step process I walked you through previously is sufficient evidence that I constantly check my data after every step to make sure everything is okay.
+
+<br>
 
 #### Pacific Region
 **Alaska**
@@ -239,6 +255,8 @@ Utah <-
 str(Utah)
 ```
 
+<br>
+
 #### Midwest Region
 **Iowa**
 ```{r, message = FALSE}
@@ -335,6 +353,8 @@ Ohio <-
 
 str(Ohio)
 ```
+
+<br>
 
 #### South Region
 **Texas**
@@ -433,6 +453,8 @@ Virginia <-
 str(Virginia)
 ```
 
+<br>
+
 #### Northeast Region
 **Pennsylvania**
 FINISH
@@ -443,6 +465,7 @@ FINISH
 **Maine**
 FINISH
 
+<br>
 
 ### Append the Tables
 
@@ -485,6 +508,7 @@ Northeast <- bind_rows(Pennsylvania, Vermont, Maine) %>%
 head(Northeast)
 ```
 
+<br>
 
 ### Other Data Source
 
@@ -529,6 +553,7 @@ Nation <-
 str(Nation)
 ```
 
+<br>
 
 ## Brief Description & Exaplanation Of the Data & the Research
 CHANGE PARAGRAPHS BELOW
@@ -542,6 +567,7 @@ For the data I am using (the states), there are separate tables for each state. 
 Once I finish cleaning and appending the tables, there will be 6 variables, language (categorical), number of speakers (numerical), margin of error (numerical), speak English less than "very well" (numerical), second margin of error (numerical), and state (categorical). I plan to mainly focus on the language, number of speakers, speak English les than "very well", and state. I want to see if there are any patterns in the language being spoken affecting the English speaking ability (maybe by how similar the language is to English). I also want to compare these trends between states (or most likely regions) and see if there are similar trends or not.   
 In combination with my other data source, state.x77 (loaded from R), I want to see if maybe there could also be correlations between these languages spoken, English ability, and income, illteracy, and graduation percentage (these last 3 are variables in the state.x77 dataset). I am still debating on whether I would like to use all this in combination with antoher R dataset (probably the midwest dataset in the ggplot2 package) or another outside data source. This will be something you might see being explored more in my final report.
 
+<br>
 
 ## Data Wrangling
 Before we dive into data wrangling, let's take a look at some summary statistics.
@@ -586,7 +612,7 @@ glimpse(Nation)
 ```
 EXPLANATION
 
-**Now let's get started with data wrangling.**   
+### **Now let's get started with data wrangling.**   
 I started off with a simple query that I had an issue getting to work properly in my preliminary EDA. I basically take my Pacific data table and group it by the language, then summarize it to sum up the total number of speakers for each langauge. Based on the output below, my code works!   
 As you can see, my output is arranged in alphabetical order by language name, even though I didn't specify anything with the arr() function.
 ```{r}
@@ -600,8 +626,10 @@ Let's try some other code!
 
 ```
 
+<br>
 
 ## Data Visualization
+
 ### Plots
 Let's first see if there's a relationship between the number of speakers of a language and their English ability. I created a simple dot plot with a line that helps us recognize any patterns in the data for the Pacific Region. I plotted the Number of Speakers versus the English Ability variable and differentiated color based on the state. As you can see from the output, if we have more than three states, then this plot could become very interesting. If the plot becomes too messy looking, we could even use faceting instead to differentiate the states.   
 From this plot, we can see that for the Pacific Region, as the number of speakers of a language increases, so does the amount of people who claim their English speaking ability is not/less than "Very Well".
@@ -677,6 +705,7 @@ Pacific %>%
   facet_grid(state ~ .)
 ```
 
+<br>
 
 ## Conclusion/Final Thoughts
 
