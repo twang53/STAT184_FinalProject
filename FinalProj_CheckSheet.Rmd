@@ -1,7 +1,7 @@
 ---
 title: 'Final Project: Guidance Document'
 author: "Tanya Wang"
-date: "Due December 11, 2020"
+date: "Due December 13, 2020"
 output:  html_notebook
 ---
 
