@@ -8,6 +8,7 @@ output:
 ---
 
 # How Languages Spoken Affect English Ability
+You can find this project at the following github.io website: "https://twang53.github.io/STAT184_FinalProject/"
 
 ## Introduction
 
@@ -207,9 +208,70 @@ str(Hawaii)
 ```
 
 **Utah**
+```{r, message = FALSE}
+Utah <- read_excel(path = xls_data, sheet = "Utah", na = "--")
+
+names(Utah)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Utah <-
+  Utah %>%
+  filter(row_number() > 5, row_number() < 169)
+
+Utah <-
+  Utah %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Utah <-
+  Utah[-c(2, 4, 5, 7:9, 12, 14, 17, 22, 29, 33, 44, 52, 64, 65, 79, 91, 115, 117, 155),]
+
+Utah <-
+  Utah %>%
+  na.omit()
+
+Utah <-
+  Utah %>%
+  mutate(state = "Utah")
+
+
+Utah <-
+  Utah %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Utah)
+```
 
 #### Midwest Region
 **Iowa**
+```{r, message = FALSE}
+Hawaii <- read_excel(path = xls_data, sheet = "Hawaii", na = "--")
+
+names(Hawaii)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Hawaii <-
+  Hawaii %>%
+  filter(row_number() > 5, row_number() < 158)
+
+Hawaii <-
+  Hawaii %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Hawaii <-
+  Hawaii[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+
+Hawaii <-
+  Hawaii %>%
+  na.omit()
+
+Hawaii <-
+  Hawaii %>%
+  mutate(state = "Hawaii")
+
+
+Hawaii <-
+  Hawaii %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Hawaii)
+```
+
 **Michigan**
 **Ohio**
 
@@ -228,23 +290,104 @@ str(Hawaii)
 
 Now that I have the individual data tables for states, I will start appending them together in terms of region.   
 From this wikipedia page ("https://en.wikipedia.org/wiki/File:Census_Regions_and_Division_of_the_United_States.svg"), I found a map of the regions and divisons that the Census utilizes for the United States.
+
+**Pacific Region:** Only Alaska, Hawaii, and Utah
 ```{r}
-Pacific <- bind_rows(Alaska, Hawaii) %>%
+Pacific <- bind_rows(Alaska, Hawaii, Utah) %>%
   arrange(desc(NumberSpeakers))
 
 # Check out my new data table for the Pacific Region
-View(Pacific)
 head(Pacific)
+```
+
+**Midwest Region:** Only Iowa, Michigan, and Ohio
+```{r}
+Midwest <- bind_rows(Iowa, Michigan, Ohio) %>%
+  arrange(desc(NumberSpeakers))
+
+# Check out my new data table for the Pacific Region
+head(Midwest)
+```
+
+**South Region:** Only Texas, Florida, and Virginia
+```{r}
+South <- bind_rows(Texas, Florida, Virginia) %>%
+  arrange(desc(NumberSpeakers))
+
+# Check out my new data table for the Pacific Region
+head(South)
+```
+
+**Northeast Region:** Only Pennsylvania, Vermont, and Maine
+```{r}
+Northeast <- bind_rows(Pennsylvania, Vermont, Maine) %>%
+  arrange(desc(NumberSpeakers))
+
+# Check out my new data table for the Pacific Region
+head(Northeast)
 ```
 
 
 ### Other Data Source
 
 This is the other data source I am using. It is also from the Census Bureau, but instead of language data for each state, it is for the nation as a whole. The data for each state would count as a subset of this data, so I wanted to know if the patterns I observe for the states/regions are also reflected in the overall nation data.
-```{r}
+```{r, message = FALSE}
 # Specifying Data Path (change path as needed since this is specific to where the data is saved on my laptop)
-xls_data <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-nation.xls"
+xls_nationData <- "C:/Users/GuaiGuai/Documents/R/STAT184_FinalProject/2009-2013-acs-lang-tables-nation.xls"
 
 # This returns the names of all the sheets in our xls file (for future reference).
-excel_sheets(path = xls_data)
+excel_sheets(path = xls_nationData)
+
+# Name the data
+Nation <- read_excel(path = xls_nationData, na = "--")
+
+# Let's take a look at the data
+head(Nation)
 ```
+
+The data doesn't look too great, so we need to do some cleaning.
+```{r}
+names(Nation)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Nation <-
+  Nation %>%
+  filter(row_number() > 5, row_number() < 377)
+
+Nation <-
+  Nation %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Nation <-
+  Nation[-c(2, 4:8, 14, 17, 21, 26, 35, 39, 53, 68, 89, 90, 106, 132, 175, 177, 331, 352, 356),]
+
+Nation <-
+  Nation %>%
+  na.omit()
+
+
+Nation <-
+  Nation %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Nation)
+```
+
+
+## Brief Description & Exaplanation Of the Data & the Research
+CHANGE
+
+I knew I wanted to do research and analysis on languages, culture, or something in the medical field, but I decided to focus my search on languages. I was able to find this data from the Census Bureau (specifically this website: "https://www.census.gov/data/tables/2013/demo/2009-2013-lang-tables.html
+"). It contains four separate xls documents that each contain multiple sheets of data. It is all describing detailed languages spoken at home and ability to speak English for the population over a 5 year period (from 2009 to 2013).   
+From the description on the site, I saw that the the tables are available for the nation, each of the 50 states, plus Washington, D.C. and Puerto Rico, counties with 100,000 or more total population and 25,000 or more speakers of languages other than English & Spanish, as well as core-based statistical areas (metropolitan statistical areas & micropolitan statistical areas) with 100,000 or more total population and 25,000 or more speakers of langauges other than English & Spanish.   
+The information is collected by the American Community Survey, which contains multi-year data used to list all languages spoken in the United States that were reported during the sample period. The data is maintained by the Census Bureau's application programming interface (API)
+Unfortunately, the data is only a sample of the total population since the ACS did not sample the households where some other languages are spoken, or because the person filling out the survey didn't report some languages and/or possibiliity reported another language instead. The English-speaking ability variable is self-reported so it represents the person's own perception about his or her own ability. The ACS questionnaires are also usually completed by one household member, so it may not reflect the overall household.   
+For the data I am using (the states), there are separate tables for each state. A case is usually represented by a single language (or a group of languages to generalize some more specific languages) in each state. The cases vary by the state, but since I am planning on appending the tables to each other, we can do some rough math. If there are 52 tables for states and each table has about 145 cases (languages), and if we append all those tables together, we'll get around 7,540 caes in total. Whether or not I will be appending all of the states may vary. I may split the states up by region (northeast, west, south, midwest, etc.) and append those tables together and then have separate tables for each region instead.   
+Once I finish cleaning and appending the tables, there will be 6 variables, language (categorical), number of speakers (numerical), margin of error (numerical), speak English less than "very well" (numerical), second margin of error (numerical), and state (categorical). I plan to mainly focus on the language, number of speakers, speak English les than "very well", and state. I want to see if there are any patterns in the language being spoken affecting the English speaking ability (maybe by how similar the language is to English). I also want to compare these trends between states (or most likely regions) and see if there are similar trends or not.   
+In combination with my other data source, state.x77 (loaded from R), I want to see if maybe there could also be correlations between these languages spoken, English ability, and income, illteracy, and graduation percentage (these last 3 are variables in the state.x77 dataset). I am still debating on whether I would like to use all this in combination with antoher R dataset (probably the midwest dataset in the ggplot2 package) or another outside data source. This will be something you might see being explored more in my final report.
+
+## Data Wrangling
+### Summary Statistics
+
+## Data Visualization
+### Plots
+
+## Conclusion/Final Thoughts
