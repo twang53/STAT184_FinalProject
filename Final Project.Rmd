@@ -242,38 +242,99 @@ str(Utah)
 #### Midwest Region
 **Iowa**
 ```{r, message = FALSE}
-Hawaii <- read_excel(path = xls_data, sheet = "Hawaii", na = "--")
+Iowa <- read_excel(path = xls_data, sheet = "Iowa", na = "--")
 
-names(Hawaii)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+names(Iowa)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
 
-Hawaii <-
-  Hawaii %>%
-  filter(row_number() > 5, row_number() < 158)
+Iowa <-
+  Iowa %>%
+  filter(row_number() > 5, row_number() < 161)
 
-Hawaii <-
-  Hawaii %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+Iowa <-
+  Iowa %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
 
-Hawaii <-
-  Hawaii[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+Iowa <-
+  Iowa[-c(2, 4:6, 12, 14, 18, 22, 30, 34, 45, 54, 64, 65, 78, 91, 108, 110, 133, 149),]
 
-Hawaii <-
-  Hawaii %>%
+Iowa <-
+  Iowa %>%
   na.omit()
 
-Hawaii <-
-  Hawaii %>%
-  mutate(state = "Hawaii")
+Iowa <-
+  Iowa %>%
+  mutate(state = "Iowa")
 
 
-Hawaii <-
-  Hawaii %>%
+Iowa <-
+  Iowa %>%
   mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
 
-str(Hawaii)
+str(Iowa)
 ```
 
 **Michigan**
+```{r, message = FALSE}
+Michigan <- read_excel(path = xls_data, sheet = "Michigan", na = "--")
+
+names(Michigan)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Michigan <-
+  Michigan %>%
+  filter(row_number() > 5, row_number() < 185)
+
+Michigan <-
+  Michigan %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Michigan <-
+  Michigan[-c(2, 4:7, 13, 15, 18, 23, 31, 35, 48, 62, 76, 77, 91, 111, 132, 134, 157, 172, 175),]
+
+Michigan <-
+  Michigan %>%
+  na.omit()
+
+Michigan <-
+  Michigan %>%
+  mutate(state = "Michigan")
+
+
+Michigan <-
+  Michigan %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Michigan)
+```
+
 **Ohio**
+```{r, message = FALSE}
+Ohio <- read_excel(path = xls_data, sheet = "Ohio", na = "--")
+
+names(Ohio)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Ohio <-
+  Ohio %>%
+  filter(row_number() > 5, row_number() < 187)
+
+Ohio <-
+  Ohio %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Ohio <-
+  Ohio[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+
+Ohio <-
+  Ohio %>%
+  na.omit()
+
+Ohio <-
+  Ohio %>%
+  mutate(state = "Ohio")
+
+
+Ohio <-
+  Ohio %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Ohio)
+```
 
 #### South Region
 **Texas**
@@ -345,7 +406,7 @@ Nation <- read_excel(path = xls_nationData, na = "--")
 head(Nation)
 ```
 
-The data doesn't look too great, so we need to do some cleaning.
+The data doesn't look too great, so we need to do some cleaning. I followed the same process I used for cleaning the states data tables, except I don't need the mutate() function to add a new variable for state since this data table is for the entire nation (every state and territory in the United States of America).
 ```{r}
 names(Nation)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
 
