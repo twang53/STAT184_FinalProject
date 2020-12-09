@@ -26,7 +26,7 @@ First we need to clean the environment and then load the package(s) we need. The
 - **readxl:** this package makes it easy to get data out of Excel and into R
 - **naniar:** contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot & tidy data
 - **datasets:** contains tons of data the user can load and use immediately
-```{r, warning = FALSE}
+```{r, message = FALSE}
 # This cleans up the environment.
 rm(list = ls())
 
