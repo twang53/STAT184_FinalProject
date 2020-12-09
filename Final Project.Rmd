@@ -435,13 +435,13 @@ str(Virginia)
 
 #### Northeast Region
 **Pennsylvania**
-
+FINISH
 
 **Vermont**
-
+FINISH
 
 **Maine**
-
+FINISH
 
 
 ### Append the Tables
@@ -531,7 +531,7 @@ str(Nation)
 
 
 ## Brief Description & Exaplanation Of the Data & the Research
-CHANGE
+CHANGE PARAGRAPHS BELOW
 
 I knew I wanted to do research and analysis on languages, culture, or something in the medical field, but I decided to focus my search on languages. I was able to find this data from the Census Bureau (specifically this website: "https://www.census.gov/data/tables/2013/demo/2009-2013-lang-tables.html
 "). It contains four separate xls documents that each contain multiple sheets of data. It is all describing detailed languages spoken at home and ability to speak English for the population over a 5 year period (from 2009 to 2013).   
@@ -542,10 +542,144 @@ For the data I am using (the states), there are separate tables for each state. 
 Once I finish cleaning and appending the tables, there will be 6 variables, language (categorical), number of speakers (numerical), margin of error (numerical), speak English less than "very well" (numerical), second margin of error (numerical), and state (categorical). I plan to mainly focus on the language, number of speakers, speak English les than "very well", and state. I want to see if there are any patterns in the language being spoken affecting the English speaking ability (maybe by how similar the language is to English). I also want to compare these trends between states (or most likely regions) and see if there are similar trends or not.   
 In combination with my other data source, state.x77 (loaded from R), I want to see if maybe there could also be correlations between these languages spoken, English ability, and income, illteracy, and graduation percentage (these last 3 are variables in the state.x77 dataset). I am still debating on whether I would like to use all this in combination with antoher R dataset (probably the midwest dataset in the ggplot2 package) or another outside data source. This will be something you might see being explored more in my final report.
 
+
 ## Data Wrangling
+Before we dive into data wrangling, let's take a look at some summary statistics.
+
 ### Summary Statistics
+So first off, I ran the summary() and glimpse() functions on the Pacific Region data to get a brief glimpse of what's going on with the data. Remember that each region I created only contain 3 out of all the states in that region due to how much hard-coding and cleaning I would have to do if I imported all 52 tables for the states plus Puerto Rico.
+```{r}
+summary(Pacific)
+```
+The summary function tells us that there are 206 total cases (because of the 206 languages). Minimum number of speakers for a language is 4 people, but the maximum is 245947 people, with an average of 3862.9 people per language.   
+Just as a quick note, the margin of errors are the 90% error.
+
+```{r}
+glimpse(Pacific)
+```
+Using the glimpse() funciton, we get the number or rows, number or columns, the variable names, and a brief look at what kind of data is under each variable. For my Pacific data table, there are 206 rows/cases and 6 columns/variables. In my preliminary EDA, I had noticed there were periods in front of my language names. After discussing with the TA, I ended up taking those out manully within the excel spreadsheet (basically hard-coding the data) so that I wouldn't have to worry about taking it out in R Studio.
+
+Now, let's take a look at each of the other regions. I only used the summary() function since you get the general gist of what glimpse() does and there's no need to use that function for every other region as well.
+```{r}
+summary(Midwest)
+```
+EXPLANATION
+
+```{r}
+summary(South)
+```
+EXPLANATION
+
+```{r}
+summary(Northeast)
+```
+EXPLANATION
+
+After looking at the regions, let's take a look at the overall nation. I decided to use both summary() and glimpse() since this dataset is a bit different than the previous datasets for the regions.
+```{r}
+summary(Nation)
+```
+EXPLANATION
+
+```{r}
+glimpse(Nation)
+```
+EXPLANATION
+
+**Now let's get started with data wrangling.**   
+I started off with a simple query that I had an issue getting to work properly in my preliminary EDA. I basically take my Pacific data table and group it by the language, then summarize it to sum up the total number of speakers for each langauge. Based on the output below, my code works!   
+As you can see, my output is arranged in alphabetical order by language name, even though I didn't specify anything with the arr() function.
+```{r}
+Pacific %>%
+  group_by(Language) %>%
+  summarize(totalSpeakers = sum(NumberSpeakers))
+```
+
+Let's try some other code!
+```{r}
+
+```
+
 
 ## Data Visualization
 ### Plots
+Let's first see if there's a relationship between the number of speakers of a language and their English ability. I created a simple dot plot with a line that helps us recognize any patterns in the data for the Pacific Region. I plotted the Number of Speakers versus the English Ability variable and differentiated color based on the state. As you can see from the output, if we have more than three states, then this plot could become very interesting. If the plot becomes too messy looking, we could even use faceting instead to differentiate the states.   
+From this plot, we can see that for the Pacific Region, as the number of speakers of a language increases, so does the amount of people who claim their English speaking ability is not/less than "Very Well".
+```{r}
+Pacific %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region")
+```
+
+But it's hard to see the data for Alaska since Utah has a huge outlier, so what if we limited the x-axis and y-axis ranges to take out the outlier?
+```{r}
+Pacific %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlim(0, 60000) +
+  ylim(0, 40000) +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region")
+```
+EXPLANATION
+
+What about for the other regions?
+```{r}
+Midwest %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region")
+```
+
+```{r}
+South %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region")
+```
+
+```{r}
+Northeast %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region")
+```
+
+```{r}
+Nation %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region")
+```
+
+```{r}
+Pacific %>%
+  ggplot(aes(Language)) +
+  geom_bar() +
+  facet_grid(state ~ .)
+```
+
 
 ## Conclusion/Final Thoughts
+
+
+
+
