@@ -39,10 +39,10 @@ The accompaning **Final Project Check Sheet** will also be turned in (it is cont
 ### Below are some descriptions taken from the rubric for reference:
 
 #### Data Access
-(1) Analysis includes at least two different data sources.
-(2) Primary data source may NOT be loaded from an R package--though supporting data may.
-(3) Access to all data sources is contained within the analysis.
-(4) Imported data is inspected at beginning of analysis using one or more R functions: e.g., str, glimpse, head, tail, names, nrow, etc
+1. Analysis includes at least two different data sources.
+2. Primary data source may NOT be loaded from an R package--though supporting data may.
+3. Access to all data sources is contained within the analysis.
+4. Imported data is inspected at beginning of analysis using one or more R functions: e.g., str, glimpse, head, tail, names, nrow, etc
 
 #### Data Wrangling
 Students need not use every function and method introduced in STAT 184, but clear demonstration of proficiency should include proper use of 5 out of the following 8 topics from class:
