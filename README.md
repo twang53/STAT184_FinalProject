@@ -1,5 +1,8 @@
 # STAT184_FinalProject
-You can find the Final Project Report HERE:
+You can find the Final Project Report [HERE](Final%20Project.nb.html).   
+This is the [State Dataset](2009-2013-acs-lang-tables-state.xls) and [Nation Dataset](2009-2013-acs-lang-tables-nation.xls) I used in my project.
+
+
 
 This is my final project for STAT 184. It requires multiple steps, starting with Preliminary EDA and ending with a report and presentation.
 
