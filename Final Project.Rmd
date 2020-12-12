@@ -22,6 +22,7 @@ You can find this project and the datsets I used at the following github.io webs
 ### Research Question
 #### **How does the number of people who speak a langauge affect their English speaking ability?**   
 I want to see how the number of peopel who speak a certain language at home can affect a person's ability to speak English well. If possible, I will also try seeing if there is a correlation between type of language and English speaking ability. This is really interesting for me because I've always been interested in the linguistics field and I thought it would be cool to see if there was some trend in the number of languages (types of languages) spoken at home versus self-reported English speaking ability. Ideally, we'd like a scientific output for Englihs speaking ability for each person based on statistical analysis of their responses to different tasks, but the data I got from the Census doesn't have that since this pattern I'm looking for wasn't what they originally collected the data for.   
+
 From experience when I submitted my preliminary EDA, I found out that I had to significanctly dial down the number of data tables I wanted to use since the data is not formatted in a way that is easily usable by R. I decided to stick with only a couple of states from the datasets by state since that in itself is a lot of data to clean, wrangle, and such. I also decided to add in another dataset for the entire US nation itself to see if the same trend we might see in states may also be true for the entire nation as a whole.
 
 <br>
@@ -34,6 +35,7 @@ First we need to clean the environment and then load the package(s) we need. The
 - **readxl:** this package makes it easy to get data out of Excel and into R
 - **naniar:** contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot & tidy data
 - **datasets:** contains tons of data the user can load and use immediately
+
 ```{r, message = FALSE}
 # This cleans up the environment.
 rm(list = ls())
@@ -679,32 +681,34 @@ glimpse(Pacific)
 ```
 Using the glimpse() funciton, we get the number or rows, number or columns, the variable names, and a brief look at what kind of data is under each variable. For my Pacific data table, there are 206 rows/cases and 6 columns/variables. In my preliminary EDA, I had noticed there were periods in front of my language names. After discussing with the TA, I ended up taking those out manully within the excel spreadsheet (basically hard-coding the data) so that I wouldn't have to worry about taking it out in R Studio.
 
-Now, let's take a look at each of the other regions. I only used the summary() function since you get the general gist of what glimpse() does and there's no need to use that function for every other region as well.
+Now, let's take a look at each of the other regions. Remember, each of my regions only contains 3 states, so this cannot be generalized to the entire region. I would have to clean and use the data for every single state in the region for us to get a better idea of the patterns/relationships. Also note that I excluded every language that had at least one NA value to make wrangling and graphing easier for this project.   
+I only used the summary() function since you get the general gist of what glimpse() does and there's no need to use that function for every other region as well.
 ```{r}
 summary(Midwest)
 ```
-EXPLANATION
+There are 271 total cases, meaning 271 languages after my cleaning for the Midwest region. The minimum number of speakers is 35 and the maximum is 270708, with an average of 6500 people per language.
 
 ```{r}
 summary(South)
 ```
-EXPLANATION
+The total number of cases, i.e. the total number of languages, is 327 for the South region. The minimum numbe rof speakers is 10, the maximum is 6983384, and the average is 43713.
 
 ```{r}
 summary(Northeast)
 ```
-EXPLANATION
+For the Northeast region, there are 190 total cases/number of languages. The minimum number of speakers is 4, maximum is 525218, and the average is 7059.9.
 
 After looking at the regions, let's take a look at the overall nation. I decided to use both summary() and glimpse() since this dataset is a bit different than the previous datasets for the regions.
 ```{r}
 summary(Nation)
 ```
-EXPLANATION
+We can see that there are 262 total cases/number of languages for the entire nation. The minimum number of speakers is 35, maximum is 37458624, and the average is 230367. Please remember that I took out all languages had at least one NA value to make it easier for processing and wrangling/visualizations.
 
 ```{r}
 glimpse(Nation)
 ```
-EXPLANATION
+As you can, the variables are the same for the region data and you get a look at some of the values in each variable. The only missing variable/column is that there is no state variable since this is for the entire nation.
+
 
 ### **Now let's get started with data wrangling.**   
 I started off with a simple query that I had an issue getting to work properly in my preliminary EDA. I basically take my Pacific data table and group it by the language, then summarize it to sum up the total number of speakers for each langauge. Based on the output below, my code works!   
