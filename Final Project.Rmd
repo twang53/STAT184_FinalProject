@@ -457,13 +457,100 @@ str(Virginia)
 
 #### Northeast Region
 **Pennsylvania**
-FINISH
+```{r, message = FALSE}
+Pennsylvania <- read_excel(path = xls_data, sheet = "Pennsylvania", na = "--")
+
+names(Pennsylvania)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Pennsylvania <-
+  Pennsylvania %>%
+  filter(row_number() > 5, row_number() < 191)
+
+Pennsylvania <-
+  Pennsylvania %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Pennsylvania <-
+  Pennsylvania[-c(2, 4:6, 12, 14, 17, 21, 29, 33, 47, 60, 74, 75, 89, 107, 129, 131, 158, 164, 176, 179),]
+
+Pennsylvania <-
+  Pennsylvania %>%
+  na.omit()
+
+Pennsylvania <-
+  Pennsylvania %>%
+  mutate(state = "Pennsylvania")
+
+
+Pennsylvania <-
+  Pennsylvania %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Pennsylvania)
+```
 
 **Vermont**
-FINISH
+```{r, message = FALSE}
+Vermont <- read_excel(path = xls_data, sheet = "Vermont", na = "--")
+
+names(Vermont)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Vermont <-
+  Vermont %>%
+  filter(row_number() > 5, row_number() < 120)
+
+Vermont <-
+  Vermont %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Vermont <-
+  Vermont[-c(2, 4:6, 11, 13, 16, 20, 27, 31, 42, 49, 59, 60, 71, 83, 90, 92, 101, 109),]
+
+Vermont <-
+  Vermont %>%
+  na.omit()
+
+Vermont <-
+  Vermont %>%
+  mutate(state = "Vermont")
+
+
+Vermont <-
+  Vermont %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Vermont)
+```
 
 **Maine**
-FINISH
+```{r, message = FALSE}
+Maine <- read_excel(path = xls_data, sheet = "Maine", na = "--")
+
+names(Maine)[c(1, 2, 3, 4, 5)] <- c("Language", "NumberSpeakers", "SpeakersError", "EnglishNotVeryWell", "EnglishError")
+
+Maine <-
+  Maine %>%
+  filter(row_number() > 5, row_number() < 133)
+
+Maine <-
+  Maine %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
+
+Maine <-
+  Maine[-c(2, 4:6, 11, 13, 16, 20, 27, 31, 42, 50, 62, 63, 74, 84, 93, 95, 110, 121),]
+
+Maine <-
+  Maine %>%
+  na.omit()
+
+Maine <-
+  Maine %>%
+  mutate(state = "Maine")
+
+
+Maine <-
+  Maine %>%
+  mutate(NumberSpeakers = as.numeric(NumberSpeakers), SpeakersError = as.numeric(SpeakersError), EnglishNotVeryWell = as.numeric(EnglishNotVeryWell), EnglishError = as.numeric(EnglishError))
+
+str(Maine)
+```
 
 <br>
 
