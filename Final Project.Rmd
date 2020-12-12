@@ -175,7 +175,7 @@ Alaska <-
   Alaska %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
 
 Alaska <-
-  Alaska[-c(2, 4, 5, 7:9, 13, 16, 17, 20, 28, 32, 44, 50, 58, 59, 71, 84, 103, 105, 144),]
+  Alaska[-c(2, 4, 5, 6, 12, 15, 17, 20, 28, 32, 44, 50, 58, 59, 71, 84, 103, 105, 144, 155),]
 
 Alaska <-
   Alaska %>%
@@ -207,7 +207,7 @@ Hawaii <-
   Hawaii %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
 
 Hawaii <-
-  Hawaii[-c(2, 4, 5, 7:9, 12, 14, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141),]
+  Hawaii[-c(2, 4:6, 11, 13, 16, 20, 28, 31, 42, 50, 61, 62, 76, 88, 122, 124, 141, 149),]
 
 Hawaii <-
   Hawaii %>%
@@ -239,7 +239,7 @@ Utah <-
   Utah %>% replace_with_na(replace = list(NumberSpeakers = c("(D)", "(B)", "(X)"), SpeakersError = c("(D)", "(B)", "(X)"), EnglishNotVeryWell = c("(D)", "(B)", "(X)"), EnglishError = c("(D)", "(B)", "(X)")))
 
 Utah <-
-  Utah[-c(2, 4, 5, 7:9, 12, 14, 17, 22, 29, 33, 44, 52, 64, 65, 79, 91, 115, 117, 155),]
+  Utah[-c(2, 4:6, 12, 14, 17, 22, 29, 33, 44, 52, 64, 65, 79, 91, 115, 117, 141, 155),]
 
 Utah <-
   Utah %>%
@@ -673,13 +673,13 @@ So first off, I ran the summary() and glimpse() functions on the Pacific Region 
 ```{r}
 summary(Pacific)
 ```
-The summary function tells us that there are 206 total cases (because of the 206 languages). Minimum number of speakers for a language is 4 people, but the maximum is 245947 people, with an average of 3862.9 people per language.   
+The summary function tells us that there are 204 total cases (because of the 206 languages). Minimum number of speakers for a language is 4 people, but the maximum is 245947 people, with an average of 3881.4 people per language.   
 Just as a quick note, the margin of errors are the 90% error.
 
 ```{r}
 glimpse(Pacific)
 ```
-Using the glimpse() funciton, we get the number or rows, number or columns, the variable names, and a brief look at what kind of data is under each variable. For my Pacific data table, there are 206 rows/cases and 6 columns/variables. In my preliminary EDA, I had noticed there were periods in front of my language names. After discussing with the TA, I ended up taking those out manully within the excel spreadsheet (basically hard-coding the data) so that I wouldn't have to worry about taking it out in R Studio.
+Using the glimpse() funciton, we get the number or rows, number or columns, the variable names, and a brief look at what kind of data is under each variable. For my Pacific data table, there are 204 rows/cases and 6 columns/variables. In my preliminary EDA, I had noticed there were periods in front of my language names. After discussing with the TA, I ended up taking those out manully within the excel spreadsheet (basically hard-coding the data) so that I wouldn't have to worry about taking it out in R Studio.
 
 Now, let's take a look at each of the other regions. Remember, each of my regions only contains 3 states, so this cannot be generalized to the entire region. I would have to clean and use the data for every single state in the region for us to get a better idea of the patterns/relationships. Also note that I excluded every language that had at least one NA value to make wrangling and graphing easier for this project.   
 I only used the summary() function since you get the general gist of what glimpse() does and there's no need to use that function for every other region as well.
@@ -720,6 +720,7 @@ PacificTotal <-
   group_by(Language) %>%
   summarize(Pacific = sum(NumberSpeakers))
 
+# Check the output
 PacificTotal
 ```
 
@@ -730,6 +731,7 @@ MidwestTotal <-
   group_by(Language) %>%
   summarize(Midwest = sum(NumberSpeakers))
 
+# Check the output
 MidwestTotal
 ```
 ```{r, message = FALSE}
@@ -738,6 +740,7 @@ SouthTotal <-
   group_by(Language) %>%
   summarize(South = sum(NumberSpeakers))
 
+# Check the output
 SouthTotal
 ```
 ```{r, message = FALSE}
@@ -746,8 +749,47 @@ NortheastTotal <-
   group_by(Language) %>%
   summarize(Northeast = sum(NumberSpeakers))
 
+# Check the output
 NortheastTotal
 ```
+
+Now that we have all the total number of speakers for each region, we can join the tables for an overall total.   
+Let's start off just joining the PacificTotal table with the MidwestTotal table with a full join and checking the output before continuing.
+```{r, message = FALSE}
+Total <-
+  full_join(PacificTotal, MidwestTotal, by = "Language")
+
+# Check the output
+Total
+```
+
+Everything look fine, so let's keep joining tables until we get the entire table we want.
+```{r}
+Total <-
+  full_join(Total, SouthTotal, by = "Language")
+
+Total <-
+  full_join(Total, NortheastTotal, by = "Language")
+
+# I created a new data table for the total in the nation data table so that I can join it to my Total table
+NationTotal <-
+  Nation %>%
+  summarize(Language, NationTotal = NumberSpeakers)
+
+# Last full_join
+Total <-
+  full_join(Total, NationTotal, by = "Language")
+
+# Take a look at the final resulting table
+Total
+```
+This data table looks pretty interesting and I think I could use it to output some pretty interesting visualizations in the next section.
+
+But before then, I want to try some more data wrangling to get some interesting data tables. Let's use the **spread()** function.
+```{r}
+
+```
+
 
 <br>
 
