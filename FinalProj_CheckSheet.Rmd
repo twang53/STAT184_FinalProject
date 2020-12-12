@@ -31,13 +31,16 @@ output:  html_notebook
 (A) .Rmd Line number(s) for general data wrangling: 
 
 
-(B) .Rmd Line number(s) for a join operation: 
+(B) .Rmd Line number(s) for a join operation:   
+- join on language, total speakers for each state
 
 
-(C) .Rmd Line number(s) for a spread or gather operation (or equivalent):
+(C) .Rmd Line number(s) for a spread or gather operation (or equivalent):   
+- can plot diff lines for languages based on total speakers (right now is long, to go to wide key = language, value = total speakers?)
 
 
-(D) .Rmd Line number(s) for use of regular expressions: 
+(D) .Rmd Line number(s) for use of regular expressions:   
+- detect patterns using regex grep or grepl (langauges with spaces, ends w/ number, starts or ends w/ a certain pattern)
 
 
 (E) .Rmd Line number(s) for use of reduction and/or transformation functions: 
@@ -64,7 +67,8 @@ output:  html_notebook
 
 (C) .Rmd Line number(s) for use of layered graphics:  
 
-(D) .Rmd Line number(s) for use of leaflet maps:  
+(D) .Rmd Line number(s) for use of leaflet maps:    
+- print leaflet map for each state?
 
 (E) .Rmd Line number(s) for use of decision tree or dendogram results:    
 
