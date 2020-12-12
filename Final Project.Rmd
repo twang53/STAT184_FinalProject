@@ -691,7 +691,7 @@ There are 271 total cases, meaning 271 languages after my cleaning for the Midwe
 ```{r}
 summary(South)
 ```
-The total number of cases, i.e. the total number of languages, is 327 for the South region. The minimum numbe rof speakers is 10, the maximum is 6983384, and the average is 43713.
+The total number of cases, i.e. the total number of languages, is 327 for the South region. The minimum number of speakers is 10, the maximum is 6983384, and the average is 43713.
 
 ```{r}
 summary(Northeast)
@@ -711,17 +711,42 @@ As you can, the variables are the same for the region data and you get a look at
 
 
 ### **Now let's get started with data wrangling.**   
-I started off with a simple query that I had an issue getting to work properly in my preliminary EDA. I basically take my Pacific data table and group it by the language, then summarize it to sum up the total number of speakers for each langauge. Based on the output below, my code works!   
+I started off with a simple query that I had an issue getting to work properly in my preliminary EDA. I basically take my Pacific data table and group it by the language, then summarize it to sum up the total number of speakers for each langauge. 
+Based on the output below, my code works!   
 As you can see, my output is arranged in alphabetical order by language name, even though I didn't specify anything with the arr() function.
-```{r}
-Pacific %>%
+```{r, message = FALSE}
+PacificTotal <-
+  Pacific %>%
   group_by(Language) %>%
-  summarize(totalSpeakers = sum(NumberSpeakers))
+  summarize(Pacific = sum(NumberSpeakers))
+
+PacificTotal
 ```
 
-Let's try some other code!
-```{r}
+Let's do the same thing for the other regions so that I can join the tables later.
+```{r, message = FALSE}
+MidwestTotal <-
+  Midwest %>%
+  group_by(Language) %>%
+  summarize(Midwest = sum(NumberSpeakers))
 
+MidwestTotal
+```
+```{r, message = FALSE}
+SouthTotal <-
+  South %>%
+  group_by(Language) %>%
+  summarize(South = sum(NumberSpeakers))
+
+SouthTotal
+```
+```{r, message = FALSE}
+NortheastTotal <-
+  Northeast %>%
+  group_by(Language) %>%
+  summarize(Northeast = sum(NumberSpeakers))
+
+NortheastTotal
 ```
 
 <br>
