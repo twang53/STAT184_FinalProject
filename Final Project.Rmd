@@ -937,6 +937,8 @@ This output is actually very interesting to see because it shows that the densit
 
 Overall, the relationships are still all positive, but when we zoomed in, we saw how much they could differentiate (whether it's based on steepness or if it almost looks like a parabolic curve, or even plateaus, etc.).
 
+
+NEED ONE MORE VISUAL (not point or density)
 ```{r}
 mapStates = map("state", fill = TRUE, plot = FALSE)
 leaflet(data = mapStates) %>%
