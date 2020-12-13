@@ -756,6 +756,7 @@ NortheastTotal
 Now that we have all the total number of speakers for each region, we can join the tables for an overall total.   
 Let's start off just joining the PacificTotal table with the MidwestTotal table with a full join and checking the output before continuing.
 ```{r, message = FALSE}
+# I used a full join and joined by the variable Language
 Total <-
   full_join(PacificTotal, MidwestTotal, by = "Language")
 
@@ -787,9 +788,29 @@ This data table looks pretty interesting and I think I could use it to output so
 
 But before then, I want to try some more data wrangling to get some interesting data tables. Let's use the **spread()** function.
 ```{r}
+# I created a new data table called SouthSum that only included the Language, NumberSpeakers, and state variables.
+SouthSum <-
+  South %>%
+  select(Language, NumberSpeakers, state)
 
+# Then using the new data table, I spread the data into a wide format so that I had Florida, Texas, and Virginia as variables and the values in each column represents the number of speakers in that state for the language. So each row/case is a specific language and the total number of speakers for that language in each of the 3 states.
+SouthSum <-
+  spread(SouthSum, key = state, value = NumberSpeakers)
+
+SouthSum
 ```
+This is similar to my Total table, but this is specific for just the three states in the South region.
 
+Now, I've been curious about certain patterns for the languages so I'm going to use regex expressions to find those patterns. Unfortunately, this is not something I'd like to visualize, I was just curious to see if it might give me any insight into the data.
+```{r}
+# I used grep() to identiy which Languages have a number/digit at the end of it's name in the Nation data table and received two languages.
+grep("[[:digit:]]$", Nation$Language, value = TRUE)
+```
+```{r}
+# This time, I used grep() to identiy which Language names contained a space of some sort. As you can see, there are quite a few languages that follow that pattern.
+grep("\\s", Nation$Language, value = TRUE)
+```
+Like I stated before, this information unfortunately doesn't give me any insight into the data and my research question, but I am able to satiate my curiousity of how many language names match these patterns.
 
 <br>
 
@@ -799,6 +820,7 @@ But before then, I want to try some more data wrangling to get some interesting 
 Let's first see if there's a relationship between the number of speakers of a language and their English ability. I created a simple dot plot with a line that helps us recognize any patterns in the data for the Pacific Region. I plotted the Number of Speakers versus the English Ability variable and differentiated color based on the state. As you can see from the output, if we have more than three states, then this plot could become very interesting. If the plot becomes too messy looking, we could even use faceting instead to differentiate the states.   
 From this plot, we can see that for the Pacific Region, as the number of speakers of a language increases, so does the amount of people who claim their English speaking ability is not/less than "Very Well".
 ```{r}
+# The color aeesthetic is by the state variable and I overlayed geom_point() with geom_smooth(). I also added x and y-axis labels and a title for the visual
 Pacific %>%
   ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
   geom_point() +
@@ -810,6 +832,7 @@ Pacific %>%
 
 But it's hard to see the data for Alaska since Utah has a huge outlier, so what if we limited the x-axis and y-axis ranges to take out the outlier?
 ```{r}
+# Here I just added limitaitons for the x and y-axis value ranges. The x-axis is limited to 0 to 60000 and the y-axis is limited to 0 to 40000. This takes out the extreme data point (maybe an outlier but maybe not) that we saw earlier.
 Pacific %>%
   ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
   geom_point() +
@@ -820,7 +843,7 @@ Pacific %>%
   ylab("# of People Who Claim Their English Ability is Poor") +
   labs(title = "Speakers vs English Ability in the Pacific Region")
 ```
-EXPLANATION
+So now that we can see the Alaska and Hawaii data more clearly, we see that there's a general positive trend, meaning the greater the number of speakers, the more people claim their English ability is poor. Unfortunately, it seems like there's a greater error range for Hawaii than Alaska and Alaska's curve actually starts curving down at the end. So can we conclude that the higher the number of speakers of a language, the more number of peopel who claim their English ability is poor? We need to look at more visualizations.
 
 What about for the other regions?
 ```{r}
@@ -832,6 +855,7 @@ Midwest %>%
   ylab("# of People Who Claim Their English Ability is Poor") +
   labs(title = "Speakers vs English Ability in the Pacific Region")
 ```
+For the Midwest region, the lines are clearer and show an evident positive relationship, but let's check the other two regions as well.
 
 ```{r}
 South %>%
@@ -842,7 +866,22 @@ South %>%
   ylab("# of People Who Claim Their English Ability is Poor") +
   labs(title = "Speakers vs English Ability in the Pacific Region")
 ```
+It seems that the error range is much larger for Texas than any other states we've seen so far. It's a bit concerning, although all three states still follow the positive relationship we saw earlier.
 
+I decided to limit the ranges to show a clearer image and the pattern differences. It's very interesting to look at, but each seems to all hold a positive relationship, just some not as steep as others.
+```{r}
+South %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region") +
+  xlim(0, 90000) +
+  ylim(0, 40000)
+```
+
+Let's take a look at the last region, Northeast.
 ```{r}
 Northeast %>%
   ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
@@ -852,7 +891,9 @@ Northeast %>%
   ylab("# of People Who Claim Their English Ability is Poor") +
   labs(title = "Speakers vs English Ability in the Pacific Region")
 ```
+Although I can't quite see the Vermont data and the Maine data seems to be positive and then plateaus, the Pennsylvania shows a clear positive relationship with a small error range. I think from all these graphs we saw, it may be safe to safe that there is indeed a positive relationship between the number of speakers of a language and the number of people of that language who claim their English ability is poor.
 
+Let's see if the same pattern is apparent in the overall nation data.
 ```{r}
 Nation %>%
   ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell)) +
@@ -862,13 +903,33 @@ Nation %>%
   ylab("# of People Who Claim Their English Ability is Poor") +
   labs(title = "Speakers vs English Ability in the Pacific Region")
 ```
-
+Although the error range is slightly larger than some individual states, overall, there seems to be a somewhat positive relationship, but I'd like to see what will happen if I limit the x and y-axis ranges.
 ```{r}
-Pacific %>%
-  ggplot(aes(Language)) +
-  geom_bar() +
-  facet_grid(state ~ .)
+Nation %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Pacific Region") +
+  xlim(0, 100000) +
+  ylim(0, 70000)
 ```
+Once we zoomed in on the graph, we see a very interesting pattern. The datapoints give us a pattern that's almost parabolic. It's still a positive relationship, but much different than what we expected from when we included all the datapoints.
+
+I'd like to see how the number of speakers differ for each language in each region to see if there might be something here that could relate to the positive relationship we discovered above. We select a random selection of 5 languages that include datapoints for all regions.
+```{r}
+# I had to use gather() to change my data table to a longer format before I could output a graph that I wanted.
+# I then graphed a density plot for the total number of speakers for each language with the line colours differentiating based on region.
+Total %>%
+  gather(Pacific, Midwest, South, Northeast, NationTotal, key = Region, value = SpeakerTotal) %>%
+  ggplot(aes(SpeakerTotal, colour = Region, fill = Region)) +
+  geom_density(alpha = 0.1) +
+  xlim(0, 20000)
+```
+This output is actually very interesting to see because it shows that the density for smaller number of speakers is much higher than everything else. The higher the number of speakers goes, the smaller the density. I think this is important to know because it affects how we can ultimately interpret the graphs we saw above with the positive relationships, especially when we included all the data points. It shows how easily an "outlier" datapoint for a large number of speakers could affect the plot, therefore, zooming in (like what I did for a couple graphs), actually really helps us see the patterns more clearly.
+
+Overall, the relationships are still all positive, but when we zoomed in, we saw how much they could differentiate (whether it's based on steepness or if it almost looks like a parabolic curve, or even plateaus, etc.).
 
 <br>
 
