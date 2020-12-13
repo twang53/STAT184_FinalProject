@@ -856,7 +856,7 @@ Midwest %>%
   geom_smooth() +
   xlab("# of Speakers") +
   ylab("# of People Who Claim Their English Ability is Poor") +
-  labs(title = "Speakers vs English Ability in the Pacific Region")
+  labs(title = "Speakers vs English Ability in the Midwest Region")
 ```
 For the Midwest region, the lines are clearer and show an evident positive relationship, but let's check the other two regions as well.
 
@@ -867,7 +867,7 @@ South %>%
   geom_smooth() +
   xlab("# of Speakers") +
   ylab("# of People Who Claim Their English Ability is Poor") +
-  labs(title = "Speakers vs English Ability in the Pacific Region")
+  labs(title = "Speakers vs English Ability in the South Region")
 ```
 It seems that the error range is much larger for Texas than any other states we've seen so far. It's a bit concerning, although all three states still follow the positive relationship we saw earlier.
 
@@ -879,7 +879,7 @@ South %>%
   geom_smooth() +
   xlab("# of Speakers") +
   ylab("# of People Who Claim Their English Ability is Poor") +
-  labs(title = "Speakers vs English Ability in the Pacific Region") +
+  labs(title = "Speakers vs English Ability in the SouthRegion") +
   xlim(0, 90000) +
   ylim(0, 40000)
 ```
@@ -892,9 +892,22 @@ Northeast %>%
   geom_smooth() +
   xlab("# of Speakers") +
   ylab("# of People Who Claim Their English Ability is Poor") +
-  labs(title = "Speakers vs English Ability in the Pacific Region")
+  labs(title = "Speakers vs English Ability in the Northeast Region")
 ```
 Although I can't quite see the Vermont data and the Maine data seems to be positive and then plateaus, the Pennsylvania shows a clear positive relationship with a small error range. I think from all these graphs we saw, it may be safe to safe that there is indeed a positive relationship between the number of speakers of a language and the number of people of that language who claim their English ability is poor.
+
+I limited the x and y-axis value ranges to take a closer look at the patterns. From the output, you see that we basically get the same general idea as when we included all data points, but there seems to be a huge error range in the beginning for Maine.
+```{r}
+Northeast %>%
+  ggplot(aes(x = NumberSpeakers, y = EnglishNotVeryWell, color = state)) +
+  geom_point() +
+  geom_smooth() +
+  xlab("# of Speakers") +
+  ylab("# of People Who Claim Their English Ability is Poor") +
+  labs(title = "Speakers vs English Ability in the Northeast Region") +
+  xlim(0, 50000) +
+  ylim(0, 30000)
+```
 
 Let's see if the same pattern is apparent in the overall nation data.
 ```{r}
@@ -904,7 +917,7 @@ Nation %>%
   geom_smooth() +
   xlab("# of Speakers") +
   ylab("# of People Who Claim Their English Ability is Poor") +
-  labs(title = "Speakers vs English Ability in the Pacific Region")
+  labs(title = "Speakers vs English Ability in the United States")
 ```
 Although the error range is slightly larger than some individual states, overall, there seems to be a somewhat positive relationship, but I'd like to see what will happen if I limit the x and y-axis ranges.
 ```{r}
@@ -914,7 +927,7 @@ Nation %>%
   geom_smooth() +
   xlab("# of Speakers") +
   ylab("# of People Who Claim Their English Ability is Poor") +
-  labs(title = "Speakers vs English Ability in the Pacific Region") +
+  labs(title = "Speakers vs English Ability in the United States") +
   xlim(0, 100000) +
   ylim(0, 70000)
 ```
