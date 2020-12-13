@@ -928,7 +928,10 @@ Total %>%
   gather(Pacific, Midwest, South, Northeast, NationTotal, key = Region, value = SpeakerTotal) %>%
   ggplot(aes(SpeakerTotal, colour = Region, fill = Region)) +
   geom_density(alpha = 0.1) +
-  xlim(0, 20000)
+  xlim(0, 20000) +
+  xlab("Total # of Speakers") +
+  ylab("Density") +
+  labs(title = "Density Plot of Total Speakers for Lanugages in Each Region (including Nation total)")
 ```
 This output is actually very interesting to see because it shows that the density for smaller number of speakers is much higher than everything else. The higher the number of speakers goes, the smaller the density. I think this is important to know because it affects how we can ultimately interpret the graphs we saw above with the positive relationships, especially when we included all the data points. It shows how easily an "outlier" datapoint for a large number of speakers could affect the plot, therefore, zooming in (like what I did for a couple graphs), actually really helps us see the patterns more clearly.
 
