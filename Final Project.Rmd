@@ -34,7 +34,8 @@ First we need to clean the environment and then load the package(s) we need. The
 - **tidyverse:** this is a collection of R packages designed for data science. It includes ggplot2, dplyr, tidyr, and more that we can use for everyday data analyses.
 - **readxl:** this package makes it easy to get data out of Excel and into R
 - **naniar:** contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot & tidy data
-- **datasets:** contains tons of data the user can load and use immediately
+- **datasets:** contains tons of data the user can load and use immediately (in case I need it at some point)
+- **maps:** this package basically is a display of maps that I need for when I try graphing a leaflet graph
 
 ```{r, message = FALSE}
 # This cleans up the environment.
@@ -42,12 +43,14 @@ rm(list = ls())
 
 # Install necessary packages.
 # install.packages("naniar")
+# install.packages("maps")
 
 # This loads the packages we need.
 library(tidyverse)
 library(readxl)
 library(naniar)
 library(datasets)
+library(maps)
 ```
 
 <br>
@@ -930,6 +933,13 @@ Total %>%
 This output is actually very interesting to see because it shows that the density for smaller number of speakers is much higher than everything else. The higher the number of speakers goes, the smaller the density. I think this is important to know because it affects how we can ultimately interpret the graphs we saw above with the positive relationships, especially when we included all the data points. It shows how easily an "outlier" datapoint for a large number of speakers could affect the plot, therefore, zooming in (like what I did for a couple graphs), actually really helps us see the patterns more clearly.
 
 Overall, the relationships are still all positive, but when we zoomed in, we saw how much they could differentiate (whether it's based on steepness or if it almost looks like a parabolic curve, or even plateaus, etc.).
+
+```{r}
+mapStates = map("state", fill = TRUE, plot = FALSE)
+leaflet(data = mapStates) %>%
+  addTiles() %>%
+  addPolygons(fillColor = topo.colors(12, alpha = NULL), stroke = FALSE)
+```
 
 <br>
 
