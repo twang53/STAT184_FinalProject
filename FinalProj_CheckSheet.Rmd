@@ -17,10 +17,13 @@ output:  html_notebook
 
 *Description: (1) Analysis includes at least two different data sources. (2) Primary data source may NOT be loaded from an R package--though supporting data may. (3) Access to all data sources is contained within the analysis. (4) Imported data is inspected at beginning of analysis using one or more R functions: e.g., str, glimpse, head, tail, names, nrow, etc*
 
-(A) .Rmd Line numbers where at least two different data sources are imported:  
+(A) .Rmd Line numbers where at least two different data sources are imported:    
+**Data Source 1:** 60-64, 70
+**Data Source 2:** 606-613
 
-
-(B) .Rmd Line numbers for inspecting data intake:  
+(B) .Rmd Line numbers for inspecting data intake:    
+Lines: 77, 101, 116, 127, 136, 616   
+**I used View() in the console throughout my process to check the entire data table while cleaning it. I made a note of it in my report.**
 
 
 ### Data Wrangling (5 out of 8 required)
@@ -28,32 +31,30 @@ output:  html_notebook
 *Description: Students need not use every function and method introduced in STAT 184, but clear demonstration of proficiency should include proper use of 5 out of the following 8 topics from class: (+) various data verbs for general data wrangling like filter, mutate, summarise, arrange, group_by, etc. (+) joins for multiple data tables. (+) spread & gather to stack/unstack variables (+) regular expressions (+) reduction and/or transformation functions like mean, sum, max, min, n(), rank, pmin, etc. (+) user-defined functions (+) loops and control flow (+) machine learning*
 
 
-(A) .Rmd Line number(s) for general data wrangling: 
+(A) .Rmd Line number(s) for general data wrangling:   
+Lines: 88-91, 122-124, 718-721   
+**I didn't list all of the lines since I used this a lot, so I only listed some to give you an example.**
 
+(B) .Rmd Line number(s) for a join operation:     
+Lines: 760-761, 769-782
 
-(B) .Rmd Line number(s) for a join operation:   
-- join on language, total speakers for each state
+(C) .Rmd Line number(s) for a spread or gather operation (or equivalent):     
+Lines: 797-798, 938, 954, 967
 
+(D) .Rmd Line number(s) for use of regular expressions:     
+Lines: 807, 811
 
-(C) .Rmd Line number(s) for a spread or gather operation (or equivalent):   
-- can plot diff lines for languages based on total speakers (right now is long, to go to wide key = language, value = total speakers?)
+(E) .Rmd Line number(s) for use of reduction and/or transformation functions:   
+Lines: 721, 732, 741, 750
 
+(F) .Rmd Line number(s) for use of user-defined functions:   
+N/A - I did not create user-defined functions
 
-(D) .Rmd Line number(s) for use of regular expressions:   
-- detect patterns using regex grep or grepl (langauges with spaces, ends w/ number, starts or ends w/ a certain pattern)
+(G) .Rmd Line number(s) for use of loops and/or control flow:   
+N/A - I didn't use loops and/or control flow
 
-
-(E) .Rmd Line number(s) for use of reduction and/or transformation functions: 
-
-
-(F) .Rmd Line number(s) for use of user-defined functions: 
-
-
-(G) .Rmd Line number(s) for use of loops and/or control flow: 
-
-
-(H) .Rmd Line number(s) for use of machine learning (not "wrangling" but scored here): 
-
+(H) .Rmd Line number(s) for use of machine learning (not "wrangling" but scored here):   
+N/A - I didn't use machine learning
 
 
 ### Data Visualization (3 of 5 required)
@@ -61,17 +62,20 @@ output:  html_notebook
 *Description: Students need not use every function and method introduced in STAT 184, but clear demonstration of proficiency should include a range of useful of data visualizations that are (1) relevant to stated research question for the analysis, (2) include at least one effective display of many--at least 3--variables, and (3) include 3 of the following 5 visualization techniques learned in STAT 184: (+) use of multiple geoms such as points, density, lines, segments, boxplots, bar charts, histograms, etc (+) use of multiple aesthetics--not necessarily all in the same graph--such as color, size, shape, x/y position, facets, etc (+) layered graphics such as points and accompanying smoother, points and accompanying boxplots, overlaid density distributions, etc (+) leaflet maps (+) decision tree and/or dendogram displaying machine learning model results*
 
 
-(A) .Rmd Line number(s) for use of mulitple different geoms:  
+(A) .Rmd Line number(s) for use of mulitple different geoms:    
+Lines: 826, 838, 852, 863, 875, 888, 900, 913, 923, 940, 956, 969
 
-(B) .Rmd Line number(s) for use of multiple aesthetics:  
+(B) .Rmd Line number(s) for use of multiple aesthetics:    
+Lines: 825, 837, 851, 862, 874, 887, 899, 939, 957, 970
 
-(C) .Rmd Line number(s) for use of layered graphics:  
+(C) .Rmd Line number(s) for use of layered graphics:    
+Lines: 827, 839, 853, 864, 876, 889, 901, 914, 924, 937-944
 
-(D) .Rmd Line number(s) for use of leaflet maps:    
-- print leaflet map for each state?
+(D) .Rmd Line number(s) for use of leaflet maps:      
+N/A - I didn't use leaflet maps
 
-(E) .Rmd Line number(s) for use of decision tree or dendogram results:    
-
+(E) .Rmd Line number(s) for use of decision tree or dendogram results:      
+N/A - I didn't use decision trees or dendograms
 
 
 
