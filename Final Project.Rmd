@@ -35,7 +35,6 @@ First we need to clean the environment and then load the package(s) we need. The
 - **readxl:** this package makes it easy to get data out of Excel and into R
 - **naniar:** contains tools for exploring missing data structures with minimal deviation from the common workflows of ggplot & tidy data
 - **datasets:** contains tons of data the user can load and use immediately (in case I need it at some point)
-- **maps:** this package basically is a display of maps that I need for when I try graphing a leaflet graph
 
 ```{r, message = FALSE}
 # This cleans up the environment.
@@ -43,14 +42,12 @@ rm(list = ls())
 
 # Install necessary packages.
 # install.packages("naniar")
-# install.packages("maps")
 
 # This loads the packages we need.
 library(tidyverse)
 library(readxl)
 library(naniar)
 library(datasets)
-library(maps)
 ```
 
 <br>
@@ -951,18 +948,44 @@ This output is actually very interesting to see because it shows that the densit
 Overall, the relationships are still all positive, but when we zoomed in, we saw how much they could differentiate (whether it's based on steepness or if it almost looks like a parabolic curve, or even plateaus, etc.).
 
 
-NEED ONE MORE VISUAL (not point or density)
+I want to create another visualization using the SouthSum data table, but I realized that the current format it's in is good for looking at and doing data transformations or reductions, but not good for graphing. So I had to use **gather()** to change the format from wide to long before I could graph the data (similar to what I did for the Total data table).
 ```{r}
-mapStates = map("state", fill = TRUE, plot = FALSE)
-leaflet(data = mapStates) %>%
-  addTiles() %>%
-  addPolygons(fillColor = topo.colors(12, alpha = NULL), stroke = FALSE)
+SouthSum %>%
+  gather(Florida, Texas, Virginia, key = state, value = TotalSpeakers) %>%
+  ggplot(aes(x = Language, y = TotalSpeakers)) +
+  geom_jitter() +
+  facet_grid(state ~ .) +
+  ylim(0, 80000) +
+  ylab("Total Speakers") +
+  labs(title = "Total Speakers for Lanugages in the South")
+```
+Although in the output, you cannot see the specific names of languages since there are so many to the point that they overlap, but I think it's okay because I'm getting an overall view of the differences beetween the total speakers for each langauge for the states Florida, Texas, and Virginia. For the point of this report, there's no need to see the actual names of the languages, since I just wanted to see the comparison of the total number of speakers. This helps me see the patterns between the languages.
+
+The graph below shows the same idea as the one above, but for each region, as well as the Nation. This also helps me visualize the patterns in total number of speakers for languages and how it differs based on region, which helps me understand why the first couple of plots I looked at had such interesting error ranges.
+```{r}
+Total %>%
+  gather(Pacific, Midwest, South, Northeast, NationTotal, key = Region, value = SpeakerTotal) %>%
+  ggplot(aes(x = Language, y = SpeakerTotal)) +
+  geom_jitter() +
+  facet_grid(Region ~ .) +
+  ylim(0, 80000) +
+  ylab("Total Speakers") +
+  labs(title = "Total Speakers for Lanugages")
 ```
 
 <br>
 
 ## Conclusion/Final Thoughts
+So what did I learn from all the data wrangling and visualizations I did?
 
+From the data visualizations, I was able to see that there is a generally positive relaitonship between the total number of speakers and the number of people who claim their English ability is poor for langauges, no matter the region. Some regions have larger error ranges and when you zoom in, the relationships are slightly different. All the relationships are positive, some are steeper or look more parabolic, while others seem to plateau, etc.
 
+There are also languages that seem to have larger groups of speakers, no matter hte region as well (with some exceptions).
 
+If I were to clean the rest of the data and do analysis and create visualizations on a more complete set of data, then maybe we'd have stronger evidence. Until then, although we see a positive relationship that backs up my original assumption, I cannot be very certain since I only included 3 states in each region.
 
+For future work, I'd like to see if the patterns since in the overall Nation data will be closer to what we see in each region if all states are included. Note that I would also have to add in the territories, like Puerto Rico.
+
+Also, note that the English ability is subjective since the surveyed people had to rate themselves and anyone else in their household together. The Census Bureau didn't individually survey every single person, rather they surveyed by household so that rating could be a bit biased and/or skewed. Remember that I stated before I may be able to conclude with a higher confidence if we could collect English ability in a more objective way, via scientific and statistical analysis of their performance on some tasks. But then this would tie into more research that may not be necessarily done by the Census Bureau.
+
+Throughout this process, I learned how difficult data cleaning can be depending on the form the data is in. But once data is cleaned into a tidy format, it makes data wrangling and data visualizations a lot easier. As you saw, I could easily manipulate my data (i.e. using spread() or gather(), sum(), etc.) to get more insights and create data graphics to explore different parts of my research question.
